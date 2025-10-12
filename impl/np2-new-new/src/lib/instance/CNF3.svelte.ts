@@ -5,7 +5,7 @@
 import { assert, type ErrorMessage } from "$lib/core/assert";
 import { onlyUnique } from "$lib/core/filters";
 import type { Id } from "$lib/core/Id";
-import { Serializer } from "$lib/core/Serializer";
+import Serializer from "$lib/core/Serializer";
 import { ProblemInstance } from "./ProblemInstance";
 import "reflect-metadata";
 

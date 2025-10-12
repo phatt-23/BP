@@ -1,41 +1,41 @@
 import { onMount } from 'svelte';
-import { Serializer } from './Serializer';
+import Serializer from './Serializer';
 import { get, writable } from 'svelte/store';
 
-const useLocalStorage = (
+function useLocalStorage<T>(
     key: string, 
-    initialValue: any,
+    initialValue: T,
     opt: {
-        serialize?: (obj: any) => string,
-        revive?: (obj: any) => any,
+        serialize: (obj: any) => string,
+        revive: (obj: any) => T,
     } = {
         serialize: (obj: any) => Serializer.serialize(obj),
         revive: (obj: any) => Serializer.revive(obj),
     }
-) => {
+) {
     let value = writable(initialValue);
 
     onMount(() => {
-        console.log('useLocalStorage::onMount')
         const currentValue = localStorage.getItem(key);
-        if (currentValue) 
-            value = JSON.parse(currentValue);
+        if (currentValue) {
+            const revived = opt.revive(JSON.parse(currentValue))
+            value.set(revived);
+        }
     });
 
     const save = () => {
-        console.log('useLocalStorage::save')
-        if (value) {
-            localStorage.setItem(key, JSON.stringify(value));
+        if (get(value)) {
+            const serialized = JSON.stringify(opt.serialize(get(value)));
+            localStorage.setItem(key, serialized);
         } else {
             localStorage.removeItem(key);
         }
     };
 
-    let obj = {
-        value,
-        save,
+    return {
+        value: value,
+        save: () => save(),
     };
-    return obj;
 };
 
 export default useLocalStorage;
