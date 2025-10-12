@@ -17,13 +17,17 @@ Created by phatt-23 on 12/10/2025
 
     $effect(() => {
         
-        const elements: ElementDefinition[] = graph.nodes.map(n => ({
+        const nodes: ElementDefinition[] = graph.nodes.map(n => ({
             data: { id: n.id, label: n.id },
+        }));
+
+        const edges: ElementDefinition[] = graph.edges.map(e => ({
+            data: { id: e.id, source: e.from, target: e.to },
         }));
 
         let cy = cytoscape({
             container: graphContainer,
-            elements: elements,
+            elements: [...nodes, ...edges],
         });
 
         cy.style(cytoscapeStyles.DEFAULT_STYLE);

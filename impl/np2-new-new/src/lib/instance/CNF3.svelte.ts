@@ -64,20 +64,27 @@ class Clause {
 
 @Serializer.SerializableClass()
 export class CNF3 extends ProblemInstance {
-    public variables: Set<VarName> = new Set();
-    public clauses: Set<Clause> = new Set();
+    public _variables: Set<VarName> = new Set();
+    public _clauses: Set<Clause> = new Set();
 
     public addVariable(v: VarName) {
-        this.variables.add(v);
+        this._variables.add(v);
     }
 
     public addClause(clause: Clause): void {
-        this.clauses.add(clause);
+        this._clauses.add(clause);
         clause.literals.forEach(literal => this.addVariable(literal.varName));
     }
 
     public asString() {
-        return Array.from(this.clauses.values()).map(c => c.asString()).join("\n")
+        return Array.from(this._clauses.values()).map(c => c.asString()).join("\n")
+    }
+
+    public get variables() : Array<VarName> {
+        return Array.from(this._variables.values());
+    }
+    public get clauses() : Array<Clause> {
+        return Array.from(this._clauses.values());
     }
 
     public static fromString(text: string): CNF3 | ErrorMessage {

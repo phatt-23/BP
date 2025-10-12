@@ -11,17 +11,57 @@ Created by phatt-23 on 12/10/2025
         O extends ProblemInstance
     > = {
         steps: ReductionStep<I,O>[];
+        stepIndex: number;
+        onNextClick?: () => void;
+        onPrevClick?: () => void;
     }
 
-    let { steps }: Props<ProblemInstance, ProblemInstance> = $props();
+    let { 
+        steps, 
+        stepIndex, 
+        onNextClick = undefined, 
+        onPrevClick = undefined 
+    }: Props<ProblemInstance, ProblemInstance> = $props();
+
+    const totalStepCount = steps.length;
+
+    let showAll = $state(false);
+
+    function prevClick() {
+        if (onPrevClick && stepIndex > 0) {
+            onPrevClick();
+        }
+    }
+
+    function nextClick() {
+        if (onNextClick && stepIndex < (totalStepCount - 1)) {
+            onNextClick();
+        }
+    }
 </script>
 
-<h2>Reduction Stepper</h2>
+<h1>Reduction Stepper</h1>
 
-{#each steps as step, i}
-    <h2>{step.title}</h2>
-    <p>
-        {@html step.description}
-    </p>
-{/each}
+<label for="showAllCheckbox">Show all</label>
+<input type="checkbox" bind:checked={showAll} name="showAllCheckbox">
+
+{#if showAll}
+    <!-- Shows all the steps at once -->
+    {#each steps as step, i}
+        <h2>Step #{i + 1}: {step.title}</h2>
+        <p>{@html step.description}</p>
+    {/each} 
+{:else}
+    {#if stepIndex < steps.length}
+        {@const step = steps[stepIndex]}
+        <h2>Step #{stepIndex + 1}: {step.title}</h2>
+        <p>{@html step.description}</p>
+    {/if}
+
+    <button onclick={prevClick}>Previous</button>
+    <button onclick={nextClick}>Next</button>
+
+    <span>{stepIndex + 1}/{totalStepCount}</span>
+{/if}
+
 
