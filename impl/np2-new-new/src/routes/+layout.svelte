@@ -4,6 +4,7 @@
 	import Header from '../lib/component/Header.svelte';
 	import cyCanvas from 'cytoscape-canvas';
 	import cytoscape from 'cytoscape';
+    import localStorageKeys from '$lib/core/localStorageKeys';
 
 	let { children } = $props();
 
@@ -15,6 +16,12 @@
 
 <div class="app">
 	<Header />
+
+	<button onclick={() => {
+		Object.values(localStorageKeys).forEach(key => {
+			localStorage.removeItem(key);
+		})
+	}}>Clear local storage</button>
 
 	<main>
 		{@render children()}
