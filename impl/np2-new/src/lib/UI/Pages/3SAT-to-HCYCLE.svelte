@@ -3,7 +3,7 @@
 <!-- 3-SAT to Hamiltonian cycle reduction page -->
 
 <script lang="ts">
-    import { currentInstance, reductionSteps, currentStepIndex } from "../../stores";
+    import { currentInstance, reductionSteps, currentStepIndex, problemStates } from "../../stores";
     import { get } from "svelte/store";
     import { threeSatToHCycle } from "../../Reductions/threeSatToHCycle"; 
     import CNFRenderer from "../Components/InstanceRenderer/CNFRenderer.svelte";
@@ -16,7 +16,7 @@
     import { ThreeSatSolver } from "../../Models/Solvers/ThreeSatSolver";
     import HamiltonianCycleView from "../Components/CertificateViews/HamiltonianCycleCertificateView.svelte";
 
-    let step = $derived( $reductionSteps[$currentStepIndex] );
+    let step = $derived( $problemStates["3SAT"].reductionSteps[$problemStates["3SAT"].currentStepIndex] );
     let graph: GraphInstance = $derived( step?.outputSnapshot! );
     let cnf = $derived( $currentInstance );
     let certificate: Record<string, boolean> | null = $state(null);
