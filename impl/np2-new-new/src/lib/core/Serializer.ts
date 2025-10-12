@@ -4,7 +4,7 @@
 
 
 // custom simple serializer
-export abstract class Serializer {
+abstract class Serializer {
     // decorator that makes classes serializable
     // by giving them a __type property
     // and registering them into Serializer's class registry
@@ -110,14 +110,19 @@ export abstract class Serializer {
     }
 
     // helpers for registering and getting class from registry
-    private static registerClass(name: string, ctor: any) {
+    static registerClass(name: string, ctor: any) {
         Serializer.classRegistry.set(name, ctor);
     }
 
-    private static getClass(name: string): any {
+    static getClass(name: string): any {
         return Serializer.classRegistry.get(name);
     }
 
     // maps class name to class type
     private static classRegistry = new Map<string, any>();
 }
+
+export default Serializer;
+
+// have to register this manually
+Serializer.registerClass(Object.name, Object);

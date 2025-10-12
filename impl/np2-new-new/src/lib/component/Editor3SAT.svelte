@@ -44,5 +44,5 @@
 </div>
 
 <style>
-    textarea { width: 10em; height: 10em; }
+    textarea { width: 100%; height: 20em; }
 </style>

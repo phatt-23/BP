@@ -6,6 +6,6 @@ import type { ProblemInstance } from "$lib/instance/ProblemInstance";
 import type { ReductionStep } from "./ReductionStep";
 
 export interface Reducer<I extends ProblemInstance, O extends ProblemInstance> {
-    inInstance: I | null; 
-    reduce(): [O, ReductionStep<I, O>[]];
+    inInstance: I; 
+    reduce(): { outInstance: O, steps: ReductionStep<I, O>[] };
 }

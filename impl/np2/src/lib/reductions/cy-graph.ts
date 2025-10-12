@@ -1,5 +1,10 @@
-import { type GraphInstance } from "./GraphInstance";
-import { DIRECTED_GRAPH_DEFAULT_STYLE, GRAPH_HAMCYCLE_FROM_3SAT_STYLESHEET, GRAPH_DEFAULT_STYLE, GRAPH_TSP_FROM_HAMCIRCUIT_STYLE } from "./graph-styles";
+import { type GraphInstance } from "../models/GraphInstance";
+import { 
+    DIRECTED_GRAPH_DEFAULT_STYLE, 
+    GRAPH_HAMCYCLE_FROM_3SAT_STYLESHEET, 
+    GRAPH_DEFAULT_STYLE, 
+    GRAPH_TSP_FROM_HAMCIRCUIT_STYLE 
+} from "../models/styles/GraphStyles";
 import type { ElementDefinition } from "cytoscape";
 import { assert } from "./../lib";
 import type cytoscape from "cytoscape";

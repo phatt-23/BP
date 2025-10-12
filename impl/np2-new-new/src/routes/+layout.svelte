@@ -1,12 +1,16 @@
 <script lang="ts">
-	import Header from '../lib/component/Header.svelte';
 	import '../app.css';
-    import type { LayoutProps } from './$types';
+    import { onMount } from 'svelte';
+	import Header from '../lib/component/Header.svelte';
+	import cyCanvas from 'cytoscape-canvas';
+	import cytoscape from 'cytoscape';
 
-	import { instanceToInstance, plainToInstance } from 'class-transformer';
-    import { Serializer } from '$lib/core/Serializer';
+	let { children } = $props();
 
-	let { data, children }: LayoutProps = $props();
+    // initialize cy canvas plugin
+    onMount(() => {
+        cyCanvas(cytoscape);
+    });
 </script>
 
 <div class="app">

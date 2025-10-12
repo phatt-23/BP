@@ -1,10 +1,10 @@
 <script lang="ts">
     import cytoscape, { type ElementDefinition } from "cytoscape";
-    import { type Graph } from "../../models/graph"
-    import { drawConvexHullsFor3DM, layoutGraphToCy, styleCy, type GraphLayout } from "../../models/cy-graph";
+    import { type GraphInstance } from '../../models/GraphInstance'
+    import { drawConvexHullsFor3DM, layoutGraphToCy, styleCy, type GraphLayout } from '../../reductions/cy-graph'
 
     type Props = { 
-        graph: Graph;
+        graph: GraphInstance;
         layout?: GraphLayout
     };
 
@@ -20,7 +20,7 @@
         layoutGraphToCy(cy, graph, layout);
         styleCy(cy, layout);
 
-        if (layout == "3DM-From-3SAT") {
+        if (layout == "3DM-from-3-SAT") {
             drawConvexHullsFor3DM(cy, graph);
         }
     });
