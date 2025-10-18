@@ -31,13 +31,17 @@
             return;
         }
 
-        if (onChange) 
+        if (onChange) {
+            console.log('text changed new cnf:', result);
             onChange(result);
+        }
+
     };
 </script>
 
 <div class="cnf-editor">
     <h2>CNF Editor</h2>
+    <p>Removes duplicate clauses automatically</p>
 
     <textarea bind:value={text} onchange={onTextChange}>
     </textarea>

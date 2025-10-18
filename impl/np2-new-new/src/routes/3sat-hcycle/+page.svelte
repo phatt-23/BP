@@ -64,10 +64,10 @@ Created by phatt-23 on 11/10/2025
     <input type="checkbox" bind:checked={showStepper} name="showStepperCheckbox">
 
     {#if showStepper && $redStore.steps.length}
-        <ReductionStepper steps={$redStore.steps} 
+        <ReductionStepper 
+            steps={$redStore.steps} 
             stepIndex={$redStore.stepIndex}
             onPrevClick={() => {
-                console.log('prev')
                 redStore.update(rs => { 
                     rs.prevStep();
                     return rs;
@@ -75,7 +75,6 @@ Created by phatt-23 on 11/10/2025
                 storage.save();
             }}
             onNextClick={() => { 
-                console.log('next')
                 redStore.update(rs => { 
                     rs.nextStep();
                     return rs;
@@ -83,6 +82,23 @@ Created by phatt-23 on 11/10/2025
                 storage.save();
             }}
         />
+
+        <div class="panes">
+            <div>
+                {#if $redStore.steps[$redStore.stepIndex].inSnapshot}
+                    <Renderer3SAT cnf={$redStore.steps[$redStore.stepIndex].inSnapshot!} />
+                {/if}
+            </div>
+            <div>
+                {#if $redStore.steps[$redStore.stepIndex].outSnapshot}
+                    <RendererGraph 
+                        graph={$redStore.steps[$redStore.stepIndex].outSnapshot!} 
+                        style={'3SAT-HCYCLE'}
+                    />
+                {/if}
+            </div>
+        </div>
+
     {:else}
         <div class="panes">
             <div>
@@ -92,7 +108,7 @@ Created by phatt-23 on 11/10/2025
             </div>
             <div>
                 {#if $redStore.outInstance}
-                    <RendererGraph graph={$redStore.outInstance} />
+                    <RendererGraph graph={$redStore.outInstance} style={'3SAT-HCYCLE'}/>
                 {/if}
             </div>
         </div>

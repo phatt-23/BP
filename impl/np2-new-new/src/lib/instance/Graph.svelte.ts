@@ -17,12 +17,14 @@ export type GraphEdge = {
     from: Id;
     to: Id;
     weight?: number;
+    classes?: string;
 }
 
 export type GraphNode = {
     id: Id;
     label?: string;
     position?: Position;
+    classes?: string;
 }
 
 @Serializer.SerializableClass()
@@ -58,5 +60,33 @@ export class Graph extends ProblemInstance {
         edgesToRemove.forEach(edge => this._edges.delete(edge));
     }
     public removeEdge(edge: GraphEdge) { this._edges.delete(edge);
+    }
+
+    // why the FUUUUCK doesn't typescript have copying objects figured out tf
+    public copy(): Graph {
+        const newGraph = new Graph();
+
+        // Deep copy nodes
+        for (const node of this._nodes) {
+            newGraph.addNode({
+                id: node.id,
+                label: node.label,
+                position: node.position ? { ...node.position } : undefined,
+                classes: node.classes,
+            });
+        }
+
+        // Deep copy edges
+        for (const edge of this._edges) {
+            newGraph.addEdge({
+                id: edge.id,
+                from: edge.from,
+                to: edge.to,
+                weight: edge.weight,
+                classes: edge.classes,
+            });
+        }
+
+        return newGraph;
     }
 }
