@@ -31,6 +31,10 @@ class Literal {
             negated: this.negated,
         }
     }
+
+    public asString(): string {
+        return `${this.negated ? '!' : ''}${this.varName}`;
+    }
 }
 
 @Serializer.SerializableClass()
@@ -46,11 +50,7 @@ class Clause {
     }
 
     public asString() : string {
-        return Clause.makeString(this);
-    }
-
-    public static makeString(clause: Clause) {
-        return clause.literals.map(l => l.varName).join(" ");
+        return this.literals.map(l => l.asString()).join(" ");
     }
 
     public toJSON() {

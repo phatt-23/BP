@@ -9,9 +9,10 @@ Created by phatt-23 on 12/10/2025
 
     type Props = {
         graph: Graph;
+        style?: keyof typeof cytoscapeStyles;
     }
 
-    let { graph } : Props = $props();
+    let { graph, style = 'DEFAULT_STYLE' } : Props = $props();
 
     let graphContainer: HTMLElement;
 
@@ -19,6 +20,8 @@ Created by phatt-23 on 12/10/2025
         
         const nodes: ElementDefinition[] = graph.nodes.map(n => ({
             data: { id: n.id, label: n.id },
+            position: n.position,
+            classes: n.classes,
         }));
 
         const edges: ElementDefinition[] = graph.edges.map(e => ({
@@ -27,10 +30,12 @@ Created by phatt-23 on 12/10/2025
 
         let cy = cytoscape({
             container: graphContainer,
-            elements: [...nodes, ...edges],
         });
 
-        cy.style(cytoscapeStyles.DEFAULT_STYLE);
+        cy.add(nodes);
+        cy.add(edges);
+
+        cy.style(cytoscapeStyles[style]);
     });
 </script>
 
@@ -43,7 +48,7 @@ Created by phatt-23 on 12/10/2025
 <style>
     #cy {
         width: 90%;
-        height: 20em;
+        height: 100em;
         border: solid black;
     }
 </style>

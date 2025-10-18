@@ -12,6 +12,7 @@ Created by phatt-23 on 12/10/2025
     > = {
         steps: ReductionStep<I,O>[];
         stepIndex: number;
+        indent?: number,
         onNextClick?: () => void;
         onPrevClick?: () => void;
     }
@@ -19,6 +20,7 @@ Created by phatt-23 on 12/10/2025
     let { 
         steps, 
         stepIndex, 
+        indent = 0,
         onNextClick = undefined, 
         onPrevClick = undefined 
     }: Props<ProblemInstance, ProblemInstance> = $props();
@@ -26,6 +28,8 @@ Created by phatt-23 on 12/10/2025
     const totalStepCount = steps.length;
 
     let showAll = $state(false);
+    let showInterSteps = $state(false);
+    let childStepIndex = $state(0);
 
     function prevClick() {
         if (onPrevClick && stepIndex > 0) {
@@ -40,28 +44,82 @@ Created by phatt-23 on 12/10/2025
     }
 </script>
 
-<h1>Reduction Stepper</h1>
+<section style="padding-left: {indent * 100}px; border: solid black 1px">
+    <h1>Reduction Stepper</h1>
 
-<label for="showAllCheckbox">Show all</label>
-<input type="checkbox" bind:checked={showAll} name="showAllCheckbox">
+    <div>
+        <label for="showAllCheckbox">Show all</label>
+        <input type="checkbox" bind:checked={showAll} name="showAllCheckbox">
+    </div>
 
-{#if showAll}
-    <!-- Shows all the steps at once -->
-    {#each steps as step, i}
-        <h2>Step #{i + 1}: {step.title}</h2>
-        <p>{@html step.description}</p>
-    {/each} 
-{:else}
-    {#if stepIndex < steps.length}
-        {@const step = steps[stepIndex]}
-        <h2>Step #{stepIndex + 1}: {step.title}</h2>
-        <p>{@html step.description}</p>
+    {#if showAll}
+
+        <!-- Shows all the steps at once -->
+        {#each steps as step, i}
+            {#if step.interSteps != undefined}
+                <div>
+                    <label for="showInterSteps">Show Inter-Steps</label>
+                    <input type="checkbox" bind:checked={showInterSteps} name="showInterSteps">
+                </div>
+            {/if}
+
+            <h2>Step #{i + 1}: {step.title}</h2>
+            <p>{@html step.description}</p>
+
+            {#if showInterSteps && step.interSteps != undefined}
+                <!-- svelte-ignore svelte_self_deprecated -->
+                <svelte:self
+                    steps={step.interSteps} 
+                    stepIndex={childStepIndex}
+                    indent={indent + 1}
+                    onPrevClick={() => {
+                        if (childStepIndex > 0)
+                            childStepIndex = childStepIndex - 1;
+                    }}
+                    onNextClick={() => {
+                        if (childStepIndex < step.interSteps!.length)
+                            childStepIndex = childStepIndex + 1;
+                    }}
+                />
+            {/if}
+
+        {/each} 
+    {:else}
+        {#if stepIndex < steps.length}
+            {@const step = steps[stepIndex]}
+
+            {#if step.interSteps != undefined}
+                <div>
+                    <label for="showInterSteps">Show Inter-Steps</label>
+                    <input type="checkbox" bind:checked={showInterSteps} name="showInterSteps">
+                </div>
+            {/if}
+
+            <h2>Step #{stepIndex + 1}: {step.title}</h2>
+            <p>{@html step.description}</p>
+
+            {#if showInterSteps && step.interSteps != undefined}
+                <!-- svelte-ignore svelte_self_deprecated -->
+                <svelte:self
+                    steps={step.interSteps} 
+                    stepIndex={childStepIndex}
+                    indent={indent + 1}
+                    onPrevClick={() => {
+                        if (childStepIndex > 0)
+                            childStepIndex = childStepIndex - 1;
+                    }}
+                    onNextClick={() => {
+                        if (childStepIndex < step.interSteps!.length)
+                            childStepIndex = childStepIndex + 1;
+                    }}
+                />
+            {/if}
+        {/if}
+
+        <div>
+            <button onclick={prevClick}>Previous</button>
+            <button onclick={nextClick}>Next</button>
+            <span>{stepIndex + 1}/{totalStepCount}</span>
+        </div>
     {/if}
-
-    <button onclick={prevClick}>Previous</button>
-    <button onclick={nextClick}>Next</button>
-
-    <span>{stepIndex + 1}/{totalStepCount}</span>
-{/if}
-
-
+</section>

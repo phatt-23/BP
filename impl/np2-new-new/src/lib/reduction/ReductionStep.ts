@@ -16,8 +16,11 @@ export interface ReductionStep<I extends ProblemInstance, O extends ProblemInsta
     // optional snapshots, otherwise the inInstance and outInstance
     // from the ReductionStore will be used instead
     inSnapshot?: I;
-    outStapshot?: O;  
+    outSnapshot?: O;  
 
     // I element id -> O element ids (shows correspondence between I element and O elements)
     mapping: Record<string, string[]>;  
+
+    // children steps
+    interSteps?: ReductionStep<I, O>[];
 }
