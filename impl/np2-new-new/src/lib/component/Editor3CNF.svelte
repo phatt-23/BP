@@ -11,37 +11,34 @@
         onChange: (cnf: CNF3) => void;
         onWrongFormat?: (message: ErrorMessage) => void;
     }
+
     let { cnf, onChange, onWrongFormat }: Props = $props();
 
-    console.log('in editor:', JSON.stringify(cnf));
-
     let text = $state(cnf?.asString() ?? '');
-
-    $effect(() => {
-        if (cnf)
-            text = cnf.asString()
-    })
 
     const onTextChange = () => {
         const result = CNF3.fromString(text);
 
         if (typeof result == "string") {
-            if (onWrongFormat)
+            if (onWrongFormat) {
                 onWrongFormat(result);
+            }
             return;
         }
 
         if (onChange) {
-            console.log('text changed new cnf:', result);
             onChange(result);
         }
-
     };
+
+    $effect(() => {
+        if (cnf) text = cnf.asString()
+    })
 </script>
 
 <div class="cnf-editor">
     <h2>CNF Editor</h2>
-    <p>Removes duplicate clauses automatically</p>
+    <p><i>Removes duplicate clauses automatically.</i></p>
 
     <textarea bind:value={text} onchange={onTextChange}>
     </textarea>

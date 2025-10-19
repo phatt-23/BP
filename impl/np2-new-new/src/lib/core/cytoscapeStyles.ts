@@ -120,5 +120,17 @@ export const cytoscapeStyles: Record<string, StylesheetStyle[]> = {
                 "line-color": "red",
             },
         },
+        {
+            selector: "edge.solved",  
+            style: {
+                "line-opacity": 0.2,
+            },
+        },
+        {
+            selector: "edge.solved.used",  
+            style: {
+                "line-opacity": 1,
+            },
+        },
     ]
 };
