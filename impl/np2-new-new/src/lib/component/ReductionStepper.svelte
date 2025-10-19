@@ -56,13 +56,6 @@ Created by phatt-23 on 12/10/2025
 
         <!-- Shows all the steps at once -->
         {#each steps as step, i}
-            {#if step.interSteps != undefined}
-                <div>
-                    <label for="showInterSteps">Show Inter-Steps</label>
-                    <input type="checkbox" bind:checked={showInterSteps} name="showInterSteps">
-                </div>
-            {/if}
-
             <h2>Step #{i + 1}: {step.title}</h2>
             <p>{@html step.description}</p>
 
@@ -88,32 +81,8 @@ Created by phatt-23 on 12/10/2025
         {#if stepIndex < steps.length}
             {@const step = steps[stepIndex]}
 
-            {#if step.interSteps != undefined}
-                <div>
-                    <label for="showInterSteps">Show Inter-Steps</label>
-                    <input type="checkbox" bind:checked={showInterSteps} name="showInterSteps">
-                </div>
-            {/if}
-
             <h2>Step #{stepIndex + 1}: {step.title}</h2>
             <p>{@html step.description}</p>
-
-            {#if showInterSteps && step.interSteps != undefined}
-                <!-- svelte-ignore svelte_self_deprecated -->
-                <svelte:self
-                    steps={step.interSteps} 
-                    stepIndex={childStepIndex}
-                    indent={indent + 1}
-                    onPrevClick={() => {
-                        if (childStepIndex > 0)
-                            childStepIndex = childStepIndex - 1;
-                    }}
-                    onNextClick={() => {
-                        if (childStepIndex < step.interSteps!.length)
-                            childStepIndex = childStepIndex + 1;
-                    }}
-                />
-            {/if}
         {/if}
 
         <div>

@@ -41,15 +41,15 @@ export const cytoscapeStyles: Record<string, StylesheetStyle[]> = {
             },
         },
         {
-            selector: "node.true",
+            selector: "node.true",  // vrchol na konci rady 
             style: { "background-color": "green" },
         },
         {
-            selector: "node.false",
+            selector: "node.false",  // vrchol na druhem konci rady
             style: { "background-color": "red" },
         },
         {
-            selector: "node.source, node.inbetween, node.target",
+            selector: "node.source, node.inbetween, node.target",  // prechodne vrcholy mezi rady promennych
             style: {
                 "background-color": "white",
                 "border-style": "solid",
@@ -57,11 +57,11 @@ export const cytoscapeStyles: Record<string, StylesheetStyle[]> = {
             },
         },
         {
-            selector: "node.clause",
+            selector: "node.clause",  // vrchol reprezentujici klauzuli
             style: { "background-color": "orange" },
         },
         {
-            selector: "node.guarantee",
+            selector: "node.guarantee",  // mezi outgoing a incoming hranami
             style: { "opacity": 0.5 },
         },
         {
@@ -75,7 +75,7 @@ export const cytoscapeStyles: Record<string, StylesheetStyle[]> = {
             },
         },
         {
-            selector: "edge.noise",
+            selector: "edge.muted",  // hrany, u kterych neni dulezite jejich viditelnost
             style: {
                 "line-opacity": 0.2,
                 "line-color": "black",
@@ -91,22 +91,34 @@ export const cytoscapeStyles: Record<string, StylesheetStyle[]> = {
             },
         },
         {
-            selector: "edge.clause.true",
+            selector: "edge.true_in",  // true incoming edge
+            style: {
+                "target-arrow-color": "green",
+                "line-color": "green",
+                "line-style": "dashed",
+            },
+        },
+        {
+            selector: "edge.true_out",  // true outcoming edge
             style: {
                 "target-arrow-color": "green",
                 "line-color": "green",
             },
         },
         {
-            selector: "edge.clause.false",
+            selector: "edge.false_in",  // false incoming edge
+            style: {
+                "target-arrow-color": "red",
+                "line-color": "red",
+                "line-style": "dashed",
+            },
+        },
+        {
+            selector: "edge.false_out",  // false outcoming edge
             style: {
                 "target-arrow-color": "red",
                 "line-color": "red",
             },
-        },
-        {
-            selector: "edge.clause.out",
-            style: { "line-style": "dashed" },
         },
     ]
 };

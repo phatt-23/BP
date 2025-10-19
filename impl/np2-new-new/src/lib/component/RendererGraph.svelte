@@ -12,12 +12,11 @@ Created by phatt-23 on 12/10/2025
         style?: keyof typeof cytoscapeStyles;
     }
 
-    let { graph, style = 'DEFAULT_STYLE' } : Props = $props();
-
+    let { graph, style = 'DEFAULT_STYLE' }: Props = $props();
     let graphContainer: HTMLElement;
+    let cy: cytoscape.Core; 
 
     $effect(() => {
-        
         const nodes: ElementDefinition[] = graph.nodes.map(n => ({
             data: { id: n.id, label: n.id },
             position: n.position,
@@ -26,16 +25,30 @@ Created by phatt-23 on 12/10/2025
 
         const edges: ElementDefinition[] = graph.edges.map(e => ({
             data: { id: e.id, source: e.from, target: e.to },
+            classes: e.classes,
         }));
 
-        let cy = cytoscape({
-            container: graphContainer,
-        });
+        // Save current viewport if cytoscape instance already exists
+        const currentPan = cy ? cy.pan() : { x: 0, y: 0 };
+        const currentZoom = cy ? cy.zoom() : 1;
 
-        cy.add(nodes);
-        cy.add(edges);
+        // Initialize cytoscape only once
+        if (!cy) {
+            cy = cytoscape({
+                container: graphContainer,
+                wheelSensitivity: 5.0,
+                style: cytoscapeStyles[style],
+            });
+        } else {
+            cy.elements().remove();
+        }
 
+        cy.add([...nodes, ...edges]);
         cy.style(cytoscapeStyles[style]);
+
+        // Restore viewport
+        cy.zoom(currentZoom);
+        cy.pan(currentPan);
     });
 </script>
 

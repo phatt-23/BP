@@ -3,12 +3,11 @@ Created by phatt-23 on 11/10/2025
 -->
 
 <script lang="ts">
-    import Editor3SAT from "$lib/component/Editor3SAT.svelte";
+    import Editor3CNF from "$lib/component/Editor3CNF.svelte";
     import ReductionStepper from "$lib/component/ReductionStepper.svelte";
-    import Renderer3SAT from "$lib/component/Renderer3SAT.svelte";
+    import Renderer3CNF from "$lib/component/Renderer3CNF.svelte";
     import RendererGraph from "$lib/component/RendererGraph.svelte";
     import localStorageKeys from "$lib/core/localStorageKeys";
-    import Serializer from "$lib/core/Serializer";
     import useLocalStorage from "$lib/core/useLocalStorage.svelte";
     import type { CNF3 } from "$lib/instance/CNF3.svelte";
     import type { Graph } from "$lib/instance/Graph.svelte";
@@ -52,43 +51,46 @@ Created by phatt-23 on 11/10/2025
 <section>
     <h1>3SAT to HCYCLE reduction</h1>
 
-    <Editor3SAT 
+    <Editor3CNF
         cnf={$redStore.inInstance} 
         onChange={(cnf) => onEditorChange(cnf)}
         onWrongFormat={(msg) => alert("From editor: " + msg)}
     />
 
-    <button onclick={onReduceClick}>Reduce</button>
+    <div>
+        <button onclick={onReduceClick}>Reduce</button>
 
-    <label for="showStepperCheckbox">Show steps</label>
-    <input type="checkbox" bind:checked={showStepper} name="showStepperCheckbox">
+        <label for="showStepperCheckbox">Show steps</label>
+        <input type="checkbox" bind:checked={showStepper} name="showStepperCheckbox">
+    </div>
 
-    {#if showStepper && $redStore.steps.length}
-        <ReductionStepper 
-            steps={$redStore.steps} 
-            stepIndex={$redStore.stepIndex}
-            onPrevClick={() => {
-                redStore.update(rs => { 
-                    rs.prevStep();
-                    return rs;
-                });
-                storage.save();
-            }}
-            onNextClick={() => { 
-                redStore.update(rs => { 
-                    rs.nextStep();
-                    return rs;
-                });
-                storage.save();
-            }}
-        />
-
-        <div class="panes">
+    {#if showStepper}
+        {#if $redStore.steps.length}
             <div>
                 {#if $redStore.steps[$redStore.stepIndex].inSnapshot}
-                    <Renderer3SAT cnf={$redStore.steps[$redStore.stepIndex].inSnapshot!} />
+                    <Renderer3CNF cnf={$redStore.steps[$redStore.stepIndex].inSnapshot!} />
                 {/if}
             </div>
+
+            <ReductionStepper 
+                steps={$redStore.steps} 
+                stepIndex={$redStore.stepIndex}
+                onPrevClick={() => {
+                    redStore.update(rs => { 
+                        rs.prevStep();
+                        return rs;
+                    });
+                    storage.save();
+                }}
+                onNextClick={() => { 
+                    redStore.update(rs => { 
+                        rs.nextStep();
+                        return rs;
+                    });
+                    storage.save();
+                }}
+            />
+
             <div>
                 {#if $redStore.steps[$redStore.stepIndex].outSnapshot}
                     <RendererGraph 
@@ -97,13 +99,14 @@ Created by phatt-23 on 11/10/2025
                     />
                 {/if}
             </div>
-        </div>
-
+        {:else}
+            <span>There are no steps to step through.</span>
+        {/if}
     {:else}
         <div class="panes">
             <div>
                 {#if $redStore.inInstance}
-                    <Renderer3SAT cnf={$redStore.inInstance} />
+                    <Renderer3CNF cnf={$redStore.inInstance} />
                 {/if}
             </div>
             <div>
@@ -115,16 +118,16 @@ Created by phatt-23 on 11/10/2025
     {/if}
 
 
-    {#if $redStore.inInstance}
+    <!-- {#if $redStore.inInstance}
         <p>{JSON.stringify(Serializer.serialize($redStore.inInstance))}</p>
         <p>{JSON.stringify(Serializer.serialize($redStore.outInstance))}</p>
-    {/if}
+    {/if} -->
 </section>
 
 <style>
 .panes {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 1rem;
 }
 </style>
