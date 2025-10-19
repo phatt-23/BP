@@ -15,7 +15,7 @@
     <h2>CertRenderer 3SAT</h2>
 
     {#if cert == Unsolvable}
-        <p>The 3CNF formula is unsatifiable.</p>
+        <p>The 3CNF formula is unsatisfiable.</p>
     {:else}
         {#each cert.assignments as [varName, assgn],i}
             <div>{varName} &coloneq; {assgn == true ? 'T' : assgn == false ? 'F' : 'Either' }</div>
