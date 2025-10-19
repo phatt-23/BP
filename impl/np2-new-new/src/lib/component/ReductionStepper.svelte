@@ -45,18 +45,28 @@ Created by phatt-23 on 12/10/2025
 </script>
 
 <section style="padding-left: {indent * 100}px; border: solid black 1px">
-    <h1>Reduction Stepper</h1>
+    <div class="header">
+        <h2>Reduction Stepper</h2>
 
-    <div>
-        <label for="showAllCheckbox">Show all</label>
-        <input type="checkbox" bind:checked={showAll} name="showAllCheckbox">
+        <div class="controls">
+            <div>
+                <input type="checkbox" bind:checked={showAll} name="showAllCheckbox">
+                <label for="showAllCheckbox">Show all</label>
+            </div>
+
+            <div>
+                <button onclick={prevClick}>Previous</button>
+                <button onclick={nextClick}>Next</button>
+                <span>{stepIndex + 1}/{totalStepCount}</span>
+            </div>
+        </div>
     </div>
 
     {#if showAll}
 
         <!-- Shows all the steps at once -->
         {#each steps as step, i}
-            <h2>Step #{i + 1}: {step.title}</h2>
+            <h3>Step #{i + 1}: {step.title}</h3>
             <p>{@html step.description}</p>
 
             {#if showInterSteps && step.interSteps != undefined}
@@ -81,14 +91,16 @@ Created by phatt-23 on 12/10/2025
         {#if stepIndex < steps.length}
             {@const step = steps[stepIndex]}
 
-            <h2>Step #{stepIndex + 1}: {step.title}</h2>
+            <h3>Step #{stepIndex + 1}: {step.title}</h3>
             <p>{@html step.description}</p>
         {/if}
-
-        <div>
-            <button onclick={prevClick}>Previous</button>
-            <button onclick={nextClick}>Next</button>
-            <span>{stepIndex + 1}/{totalStepCount}</span>
-        </div>
     {/if}
 </section>
+
+<style>
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+</style>

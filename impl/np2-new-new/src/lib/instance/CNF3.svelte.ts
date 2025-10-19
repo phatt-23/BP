@@ -9,10 +9,10 @@ import Serializer from "$lib/core/Serializer";
 import { ProblemInstance } from "./ProblemInstance";
 import "reflect-metadata";
 
-type VarName = string;
+export type VarName = string;
 
 @Serializer.SerializableClass()
-class Literal {
+export class Literal {
     public id: Id;
     public varName: VarName;
     public negated: boolean;
@@ -35,10 +35,14 @@ class Literal {
     public asString(): string {
         return `${this.negated ? '!' : ''}${this.varName}`;
     }
+
+    public asHtmlString() : string {
+        return (this.negated ? '&not;' : '') + this.varName;
+    }
 }
 
 @Serializer.SerializableClass()
-class Clause {
+export class Clause {
     public id: Id;
     public literals: [Literal, Literal, Literal];
 
@@ -51,6 +55,11 @@ class Clause {
 
     public asString() : string {
         return this.literals.map(l => l.asString()).join(" ");
+    }
+
+    public asHtmlString() : string {
+        const vars = this.literals.map(l => l.asHtmlString());
+        return '(' + vars.join('&or;') + ')';
     }
 
     public toJSON() {
@@ -85,6 +94,11 @@ export class CNF3 extends ProblemInstance {
     }
     public get clauses() : Array<Clause> {
         return Array.from(this._clauses.values());
+    }
+    public empty() : boolean {
+        const empty = this.clauses.length == 0 || this.variables.length == 0;
+        console.debug("empty", empty);
+        return empty;
     }
 
     public static fromString(text: string): CNF3 | ErrorMessage {

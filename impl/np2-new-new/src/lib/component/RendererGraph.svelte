@@ -60,8 +60,8 @@ Created by phatt-23 on 12/10/2025
 
 <style>
     #cy {
-        width: 90%;
-        height: 100em;
+        width: 1fr;
+        height: 50em;
         border: solid black;
     }
 </style>

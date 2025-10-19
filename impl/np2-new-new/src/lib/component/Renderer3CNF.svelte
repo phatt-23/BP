@@ -1,6 +1,4 @@
-<!--
-    Created by phatt-23 on 11/10/2025
--->
+<!-- Created by phatt-23 on 11/10/2025 -->
 
 <script lang="ts">
     import type { CNF3 } from "$lib/instance/CNF3.svelte";
@@ -18,29 +16,24 @@
     <h2>CNF Renderer</h2>
 
     <div>
-        <label for="viewAsColumnCheckbox">view as column</label>
         <input bind:checked={viewAsColumn} type="checkbox" name="viewAsColumnCheckbox">
+        <label for="viewAsColumnCheckbox">View as column</label>
     </div>
 
     {#each cnf.clauses as clause, i}
         {#if viewAsColumn}
             <div class="clause">
-                ({#each clause.literals as lit, j}
-                    <span class:neg={lit.negated} class="literal">{lit.negated ? '¬' : ''}{lit.varName}</span>{j < 2 ? '∨' : ''}
-                {/each})
+                {@html clause.asHtmlString()}
             </div> 
         {:else}
             <span class="clause">
-                ({#each clause.literals as lit, j}
-                    <span class:neg={lit.negated} class="literal">{lit.negated ? '¬' : ''}{lit.varName}</span>{j < 2 ? '∨' : ''}
-                {/each})
+                {@html clause.asHtmlString()}
             </span> 
-            {i < cnf.clauses.length - 1 ? '∧': ''}
+            {@html i < cnf.clauses.length - 1 ? '&and;': ''}
         {/if}
     {/each}
 </div>
 
 <style>
-    .neg { color: crimson; }
-    .clause { margin: 0.2em 0; }
+.clause { margin: 0.2em 0; }
 </style>

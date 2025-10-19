@@ -2,7 +2,6 @@
 // Created by phatt-23 on 11/10/2025
 //
 
-import "reflect-metadata";
 import { ProblemInstance } from "./ProblemInstance";
 import Serializer from "$lib/core/Serializer";
 import type { Id } from "$lib/core/Id";
@@ -39,9 +38,15 @@ export class Graph extends ProblemInstance {
     }
 
     public addNode(node: GraphNode) {
+        if (node.classes == undefined) {
+            node.classes = '';
+        }
         this._nodes.add(node);
     }
     public addEdge(edge: GraphEdge) {
+        if (edge.classes == undefined) {
+            edge.classes = '';
+        }
         this._edges.add(edge);
     }
 
@@ -60,6 +65,9 @@ export class Graph extends ProblemInstance {
         edgesToRemove.forEach(edge => this._edges.delete(edge));
     }
     public removeEdge(edge: GraphEdge) { this._edges.delete(edge);
+    }
+    public empty() : boolean {
+        return this.nodes.length == 0 || this.edges.length == 0;
     }
 
     // why the FUUUUCK doesn't typescript have copying objects figured out tf
