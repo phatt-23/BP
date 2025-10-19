@@ -35,7 +35,7 @@
                     <span class:neg={lit.negated} class="literal">{lit.negated ? '¬' : ''}{lit.varName}</span>{j < 2 ? '∨' : ''}
                 {/each})
             </span> 
-            {i < cnf.clauses.size - 1 ? '∧': ''}
+            {i < cnf.clauses.length - 1 ? '∧': ''}
         {/if}
     {/each}
 </div>

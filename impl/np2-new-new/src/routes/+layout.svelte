@@ -17,11 +17,13 @@
 <div class="app">
 	<Header />
 
-	<button onclick={() => {
-		Object.values(localStorageKeys).forEach(key => {
-			localStorage.removeItem(key);
-		})
-	}}>Clear local storage</button>
+	<div class="dev">
+		<button onclick={() => {
+			Object.values(localStorageKeys).forEach(key => {
+				localStorage.removeItem(key);
+			})
+		}}>Clear local storage</button>
+	</div>
 
 	<main>
 		{@render children()}
@@ -47,7 +49,7 @@
 		flex-direction: column;
 		padding: 1rem;
 		width: 100%;
-		/* max-width: 64rem; */
+		max-width: 64rem;
 		margin: 0 auto;
 		box-sizing: border-box;
 	}
