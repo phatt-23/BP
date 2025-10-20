@@ -8,11 +8,11 @@ abstract class Serializer {
     // decorator that makes classes serializable
     // by giving them a __type property
     // and registering them into Serializer's class registry
-    static SerializableClass() {
+    static SerializableClass(typeName?: string) {
         return function(target: any) {
-            const typeName = target.name;
-            target.prototype.__type = typeName;
-            Serializer.registerClass(typeName, target);
+            const name = typeName ?? target.name;
+            target.prototype.__type = name;
+            Serializer.registerClass(name, target);
         }
     }
 

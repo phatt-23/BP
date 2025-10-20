@@ -5,7 +5,7 @@ import type { TriBool } from "$lib/core/TriBool";
 import type { VarName } from "$lib/instance/CNF3.svelte";
 import type { Certificate } from "./Certificate";
 
-@Serializer.SerializableClass()
+@Serializer.SerializableClass("Certificate3SAT")
 export class Certificate3SAT implements Certificate {
     public assignments : Map<VarName, TriBool>;
 

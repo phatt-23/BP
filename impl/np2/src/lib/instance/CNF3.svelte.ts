@@ -10,7 +10,7 @@ import { ProblemInstance } from "./ProblemInstance";
 
 export type VarName = string;
 
-@Serializer.SerializableClass()
+@Serializer.SerializableClass("Literal")
 export class Literal {
     public id: Id;
     public varName: VarName;
@@ -40,7 +40,7 @@ export class Literal {
     }
 }
 
-@Serializer.SerializableClass()
+@Serializer.SerializableClass("Clause")
 export class Clause {
     public id: Id;
     public literals: [Literal, Literal, Literal];
@@ -70,7 +70,7 @@ export class Clause {
     }
 }
 
-@Serializer.SerializableClass()
+@Serializer.SerializableClass("CNF3")
 export class CNF3 extends ProblemInstance {
     public _variables: Set<VarName> = new Set();
     public _clauses: Set<Clause> = new Set();

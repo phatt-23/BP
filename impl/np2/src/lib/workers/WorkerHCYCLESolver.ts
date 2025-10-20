@@ -3,7 +3,6 @@
 import { SolverHCYCLE } from "$lib/solve/SolverHCYCLE";
 import { Unsolvable } from "$lib/core/Unsolvable";
 import { Graph } from "$lib/instance/Graph.svelte";
-import Serializer from "$lib/core/Serializer";
 
 self.onmessage = async (e) => {
     const instance : Graph = Graph.fromSerializedString(e.data);
