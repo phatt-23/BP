@@ -97,4 +97,60 @@ export class Graph extends ProblemInstance {
 
         return newGraph;
     }
+
+
+    /**
+     * When using workers, these are the methods that serialize and desearialize the Graph
+     * The Serializer class cannot be used. Worker has a different context to the main thread
+     * and the classes are not registered.
+     */
+
+     public toSerializedString(pretty = false): string {
+        const data = {
+            nodes: this.nodes.map(n => ({
+                id: n.id,
+                label: n.label ?? null,
+                position: n.position ?? null,
+                classes: n.classes ?? '',
+            })),
+            edges: this.edges.map(e => ({
+                id: e.id,
+                from: e.from,
+                to: e.to,
+                weight: e.weight ?? null,
+                classes: e.classes ?? '',
+            })),
+        };
+        return JSON.stringify(data, null, pretty ? 2 : 0);
+    }
+
+    public static fromSerializedString(serialized: string): Graph {
+        const data = JSON.parse(serialized);
+        const graph = new Graph();
+
+        if (Array.isArray(data.nodes)) {
+            for (const node of data.nodes) {
+                graph.addNode({
+                    id: node.id,
+                    label: node.label ?? undefined,
+                    position: node.position ?? undefined,
+                    classes: node.classes ?? '',
+                });
+            }
+        }
+
+        if (Array.isArray(data.edges)) {
+            for (const edge of data.edges) {
+                graph.addEdge({
+                    id: edge.id,
+                    from: edge.from,
+                    to: edge.to,
+                    weight: edge.weight ?? undefined,
+                    classes: edge.classes ?? '',
+                });
+            }
+        }
+
+        return graph;
+    }
 }

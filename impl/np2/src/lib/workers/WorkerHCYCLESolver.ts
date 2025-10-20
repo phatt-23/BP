@@ -5,11 +5,8 @@ import { Unsolvable } from "$lib/core/Unsolvable";
 import { Graph } from "$lib/instance/Graph.svelte";
 import Serializer from "$lib/core/Serializer";
 
-// REGISTER classes used in serialization
-Serializer.registerClass('Graph', Graph);
-
 self.onmessage = async (e) => {
-    const instance : Graph = Serializer.revive(e.data);
+    const instance : Graph = Graph.fromSerializedString(e.data);
     const solver = new SolverHCYCLE(instance);
     const result = await solver.solve();
     postMessage(result || Unsolvable);

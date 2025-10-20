@@ -20,20 +20,17 @@
         <label for="viewAsColumnCheckbox">View as column</label>
     </div>
 
-    {#each cnf.clauses as clause, i}
-        {#if viewAsColumn}
+    {#if viewAsColumn}
+        {#each cnf.clauses as clause, i}
             <div class="clause">
                 {@html clause.asHtmlString()}
             </div> 
-        {:else}
-            <span class="clause">
-                {@html clause.asHtmlString()}
-            </span> 
-            {@html i < cnf.clauses.length - 1 ? '&and;': ''}
-        {/if}
-    {/each}
+        {/each}
+    {:else}
+        {@html cnf.asHtmlString()}
+    {/if}
 </div>
 
 <style>
-.clause { margin: 0.2em 0; }
+.clause { margin: 0.0em 0; }
 </style>

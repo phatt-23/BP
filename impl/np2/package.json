@@ -15,6 +15,7 @@
 		"@fontsource/fira-mono": "^5.2.7",
 		"@neoconfetti/svelte": "^2.2.2",
 		"@sveltejs/adapter-auto": "^6.1.0",
+		"@sveltejs/adapter-static": "^3.0.10",
 		"@sveltejs/kit": "^2.43.2",
 		"@sveltejs/vite-plugin-svelte": "^6.2.0",
 		"@types/cytoscape-canvas": "^3.0.4",
@@ -28,7 +29,6 @@
 		"@types/cytoscape": "^3.21.9",
 		"class-transformer": "^0.5.1",
 		"cytoscape": "^3.33.1",
-		"cytoscape-canvas": "^3.0.1",
-		"reflect-metadata": "^0.2.2"
+		"cytoscape-canvas": "^3.0.1"
 	}
 }

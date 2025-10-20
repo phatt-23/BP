@@ -7,7 +7,6 @@ import { onlyUnique } from "$lib/core/filters";
 import type { Id } from "$lib/core/Id";
 import Serializer from "$lib/core/Serializer";
 import { ProblemInstance } from "./ProblemInstance";
-import "reflect-metadata";
 
 export type VarName = string;
 
@@ -87,6 +86,10 @@ export class CNF3 extends ProblemInstance {
 
     public asString() {
         return Array.from(this._clauses.values()).map(c => c.asString()).join("\n")
+    }
+
+    public asHtmlString() {
+        return this.clauses.map(c => c.asHtmlString()).join('&and;');
     }
 
     public get variables() : Array<VarName> {
