@@ -8,7 +8,7 @@ import type { ProblemInstance } from "$lib/instance/ProblemInstance";
 import type { ReductionStep } from "$lib/reduction/ReductionStep";
 import type { Certificate } from "$lib/solve/Certificate";
 
-@Serializer.SerializableClass()
+@Serializer.SerializableClass("ReductionStore")
 export class ReductionStore
     <
         I extends ProblemInstance, 

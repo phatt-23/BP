@@ -26,7 +26,7 @@ export type GraphNode = {
     classes?: string;
 }
 
-@Serializer.SerializableClass()
+@Serializer.SerializableClass("Graph")
 export class Graph extends ProblemInstance {
     public _nodes: Set<GraphNode>;
     public _edges: Set<GraphEdge>;

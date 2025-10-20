@@ -4,7 +4,7 @@ import Serializer from "$lib/core/Serializer";
 import type { GraphNode } from "$lib/instance/Graph.svelte";
 import type { Certificate } from "./Certificate";
 
-@Serializer.SerializableClass()
+@Serializer.SerializableClass("Certificate3SAT")
 export class CertificateHCYCLE implements Certificate {
     public path : GraphNode[];
 
