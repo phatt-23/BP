@@ -1,6 +1,4 @@
-<!--
-Created by phatt-23 on 11/10/2025
--->
+<!-- Created by phatt-23 on 11/10/2025 -->
 
 <script lang="ts">
     import CertRenderer3SAT from "$lib/component/CertRenderer3SAT.svelte";
@@ -20,7 +18,6 @@ Created by phatt-23 on 11/10/2025
     import { Reducer3SATtoHCYCLE } from "$lib/reduction/Reducer3SATtoHCYCLE";
     import type { Certificate3SAT } from "$lib/solve/Certificate3SAT";
     import type { CertificateHCYCLE } from "$lib/solve/CertificateHCYCLE";
-    import { SolverHCYCLE } from "$lib/solve/SolverHCYCLE";
     import { ReductionStore } from "$lib/state/ReductionStore.svelte";
 
     let storage = useLocalStorage(
@@ -31,6 +28,8 @@ Created by phatt-23 on 11/10/2025
     let redStore = storage.value;
 
     let showStepper = $state(false);
+    let isSolving = $state(false);
+    let solveMessage = $state('');
 
     function onEditorChange(cnf: CNF3) {
         redStore.update(rs => { 
@@ -62,68 +61,78 @@ Created by phatt-23 on 11/10/2025
         // solve only if the output instance is valid and it hasn't been solved yet
         if (!outInstance || outCert) return;
 
-        const worker = new Worker(new URL("$lib/workers/WorkerHCYCLESolver.ts", import.meta.url), { type: "module" });
+        isSolving = true;
+        solveMessage = 'Solving Hamiltonian cycle...';
 
-        const outCertPromise = new Promise<CertificateHCYCLE | Unsolvable>(resolve => {
-            worker.onmessage = (e) => {
-                worker.terminate();
-                resolve(e.data);
-            };
-        });
+        try {
+            const worker = new Worker(new URL("$lib/workers/WorkerHCYCLESolver.ts", import.meta.url), { type: "module" });
 
-        const revived : Graph = Serializer.revive(Serializer.serialize(outInstance));
-
-        worker.postMessage(Serializer.serialize(outInstance));
-        outCert = await outCertPromise;
-
-        if (outCert == Unsolvable) {
-            redStore.update(rs => {
-                rs.inCert = Unsolvable;
-                rs.outCert = Unsolvable;
-                return rs;
+            const outCertPromise = new Promise<CertificateHCYCLE | Unsolvable>(resolve => {
+                worker.onmessage = (e) => {
+                    worker.terminate();
+                    resolve(e.data);
+                };
             });
-            return;
-        }
 
-        // Style the graph, so the path visible.
+            worker.postMessage(outInstance.toSerializedString());
+            outCert = await outCertPromise;
 
-        // alias
-        const graph = outInstance;
-        const path = outCert.path;
+            if (outCert == Unsolvable) {
+                redStore.update(rs => {
+                    rs.inCert = Unsolvable;
+                    rs.outCert = Unsolvable;
+                    return rs;
+                });
+            } else {
+                // Style the graph, so the path visible.
 
-        // add 'solved' class ot every edge
-        // all 'solved' edges are dimmed down
-        // only those that are 'solved' and 'used' 
-        // will at full opacity
-        graph.edges.forEach(e => e.classes += ' solved');
+                // alias
+                const graph = outInstance;
+                const path = outCert.path;
 
-        const cutPrefix = (id : string) => id.slice(id.search(PREFIX_AND_ID_DELIM) + 1)
+                // add 'solved' class ot every edge
+                // all 'solved' edges are dimmed down
+                // only those that are 'solved' and 'used' 
+                // will at full opacity
+                graph.edges.forEach(e => e.classes += ' solved');
 
-        for (let i = 0; i < path.length - 1; i++) {
-            const from = cutPrefix(path[i].id);
-            const to = cutPrefix(path[i + 1].id);
+                const cutPrefix = (id : string) => id.slice(id.search(PREFIX_AND_ID_DELIM) + 1)
 
-            const edgeId = EDGE_ID_PREFIX + `${from}-${to}`;
+                for (let i = 0; i < path.length - 1; i++) {
+                    const from = cutPrefix(path[i].id);
+                    const to = cutPrefix(path[i + 1].id);
 
-            const edge = graph.edges.find(e => e.id == edgeId);
-            if (edge) {
-                graph.removeEdge(edge);
-                edge.classes += ' used';
-                graph.addEdge(edge);
+                    const edgeId = EDGE_ID_PREFIX + `${from}-${to}`;
+
+                    const edge = graph.edges.find(e => e.id == edgeId);
+                    if (edge) {
+                        graph.removeEdge(edge);
+                        edge.classes += ' used';
+                        graph.addEdge(edge);
+                    }
+                }
+
+                // decode back to 3SAT
+                inCert = new DecoderHCYCLEto3SAT().decode(graph, outCert);
+
+                redStore.update(rs => {
+                    rs.inCert = inCert;
+                    rs.outCert = outCert;
+                    rs.outInstance = graph;
+                    return rs;
+                });
             }
+
+            // Save changes to storage
+            storage.save();
+
+        } catch (e) {
+            console.error('Error during solving:', e);
+            solveMessage = 'An error occured while solving.';
+        } finally {
+            isSolving = false;
+            solveMessage = '';
         }
-
-        // decode back to 3SAT
-        inCert = new DecoderHCYCLEto3SAT().decode(graph, outCert);
-
-        redStore.update(rs => {
-            rs.inCert = inCert;
-            rs.outCert = outCert;
-            rs.outInstance = graph;
-            return rs;
-        });
-
-        storage.save();
     }
 
     // reset the step index back to 0, if anything changes
@@ -152,16 +161,27 @@ Created by phatt-23 on 11/10/2025
     <div>
         <button onclick={onReduceClick}>Reduce</button>
 
-        <button 
-            disabled={!$redStore.hasInstances()} 
+        <button
+            disabled={!$redStore.hasInstances() || isSolving}
             onclick={() => onSolveClick()}
         >
-            Solve
+            {#if isSolving}
+                Solving...
+            {:else}
+                Solve
+            {/if}
         </button>
 
         <input type="checkbox" bind:checked={showStepper} name="showStepperCheckbox">
         <label for="showStepperCheckbox">Show steps</label>
     </div>
+
+    {#if isSolving}
+        <div class="loading">
+            <span class="spinner"></span>
+            <span>{solveMessage}</span>
+        </div>
+    {/if}
 
     {#if showStepper}
         {@const steps = $redStore.steps}
@@ -240,6 +260,27 @@ Created by phatt-23 on 11/10/2025
     display: grid;
     grid-template-columns: 1fr;
     gap: 1rem;
+}
+
+.loading {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    font-style: italic;
+}
+
+.spinner {
+    width: 1em;
+    height: 1em;
+    border: 2px solid rgba(0,0,0,0.2);
+    border-top-color: rgba(0,0,0,0.6);
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
 </style>
 

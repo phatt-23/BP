@@ -92,7 +92,7 @@ abstract class Serializer {
         if (obj.__type) {
             const ctor = Serializer.getClass(obj.__type);
             if (!ctor) {
-                throw new Error(`Unknown class: ${obj.__type}`);
+                throw new Error(`Serializer - Unknown class: ${obj.__type}`);
             }
 
             const instance = Object.create(ctor.prototype);
