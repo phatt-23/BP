@@ -215,13 +215,15 @@ export const cytoscapeStyles: Record<string, StylesheetStyle[]> = {
         {
             selector: 'edge.solid',
             style: {
+                'opacity': 1.0,
                 'line-opacity': 1.0,
             }
         },
         {
             selector: 'edge.muted',
             style: {
-                'line-opacity': 0.2,
+                'opacity': 0.4,
+                'line-opacity': 0.4,
             }
         },
     ]

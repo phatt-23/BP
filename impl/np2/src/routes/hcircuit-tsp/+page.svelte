@@ -12,7 +12,7 @@
     import localStorageKeys from "$lib/core/localStorageKeys";
     import { Unsolvable } from "$lib/core/Unsolvable";
     import useLocalStorage from "$lib/core/useLocalStorage.svelte";
-    import { DecorderHCIRCUITtoHCYCLE } from "$lib/decode/DecoderHCIRCUITtoHCYCLE";
+    import { DecoderTSPtoHCIRCUIT } from "$lib/decode/DecoderTSPtoHCIRCUIT";
     import type { Graph } from "$lib/instance/Graph";
     import { ReducerHCIRCUITtoTSP } from "$lib/reduction/ReducerHCIRCUITtoTSP";
     import { ReducerHCYCLEtoHCIRCUIT } from "$lib/reduction/ReducerHCYCLEtoHCIRCUIT";
@@ -130,7 +130,7 @@
                     }
                 }
 
-                const decoder = new DecorderHCIRCUITtoHCYCLE()
+                const decoder = new DecoderTSPtoHCIRCUIT()
                 inCert = decoder.decode(graph, outCert);
 
                 redStore.update(rs => {
