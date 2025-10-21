@@ -185,4 +185,44 @@ export const cytoscapeStyles: Record<string, StylesheetStyle[]> = {
             },
         },
     ],
+    'TSP': [
+        {
+            selector: 'node',
+            style: {
+                'label': 'data(id)',
+                'text-valign': 'top',
+                'color': '#000',
+                'background-color': '#61bffc',
+                'text-outline-color': '#fff',
+                'text-outline-width': 2,
+                'border-color': 'black',
+                'border-style': 'solid',
+                'border-width': 2,
+            },
+        },
+        {
+            selector: 'edge',
+            style: {
+                'label': 'data(weight)',
+                'curve-style': 'bezier',
+                'line-color': 'black',
+                'text-background-color': '#fff',
+                'text-background-opacity': 1,
+                'text-background-padding': 4,
+                'width': 2
+            }
+        },
+        {
+            selector: 'edge.solid',
+            style: {
+                'line-opacity': 1.0,
+            }
+        },
+        {
+            selector: 'edge.muted',
+            style: {
+                'line-opacity': 0.2,
+            }
+        },
+    ]
 };

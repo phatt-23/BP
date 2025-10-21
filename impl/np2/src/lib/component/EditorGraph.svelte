@@ -50,6 +50,7 @@
 
 <main class='graph-editor'>
     <h2>Graph Editor</h2>
+    <p class="reminder"><i>Removes duplicate entries automatically.</i></p>
 
     <textarea bind:value={text} onchange={onTextChange}></textarea>
 

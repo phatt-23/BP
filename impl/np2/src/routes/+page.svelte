@@ -10,7 +10,7 @@
 	<meta name="description" content="Svelte demo app" />
 </svelte:head>
 
-<section>
+<main>
 	<h1>
 		NP-Complete problems 2
 	</h1>
@@ -33,4 +33,19 @@
 			<li>3DM {@html rP} SSP</li>
 		</ul>
 	</ul>
-</section>
+
+	<h4>Notes</h4>
+	<p>
+		As far as I know, there is no concrete/correct way to differentiate 
+		between "hamiltonovsky cyklus" and "hamiltonovska kruznice" in the English language.
+		In this project I chose this naming:
+	</p>
+	<ul>
+		<li>HCYCLE - here means "hamiltonovsky cyklus"</li>
+		<li>HCIRCUIT - here means "hamiltonovska kruznice"</li>
+	</ul>
+	<p>
+		HCYCLE is asking wether there is a hamiltonian cycle in a <b>directed</b> graph.
+		HCIRCUIT is asking wether there is a hamiltonian cycle in an <b>undirected</b> graph.
+	</p>
+</main>

@@ -7,6 +7,6 @@ import type { Certificate } from "./Certificate";
 export interface Solver<I extends ProblemInstance, C extends Certificate> {
     instance: I;
 
-    solve() : Certificate | Unsolvable;
+    solve() : C | Unsolvable;
 };
 

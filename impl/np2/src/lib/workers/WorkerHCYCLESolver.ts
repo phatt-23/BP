@@ -7,6 +7,6 @@ import { Graph } from "$lib/instance/Graph";
 self.onmessage = async (e) => {
     const instance : Graph = Graph.fromSerializedString(e.data);
     const solver = new SolverHCYCLE(instance);
-    const result = await solver.solve();
+    const result = solver.solve();
     postMessage(result || Unsolvable);
 };

@@ -30,8 +30,11 @@ Created by phatt-23 on 12/10/2025
         style = 'DEFAULT',
         layout = 'preset',
     }: Props = $props();
+
     let graphContainer: HTMLElement;
     let cy: cytoscape.Core; 
+
+    let moveEnabled = $state(false);
 
     $effect(() => {
         const nodes: ElementDefinition[] = graph.nodes.map(n => ({
@@ -41,7 +44,12 @@ Created by phatt-23 on 12/10/2025
         }));
 
         const edges: ElementDefinition[] = graph.edges.map(e => ({
-            data: { id: e.id, source: e.from, target: e.to },
+            data: { 
+                id: e.id, 
+                source: e.from, 
+                target: e.to,
+                weight: e.weight,
+            },
             classes: e.classes,
         }));
 
@@ -64,14 +72,25 @@ Created by phatt-23 on 12/10/2025
         cy.style(cytoscapeStyles[style]);
         cy.layout({ name: layout }).run();
 
+        cy.nodes().ungrabify();
+
+
         // Restore viewport
-        cy.zoom(currentZoom);
-        cy.pan(currentPan);
+        // cy.zoom(currentZoom);
+        // cy.pan(currentPan);
+    });
+
+    $effect(() => {
+        cy.panningEnabled(moveEnabled);
+        cy.userZoomingEnabled(moveEnabled);
     });
 </script>
 
 <section>
     <h2>Graph Renderer</h2>
+
+    <label for="moveEnabledCheckbox">Move Enabled</label>
+    <input type="checkbox" bind:checked={moveEnabled} name="moveEnabledCheckbox">
 
     <div bind:this={graphContainer} id="cy"></div>
 </section>
@@ -79,7 +98,7 @@ Created by phatt-23 on 12/10/2025
 <style>
     #cy {
         width: 1fr;
-        height: 50em;
+        height: 40em;
         border: solid black;
     }
 </style>
