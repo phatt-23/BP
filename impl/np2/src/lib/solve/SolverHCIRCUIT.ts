@@ -13,7 +13,7 @@ export class SolverHCIRCUIT implements Solver<Graph, CertificateHCIRCUIT> {
         this.instance = instance;
     }
 
-    public async solve() : Promise<CertificateHCIRCUIT | Unsolvable> {
+    public solve(): CertificateHCIRCUIT | Unsolvable {
         const nodes = this.instance.nodes;
         const edges = this.instance.edges;
 

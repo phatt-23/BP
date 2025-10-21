@@ -7,6 +7,6 @@ import { SolverHCIRCUIT } from "$lib/solve/SolverHCIRCUIT";
 self.onmessage = async (e) => {
     const instance : Graph = Graph.fromSerializedString(e.data);
     const solver = new SolverHCIRCUIT(instance);
-    const result = await solver.solve();
+    const result = solver.solve();
     postMessage(result || Unsolvable);
 };

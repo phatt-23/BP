@@ -12,7 +12,7 @@ export class SolverHCYCLE implements Solver<Graph, CertificateHCYCLE> {
         this.instance = instance;
     }
 
-    public async solve() : Promise<CertificateHCYCLE | Unsolvable> {
+    public solve(): CertificateHCYCLE | Unsolvable {
         const nodes = this.instance.nodes;
         const edges = this.instance.edges;
 

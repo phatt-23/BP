@@ -1,6 +1,4 @@
-<!--
-Created by phatt-23 on 19/10/2025
--->
+<!-- Created by phatt-23 on 19/10/2025 -->
 
 <script lang="ts">
     import CertRendererHCIRCUIT from "$lib/component/CertRendererHCIRCUIT.svelte";
@@ -48,10 +46,9 @@ Created by phatt-23 on 19/10/2025
         redStore.update(rs => { 
             rs.reset();
             rs.setInInstance(graph); 
+            storage.save();
             return rs; 
         });
-
-        storage.save();
     }
 
     function onReduceClick() {
@@ -59,17 +56,12 @@ Created by phatt-23 on 19/10/2025
             const reducer = new ReducerHCYCLEtoHCIRCUIT($redStore.inInstance);
             const { outInstance, steps } = reducer.reduce();
 
-            console.debug(outInstance)
-
             redStore.update(rs => {
                 rs.setSteps(steps);
                 rs.setOutInstance(outInstance);
+                storage.save();
                 return rs;
             });
-
-            console.debug($redStore);
-
-            storage.save();
         }
     }
 
@@ -186,7 +178,6 @@ Created by phatt-23 on 19/10/2025
     <h1>
         HCYCLE to HCIRCUIT reduction
     </h1>
-    <p class="reminder"><i>Removes duplicate entires automatically</i></p>
 
     <EditorGraph
         graph={$redStore.inInstance}
