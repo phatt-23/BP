@@ -2,7 +2,7 @@
 
 import type { TriBool } from "$lib/core/TriBool";
 import { Unsolvable } from "$lib/core/Unsolvable";
-import { Literal, type Clause, type CNF3, type VarName } from "$lib/instance/CNF3.svelte";
+import { Literal, type Clause, type CNF3, type VarName } from "$lib/instance/CNF3";
 import { Certificate3SAT } from "./Certificate3SAT";
 import { type Solver } from "./Solver";
 

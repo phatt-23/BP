@@ -1,7 +1,7 @@
 <!-- Created by phatt-23 on 11/10/2025 -->
 
 <script lang="ts">
-    import type { CNF3 } from "$lib/instance/CNF3.svelte";
+    import type { CNF3 } from "$lib/instance/CNF3";
 
     type Props = {
         cnf: CNF3;

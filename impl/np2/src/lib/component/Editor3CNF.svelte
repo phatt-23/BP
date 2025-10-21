@@ -5,7 +5,7 @@
 <script lang="ts">
     import type { ErrorMessage } from "$lib/core/assert";
     import { DemoProvider } from "$lib/demo/DemoProvider";
-    import { CNF3 } from "$lib/instance/CNF3.svelte";
+    import { CNF3 } from "$lib/instance/CNF3";
 
     type Props = {
         cnf: CNF3 | null;

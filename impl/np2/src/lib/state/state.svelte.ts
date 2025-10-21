@@ -2,8 +2,8 @@
 // Created by phatt-23 on 11/10/2025
 //
 
-import type { CNF3 } from "$lib/instance/CNF3.svelte";
-import type { Graph } from "$lib/instance/Graph.svelte";
+import type { CNF3 } from "$lib/instance/CNF3";
+import type { Graph } from "$lib/instance/Graph";
 import { getContext, setContext } from "svelte";
 import { ReductionStore } from "./ReductionStore.svelte";
 import { instanceToPlain, Type } from "class-transformer";

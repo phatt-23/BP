@@ -7,17 +7,19 @@
     import ReductionStepper from "$lib/component/ReductionStepper.svelte";
     import Renderer3CNF from "$lib/component/Renderer3CNF.svelte";
     import RendererGraph from "$lib/component/RendererGraph.svelte";
+    import Spinner from "$lib/component/Spinner.svelte";
     import { EDGE_ID_PREFIX, PREFIX_AND_ID_DELIM } from "$lib/core/Id";
     import localStorageKeys from "$lib/core/localStorageKeys";
     import { Unsolvable } from "$lib/core/Unsolvable";
     import useLocalStorage from "$lib/core/useLocalStorage.svelte";
     import { DecoderHCYCLEto3SAT } from "$lib/decode/DecoderHCYCLEto3SAT";
-    import { CNF3 } from "$lib/instance/CNF3.svelte";
-    import { Graph } from "$lib/instance/Graph.svelte";
+    import { CNF3 } from "$lib/instance/CNF3";
+    import { Graph } from "$lib/instance/Graph";
     import { Reducer3SATtoHCYCLE } from "$lib/reduction/Reducer3SATtoHCYCLE";
     import { Certificate3SAT } from "$lib/solve/Certificate3SAT";
     import { CertificateHCYCLE } from "$lib/solve/CertificateHCYCLE";
     import { ReductionStore } from "$lib/state/ReductionStore.svelte";
+    import { onDestroy, onMount } from "svelte";
 
     let storage = useLocalStorage(
         localStorageKeys.LS_3SAT_HCYCLE, 
@@ -25,6 +27,11 @@
     );
 
     let redStore = storage.value;
+
+    onMount(() => {
+        console.log('3sat-hcycle on mount')
+        console.debug($redStore.inInstance);
+    })
 
     let showStepper = $state(false);
     let isSolving = $state(false);
@@ -157,6 +164,14 @@
             return rs;
         });
     })
+
+    onDestroy(() => {
+        console.debug('onDestroy');
+        if (currentWorker) {
+            currentWorker.terminate();
+            currentWorker = null;
+        }
+    })
 </script>
 
 <svelte:head>
@@ -173,11 +188,20 @@
         onWrongFormat={(msg) => alert("From editor: " + msg)}
     />
 
-    <div>
-        <button disabled={isSolving} onclick={onReduceClick}>Reduce</button>
+    <div class="controls">
+        <button 
+            disabled={!$redStore.hasInInstance() 
+                || $redStore.hasOutInstance() 
+                || isSolving} 
+            onclick={onReduceClick}
+        >
+            Reduce
+        </button>
 
         <button
-            disabled={!$redStore.hasInstances() || isSolving}
+            disabled={!$redStore.hasInstances() 
+                || $redStore.hasOutCertificate()
+                || isSolving}
             onclick={() => onSolveClick()}
         >
             {#if isSolving}
@@ -192,10 +216,7 @@
     </div>
 
     {#if isSolving}
-        <div class="loading">
-            <span class="spinner"></span>
-            <span>{solveMessage}</span>
-        </div>
+        <Spinner>{solveMessage}</Spinner>
     {/if}
 
     {#if showStepper}
@@ -275,26 +296,5 @@
     display: grid;
     grid-template-columns: 1fr;
     gap: 1rem;
-}
-
-.loading {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-    font-style: italic;
-}
-
-.spinner {
-    width: 1em;
-    height: 1em;
-    border: 2px solid rgba(0,0,0,0.2);
-    border-top-color: rgba(0,0,0,0.6);
-    border-radius: 50%;
-    animation: spin 0.6s linear infinite;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
 }
 </style>
