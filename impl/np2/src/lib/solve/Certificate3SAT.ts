@@ -2,7 +2,7 @@
 
 import Serializer from "$lib/core/Serializer";
 import type { TriBool } from "$lib/core/TriBool";
-import type { VarName } from "$lib/instance/CNF3.svelte";
+import type { VarName } from "$lib/instance/CNF3";
 import type { Certificate } from "./Certificate";
 
 @Serializer.SerializableClass("Certificate3SAT")

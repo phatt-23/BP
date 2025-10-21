@@ -4,15 +4,32 @@ Created by phatt-23 on 12/10/2025
 
 <script lang="ts">
     import { cytoscapeStyles } from "$lib/core/cytoscapeStyles";
-    import type { Graph } from "$lib/instance/Graph.svelte";
+    import type { Graph } from "$lib/instance/Graph";
     import cytoscape, { type ElementDefinition } from "cytoscape";
+
+
+    type CytoscapeLayout = 
+        | 'null'
+        | 'random'
+        | 'preset'
+        | 'grid'
+        | 'circle'
+        | 'concentric'
+        | 'breadthfirst'
+        | 'cose'
+        | 'base';
 
     type Props = {
         graph: Graph;
         style?: keyof typeof cytoscapeStyles;
+        layout?: CytoscapeLayout;
     }
 
-    let { graph, style = 'DEFAULT_STYLE' }: Props = $props();
+    let { 
+        graph, 
+        style = 'DEFAULT',
+        layout = 'preset',
+    }: Props = $props();
     let graphContainer: HTMLElement;
     let cy: cytoscape.Core; 
 
@@ -45,6 +62,7 @@ Created by phatt-23 on 12/10/2025
 
         cy.add([...nodes, ...edges]);
         cy.style(cytoscapeStyles[style]);
+        cy.layout({ name: layout }).run();
 
         // Restore viewport
         cy.zoom(currentZoom);

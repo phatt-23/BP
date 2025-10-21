@@ -41,7 +41,10 @@ export class ReductionStore
         this.reset();
         this.inInstance = inInstance;
     }
-    public set setSteps(steps: ReductionStep<I, O>[]) {
+    public setOutInstance(outInstance: O) {
+        this.outInstance = outInstance;
+    }
+    public setSteps(steps: ReductionStep<I, O>[]) {
         this.steps = steps;
         this.stepIndex = 0;
     }
@@ -54,5 +57,17 @@ export class ReductionStore
     }
     public hasInstances() : boolean {
         return this.inInstance != null && this.outInstance != null;
+    }
+    public hasInInstance() : boolean {
+        return this.inInstance != null;
+    }
+    public hasOutInstance() : boolean {
+        return this.outInstance != null;
+    }
+    public hasInCertificate() : boolean {
+        return this.inCert != null;
+    }
+    public hasOutCertificate() : boolean {
+        return this.outCert != null;
     }
 }

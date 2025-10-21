@@ -17,7 +17,7 @@
     <h2>CertRenderer HCYCLE</h2>
 
     {#if cert == Unsolvable}
-        <p>The graph doesn't contain a hamiltonian cycle.</p>
+        <p>The graph doesn't contain a Hamiltonian cycle.</p>
     {:else}
         <div class="controls">
             <input type="checkbox" bind:checked={showAsList} name="showAsListCheckbox">

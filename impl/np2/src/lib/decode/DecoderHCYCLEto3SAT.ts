@@ -8,8 +8,8 @@ import {
 } from "$lib/core/Id";
 
 import type { TriBool } from "$lib/core/TriBool";
-import type { VarName } from "$lib/instance/CNF3.svelte";
-import type { Graph } from "$lib/instance/Graph.svelte";
+import type { VarName } from "$lib/instance/CNF3";
+import type { Graph } from "$lib/instance/Graph";
 import { Certificate3SAT } from "$lib/solve/Certificate3SAT";
 import type { CertificateHCYCLE } from "$lib/solve/CertificateHCYCLE";
 import type { Decoder } from "./Decoder";

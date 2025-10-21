@@ -18,3 +18,7 @@ export const NODE_ID_PREFIX_INBETWEEN = 'n%i:';
 export const NODE_ID_PREFIX_TRUE = 'n%t:';
 export const NODE_ID_PREFIX_FALSE = 'n%f:';
 
+// HCYCLE to HCIRCUIT
+export const NODE_IN_POSTFIX = '_in';
+export const NODE_GAP_POSTFIX = '_gap';
+export const NODE_OUT_POSTFIX = '_out';

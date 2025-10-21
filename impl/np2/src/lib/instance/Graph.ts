@@ -4,7 +4,9 @@
 
 import { ProblemInstance } from "./ProblemInstance";
 import Serializer from "$lib/core/Serializer";
-import type { Id } from "$lib/core/Id";
+import { EDGE_ID_PREFIX, NODE_ID_PREFIX, type Id } from "$lib/core/Id";
+import type { ErrorMessage } from "$lib/core/assert";
+import { onlyUnique } from "$lib/core/filters";
 
 export type Position = {
     x: number;
@@ -26,7 +28,7 @@ export type GraphNode = {
     classes?: string;
 }
 
-@Serializer.SerializableClass("Graph")
+@Serializer.SerializableClass()
 export class Graph extends ProblemInstance {
     public _nodes: Set<GraphNode>;
     public _edges: Set<GraphEdge>;
@@ -41,12 +43,22 @@ export class Graph extends ProblemInstance {
         if (node.classes == undefined) {
             node.classes = '';
         }
+
+        // if there's a node with the same id, don't add it
+        if (this.nodes.find(n => n.id == node.id)) 
+            return;
+
         this._nodes.add(node);
     }
     public addEdge(edge: GraphEdge) {
         if (edge.classes == undefined) {
             edge.classes = '';
         }
+
+        // if there's an edge with the same id, don't add it
+        if (this.edges.find(e => e.id == edge.id)) 
+            return;
+
         this._edges.add(edge);
     }
 
@@ -67,7 +79,7 @@ export class Graph extends ProblemInstance {
     public removeEdge(edge: GraphEdge) { this._edges.delete(edge);
     }
     public empty() : boolean {
-        return this.nodes.length == 0 || this.edges.length == 0;
+        return this.nodes.length == 0; 
     }
 
     // why the FUUUUCK doesn't typescript have copying objects figured out tf
@@ -96,6 +108,66 @@ export class Graph extends ProblemInstance {
         }
 
         return newGraph;
+    }
+
+    public asString() : string {
+        const nodeLines = this.nodes.map(n => n.id.slice(NODE_ID_PREFIX.length)).join('\n');
+        const edgeLines = this.edges.map(e => e.from.slice(NODE_ID_PREFIX.length) + ' ' + e.to.slice(NODE_ID_PREFIX.length) + (e.weight != undefined ? ' ' + e.weight : '')).join('\n');
+        return nodeLines + '\n' + edgeLines + '\n';
+    }
+
+    public static fromString(text: string): Graph | ErrorMessage {
+        const lines = text.split('\n').map(x => x.trim()).filter(x => x.length).filter(onlyUnique);
+        let graph = new Graph();
+
+        console.debug("LINES", lines);
+
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i];
+
+            const words = line.split(" ").map(w => w.trim()).filter(w => w.length);
+            
+            // single node
+            if (words.length == 1) {
+                const n = words;
+                graph.addNode({
+                    id: NODE_ID_PREFIX + n,
+                });
+            }
+
+            // edge between n1 and n2 (optinal weight)
+            else if (words.length <= 3) {
+                const n1 = words[0];
+                const n2 = words[1];
+
+                let w = undefined;
+                if (words.length == 3) {
+                    try {
+                        w = Number.parseFloat(words[2]);
+                    } catch (e) {
+                        return `On the line ${i}, couldn't parse the weight: '${words[2]}` +
+                            `Please enter a number (floating allowed)`;
+                    }
+                }
+
+                graph.addNode({
+                    id: NODE_ID_PREFIX + n1,
+                });
+
+                graph.addNode({
+                    id: NODE_ID_PREFIX + n2,
+                });
+
+                graph.addEdge({
+                    id: EDGE_ID_PREFIX + `${n1}-${n2}`,
+                    from: NODE_ID_PREFIX + n1,
+                    to: NODE_ID_PREFIX + n2,
+                    weight: w,
+                });
+            }
+        }
+
+        return graph;
     }
 
 

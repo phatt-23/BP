@@ -13,8 +13,8 @@ import {
     SOURCE_NODE_ID,
     TARGET_NODE_ID
 } from "$lib/core/Id";
-import type { CNF3 } from "$lib/instance/CNF3.svelte";
-import { Graph, type GraphEdge, type GraphNode } from "$lib/instance/Graph.svelte";
+import type { CNF3 } from "$lib/instance/CNF3";
+import { Graph, type GraphEdge, type GraphNode } from "$lib/instance/Graph";
 import type { Reducer } from "./Reducer";
 import type { ReductionStep } from "./ReductionStep";
 

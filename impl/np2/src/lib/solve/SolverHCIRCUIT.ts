@@ -1,18 +1,19 @@
-// Created by phatt-23 on 19/10/2025
+// Created by phatt-23 on 21/10/2025
 
 import { Unsolvable } from "$lib/core/Unsolvable";
 import type { Graph, GraphNode } from "$lib/instance/Graph";
+import type { CertificateHCIRCUIT } from "./CertificateHCIRCUIT";
 import { CertificateHCYCLE } from "./CertificateHCYCLE";
 import type { Solver } from "./Solver";
 
-export class SolverHCYCLE implements Solver<Graph, CertificateHCYCLE> {
+export class SolverHCIRCUIT implements Solver<Graph, CertificateHCIRCUIT> {
     public instance : Graph;
 
     public constructor(instance : Graph) {
         this.instance = instance;
     }
 
-    public async solve() : Promise<CertificateHCYCLE | Unsolvable> {
+    public async solve() : Promise<CertificateHCIRCUIT | Unsolvable> {
         const nodes = this.instance.nodes;
         const edges = this.instance.edges;
 
@@ -31,7 +32,7 @@ export class SolverHCYCLE implements Solver<Graph, CertificateHCYCLE> {
                 adj.get(edge.from)!.add(edge.to);
 
                 // if it were undirected
-                // adj.get(edge.to)!.add(edge.from); 
+                adj.get(edge.to)!.add(edge.from); 
             }
         }
 
