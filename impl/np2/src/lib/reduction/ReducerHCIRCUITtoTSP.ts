@@ -15,37 +15,106 @@ export class ReducerHCIRCUITtoTSP implements Reducer<Graph, Graph> {
         this.nodeCount = this.inInstance.nodes.length;
     }
 
-    reduce(): { outInstance: Graph; steps: ReductionStep<Graph, Graph>[]; } {
-        const graph = new Graph();
+    copyOver(graph: Graph) {
         const steps: ReductionStep<Graph, Graph>[] = [];
 
+        steps.push({
+            id: `copy-over`,
+            title: `Copy over the original graph`,
+            description: ``,
+            mapping: {},
+            inSnapshot: this.inInstance.copy(),
+            outSnapshot: graph,
+        });
+
+        return {
+            graph,
+            steps,
+        };
+    }
+
+    assignWeightsToExisting(graph: Graph) {
+        const steps: ReductionStep<Graph, Graph>[] = [];
+        graph.edges.forEach(e => {
+            e.weight = 1;
+            e.classes += ' solid';
+        });
+
+        steps.push({
+            id: `assign-weight-1`,
+            title: `Assign weights to existing edges`,
+            description: `
+                <p>
+                    For each edge that was in the original graph now assign the weight 1.
+                </p>
+            `,
+            mapping: {},
+            inSnapshot: this.inInstance.copy(),
+            outSnapshot: graph,
+        });
+
+        return {
+            graph,
+            steps,
+        };
+    }
+
+    addMissingEdges(graph: Graph) {
+        const steps: ReductionStep<Graph, Graph>[] = [];
+
+        // fast cache of edgeIds (for checking if they exist)
         const edgeIds = new Set<Id>(this.inInstance.edges.map(e => e.id));
 
+        // stripped of the node id prefix
         const nodeNames = this.inInstance.nodes.map(n => {
             graph.addNode(n);
             const nodeName = n.id.slice(NODE_ID_PREFIX.length);
             return nodeName;
         });
 
-        console.debug('edgeIds:', edgeIds);
-
-        for (let i = 0; i < this.nodeCount; i++) {
-            for (let j = i + 1; j < this.nodeCount; j++) {
+        for (let i = 0; i < graph.nodes.length; i++) {
+            for (let j = i + 1; j < graph.nodes.length; j++) {
                 const ni = nodeNames[i];
                 const nj = nodeNames[j];
 
                 const edgeId = EDGE_ID_PREFIX + `${ni}-${nj}`;
-                const edgeExists = edgeIds.has(edgeId);
+                const edgeIdMirror = EDGE_ID_PREFIX + `${nj}-${ni}`;
+                const edgeExists = edgeIds.has(edgeId) || edgeIds.has(edgeIdMirror);
 
-                graph.addEdge({
-                    id: edgeId,
-                    from: NODE_ID_PREFIX + ni,
-                    to: NODE_ID_PREFIX + nj,
-                    weight: edgeExists ? 1 : 2,
-                    classes: edgeExists ? 'solid' : 'muted',
-                });
+                if (!edgeExists) {
+                    graph.addEdge({
+                        id: edgeId,
+                        from: NODE_ID_PREFIX + ni,
+                        to: NODE_ID_PREFIX + nj,
+                        weight: 2,
+                        classes: 'muted',
+                    });
+                }
             }
         }
+
+        steps.push({
+            id: `add-missing-edges`,
+            title: `Add missing edges`,
+            description: `
+                <p>
+                    Connect all the nodes that weren't connect before by a new edge and assign a weight of 2 to this new edge.
+                </p>
+            `,
+            mapping: {},
+            inSnapshot: this.inInstance.copy(),
+            outSnapshot: graph,
+        });
+
+        return {
+            graph,
+            steps,
+        };
+
+    }
+
+    reduce(): { outInstance: Graph; steps: ReductionStep<Graph, Graph>[]; } {
+        const steps: ReductionStep<Graph, Graph>[] = [];
 
         steps.push({
             id: `reduce-hcircuit-to-tsp-1`,
@@ -67,12 +136,22 @@ export class ReducerHCIRCUITtoTSP implements Reducer<Graph, Graph> {
                 </p>
             `,
             inSnapshot: this.inInstance.copy(),
-            outSnapshot: graph.copy(),
             mapping: {},
         });
 
+        const step1 = this.copyOver(this.inInstance.copy());
+        steps.push(...step1.steps);
+
+        const step2 = this.assignWeightsToExisting(step1.graph.copy());
+        steps.push(...step2.steps);
+
+        const step3 = this.addMissingEdges(step2.graph.copy());
+        steps.push(...step3.steps);
+
+        const outInstance = step3.graph;
+
         return {
-            outInstance: graph,
+            outInstance,
             steps,
         }
 
