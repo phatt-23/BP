@@ -17,11 +17,9 @@ function useLocalStorage<T>(
 
     onMount(() => {
         const currentValue = localStorage.getItem(key);
-        console.debug('checking LOCAL STORAGE:', key, currentValue);
         if (currentValue) {
             const revived = opt.revive(JSON.parse(currentValue))
             value.set(revived);
-            console.debug('revived:', revived)
         }
     });
 

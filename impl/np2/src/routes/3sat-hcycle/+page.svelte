@@ -28,11 +28,6 @@
 
     let redStore = storage.value;
 
-    onMount(() => {
-        console.log('3sat-hcycle on mount')
-        console.debug($redStore.inInstance);
-    })
-
     let showStepper = $state(false);
     let isSolving = $state(false);
     let solveMessage = $state('');

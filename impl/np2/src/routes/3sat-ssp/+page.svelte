@@ -1,39 +1,44 @@
-<!-- Created by phatt-23 on 21/10/2025 -->
+<!-- Created by phatt-23 on 22/10/2025 -->
 
 <script lang="ts">
-    import CertRendererHCIRCUIT from "$lib/component/CertRendererHCIRCUIT.svelte";
+    import CertRenderer3SAT from "$lib/component/CertRenderer3SAT.svelte";
     import CertRendererHCYCLE from "$lib/component/CertRendererHCYCLE.svelte";
-    import CertRendererTSP from "$lib/component/CertRendererTSP.svelte";
-    import EditorGraph from "$lib/component/EditorGraph.svelte";
+    import CertRendererSSP from "$lib/component/CertRendererSSP.svelte";
+    import Editor3CNF from "$lib/component/Editor3CNF.svelte";
     import ReductionStepper from "$lib/component/ReductionStepper.svelte";
+    import Renderer3CNF from "$lib/component/Renderer3CNF.svelte";
     import RendererGraph from "$lib/component/RendererGraph.svelte";
+    import RendererSSP from "$lib/component/RendererSSP.svelte";
     import Spinner from "$lib/component/Spinner.svelte";
-    import { EDGE_ID_PREFIX, NODE_ID_PREFIX, PREFIX_AND_ID_DELIM } from "$lib/core/Id";
+    import { EDGE_ID_PREFIX, PREFIX_AND_ID_DELIM } from "$lib/core/Id";
     import localStorageKeys from "$lib/core/localStorageKeys";
     import { Unsolvable } from "$lib/core/Unsolvable";
     import useLocalStorage from "$lib/core/useLocalStorage.svelte";
-    import { DecoderTSPtoHCIRCUIT } from "$lib/decode/DecoderTSPtoHCIRCUIT";
-    import type { Graph } from "$lib/instance/Graph";
-    import { ReducerHCIRCUITtoTSP } from "$lib/reduction/ReducerHCIRCUITtoTSP";
-    import type { CertificateHCIRCUIT } from "$lib/solve/CertificateHCIRCUIT";
-    import type { CertificateTSP } from "$lib/solve/CertificateTSP";
+    import { DecoderHCYCLEto3SAT } from "$lib/decode/DecoderHCYCLEto3SAT";
+    import { DecoderSSPto3SAT } from "$lib/decode/DecoderSSPto3SAT";
+    import { CNF3 } from "$lib/instance/CNF3";
+    import type { SSP } from "$lib/instance/SSP";
+    import { Reducer3SATtoHCYCLE } from "$lib/reduction/Reducer3SATtoHCYCLE";
+    import { Reducer3SATtoSSP } from "$lib/reduction/Reducer3SATtoSSP";
+    import { Certificate3SAT } from "$lib/solve/Certificate3SAT";
+    import { CertificateHCYCLE } from "$lib/solve/CertificateHCYCLE";
+    import { CertificateSSP } from "$lib/solve/CertificateSSP";
     import { ReductionStore } from "$lib/state/ReductionStore.svelte";
     import { onDestroy, onMount } from "svelte";
 
     let storage = useLocalStorage(
-        localStorageKeys.LS_HCIRCUIT_TSP,
-        new ReductionStore<Graph, Graph, CertificateHCIRCUIT, CertificateTSP>()
+        localStorageKeys.LS_3SAT_SSP, 
+        new ReductionStore<CNF3, SSP, Certificate3SAT, CertificateSSP>()
     );
 
-    let redStore = storage.value
-    console.debug('input instance:', $redStore.inInstance)
+    let redStore = storage.value;
 
     let showStepper = $state(false);
     let isSolving = $state(false);
     let solveMessage = $state('');
     let currentWorker: Worker | null = null;
 
-    function onEditorChange(graph: Graph) {
+    function onEditorChange(cnf: CNF3) {
         // terminate the solver if running
         if (currentWorker) {
             currentWorker.terminate();
@@ -44,7 +49,7 @@
 
         redStore.update(rs => { 
             rs.reset();
-            rs.setInInstance(graph); 
+            rs.setInInstance(cnf); 
             storage.save();
             return rs; 
         });
@@ -52,15 +57,16 @@
 
     function onReduceClick() {
         if ($redStore.inInstance) {
-            const reducer = new ReducerHCIRCUITtoTSP($redStore.inInstance);
+            const reducer = new Reducer3SATtoSSP($redStore.inInstance);
             const { outInstance, steps } = reducer.reduce();
 
             redStore.update(rs => {
-                rs.setSteps(steps);
-                rs.setOutInstance(outInstance);
-                storage.save();
+                rs.steps = steps;
+                rs.outInstance = outInstance;
                 return rs;
             });
+
+            storage.save();
         }
     }
 
@@ -69,7 +75,7 @@
         if (!outInstance || outCert) return;
 
         isSolving = true;
-        solveMessage = 'Solving TSP...';
+        solveMessage = 'Solving SSP...';
 
         // terminate any previous worker just in case
         if (currentWorker) {
@@ -78,37 +84,42 @@
         }
 
         try {
-            const worker = new Worker(
-                new URL("$lib/workers/WorkerTSPSolver.ts", import.meta.url),
-                { type: "module" }
-            );
+            const workerURL = new URL("$lib/workers/WorkerSSPSolver.ts", import.meta.url);
+            const worker = new Worker(workerURL, { type: "module" });
+
             currentWorker = worker;
 
-            const outCertPromise = new Promise<CertificateTSP | Unsolvable>((resolve, reject) => {
+            const outCertPromise = new Promise<CertificateSSP | Unsolvable>((resolve, reject) => {
                 worker.onmessage = (e) => {
-                    if (worker !== currentWorker) return; // ignore stale workers
+                    if (worker !== currentWorker) 
+                        return; // ignore stale workers
+
                     worker.terminate();
                     currentWorker = null;
                     resolve(e.data);
                 };
                 worker.onerror = (err) => {
-                    if (worker !== currentWorker) return;
+                    if (worker !== currentWorker) 
+                        return;
+
                     worker.terminate();
                     currentWorker = null;
                     reject(err);
                 };
             });
 
-
             const message = {
-                graph: outInstance.toSerializedString(),
-                maxCost: outInstance.nodes.length,
-            }
+                numbers: outInstance.numbers,
+                target: outInstance.target,
+            };
 
             worker.postMessage(message);
             outCert = await outCertPromise;
 
-            if (!currentWorker && !isSolving) return;
+            // ignore if user changed CNF during solving
+            // (the current worker is null and the isSolving is false)
+            if (!currentWorker && !isSolving) 
+                return;
 
             if (outCert == Unsolvable) {
                 redStore.update(rs => {
@@ -117,34 +128,15 @@
                     return rs;
                 });
             } else {
-                const graph = outInstance;
-                const path = outCert.path;
-                graph.edges.forEach(e => e.classes += ' solved');
+                const numbers = outCert.numbers;
 
-                const cutPrefix = (id: string) => id.slice(NODE_ID_PREFIX.length);
-
-                for (let i = 0; i < path.length - 1; i++) {
-                    const from = cutPrefix(path[i].id);
-                    const to = cutPrefix(path[i + 1].id);
-
-                    const edgeId = EDGE_ID_PREFIX + `${from}-${to}`;
-                    const edgeIdMirror = EDGE_ID_PREFIX + `${to}-${from}`;
-                    const edge = graph.edges.find(e => e.id == edgeId || e.id == edgeIdMirror);
-
-                    if (edge) {
-                        graph.removeEdge(edge);
-                        edge.classes += ' used';
-                        graph.addEdge(edge);
-                    }
-                }
-
-                const decoder = new DecoderTSPtoHCIRCUIT()
-                inCert = decoder.decode(graph, outCert);
+                const decoder = new DecoderSSPto3SAT()
+                inCert = decoder.decode(outInstance, outCert);
 
                 redStore.update(rs => {
                     rs.inCert = inCert;
                     rs.outCert = outCert;
-                    rs.outInstance = graph;
+                    rs.outInstance = outInstance;
                     return rs;
                 });
             }
@@ -169,6 +161,7 @@
     })
 
     onDestroy(() => {
+        console.debug('onDestroy');
         if (currentWorker) {
             currentWorker.terminate();
             currentWorker = null;
@@ -177,19 +170,17 @@
 </script>
 
 <svelte:head>
-    <title>HCIRCUIT to TSP</title>
-	<meta name="description" content="Reduction from HCIRCUIT to TSP" />
+    <title>3SAT to SSP</title>
+	<meta name="description" content="Redcution from 3SAT to SSP" />
 </svelte:head>
 
 <main>
-    <h1>
-        HCIRCUIT to TSP reduction
-    </h1>
+    <h1>3SAT to SSP reduction</h1>
 
-    <EditorGraph
-        graph={$redStore.inInstance}
-        onChange={(graph) => onEditorChange(graph)}
-        onWrongFormat={(msg) => alert("From graph editor: " + msg)}
+    <Editor3CNF
+        cnf={$redStore.inInstance} 
+        onChange={(cnf) => onEditorChange(cnf)}
+        onWrongFormat={(msg) => alert("From editor: " + msg)}
     />
 
     <div class="controls">
@@ -232,11 +223,7 @@
                     steps[stepIndex].inSnapshot && 
                     !steps[stepIndex].inSnapshot.empty()
                 }
-                    <RendererGraph 
-                        graph={steps[stepIndex].inSnapshot!} 
-                        style='UNDIRECTED'
-                        layout='circle'
-                    />
+                    <Renderer3CNF cnf={steps[stepIndex].inSnapshot!} />
                 {/if}
             </div>
 
@@ -262,11 +249,7 @@
             <div>
                 {#if $redStore.stepIndex < $redStore.steps.length && 
                     $redStore.steps[$redStore.stepIndex].outSnapshot}
-                    <RendererGraph 
-                        graph={$redStore.steps[$redStore.stepIndex].outSnapshot!} 
-                        style='TSP'
-                        layout='circle'
-                    />
+                    <RendererSSP ssp={$redStore.steps[$redStore.stepIndex].outSnapshot!} />
                 {/if}
             </div>
         {:else}
@@ -276,28 +259,28 @@
         <div class="panes">
             <div>
                 {#if $redStore.inInstance && !$redStore.inInstance.empty()}
-                    <RendererGraph 
-                        graph={$redStore.inInstance} 
-                        style='UNDIRECTED' 
-                        layout='circle'
-                    />
+                    <Renderer3CNF cnf={$redStore.inInstance} />
                 {/if}
                 {#if $redStore.inCert}
-                    <CertRendererHCIRCUIT cert={$redStore.inCert} />
+                    <CertRenderer3SAT cert={$redStore.inCert} />
                 {/if}
             </div>
             <div>
                 {#if $redStore.outInstance && !$redStore.outInstance.empty()}
-                    <RendererGraph 
-                        graph={$redStore.outInstance} 
-                        style='TSP'
-                        layout='circle'
-                    />
+                    <RendererSSP ssp={$redStore.outInstance} />
                 {/if}
                 {#if $redStore.outCert}
-                    <CertRendererTSP cert={$redStore.outCert}/>
+                    <CertRendererSSP cert={$redStore.outCert}/>
                 {/if}
             </div>
         </div>
     {/if}
 </main>
+
+<style>
+.panes {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+</style>

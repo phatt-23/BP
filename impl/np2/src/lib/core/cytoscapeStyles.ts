@@ -208,7 +208,7 @@ export const cytoscapeStyles: Record<string, StylesheetStyle[]> = {
                 'line-color': 'black',
                 'text-background-color': '#fff',
                 'text-background-opacity': 1,
-                'text-background-padding': 4,
+                'text-background-padding': '4',
                 'width': 2
             }
         },
@@ -224,6 +224,19 @@ export const cytoscapeStyles: Record<string, StylesheetStyle[]> = {
             style: {
                 'opacity': 0.4,
                 'line-opacity': 0.4,
+            }
+        },
+        {
+            selector: 'edge.solved',
+            style: {
+                'line-opacity': 0.4,
+            }
+        },
+        {
+            selector: 'edge.used',
+            style: {
+                'line-opacity': 1.0,
+                'line-color': 'red'
             }
         },
     ]

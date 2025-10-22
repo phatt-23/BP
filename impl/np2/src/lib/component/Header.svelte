@@ -17,6 +17,9 @@
 			<li aria-current={page.url.pathname === '/hcircuit-tsp' ? 'page' : undefined}>
 				<a href="/hcircuit-tsp">HCIRCUIT to TSP</a>
 			</li>
+			<li aria-current={page.url.pathname === '/3sat-ssp' ? 'page' : undefined}>
+				<a href="/3sat-ssp">3SAT to SSP</a>
+			</li>
 		</ul>
 	</nav>
 </header>

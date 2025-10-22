@@ -5,8 +5,12 @@ import { Graph } from "$lib/instance/Graph";
 import { SolverTSP } from "$lib/solve/SolverTSP";
 
 self.onmessage = async (e) => {
-    const instance : Graph = Graph.fromSerializedString(e.data);
-    const solver = new SolverTSP(instance);
+    const serializedGraph: string = e.data.graph;
+    const maxCost: number = e.data.maxCost;
+
+    const instance: Graph = Graph.fromSerializedString(serializedGraph);
+
+    const solver = new SolverTSP(instance, maxCost);
     try {
         const result = solver.solve();
         postMessage(result || Unsolvable);
