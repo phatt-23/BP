@@ -5,7 +5,7 @@ import { SSP } from "$lib/instance/SSP";
 import { SolverSSP } from "$lib/solve/SolverSSP";
 
 self.onmessage = async (e) => {
-    const ssp = SSP.fromString(e.data.numbers, e.data.target);
+    const ssp = SSP.fromSerializedString(e.data);
 
     if (typeof ssp == 'string') {
         postMessage(new Error("SSP couldn't be parsed from string."));

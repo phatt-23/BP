@@ -144,4 +144,22 @@ export class CNF3 extends ProblemInstance {
 
         return cnf;
     }
+
+    public copy(): CNF3 {
+        const cnf = new CNF3();
+
+        // Copy variables
+        this._variables.forEach(v => cnf.addVariable(v));
+
+        // Copy clauses and literals
+        this._clauses.forEach(clause => {
+            const newLits = clause.literals.map(lit => 
+                new Literal(lit.id, lit.varName, lit.negated)
+            );
+            const newClause = new Clause(clause.id, newLits);
+            cnf.addClause(newClause);
+        });
+
+        return cnf;
+    }
 }

@@ -22,3 +22,10 @@ export const NODE_ID_PREFIX_FALSE = 'n%f:';
 export const NODE_IN_POSTFIX = '_in';
 export const NODE_GAP_POSTFIX = '_gap';
 export const NODE_OUT_POSTFIX = '_out';
+
+// 3SAT to SSP
+export const VARIABLE_TRUE_PREFIX = 'T:';
+export const VARIABLE_FALSE_PREFIX = 'F:';
+export const CLAUSE_FILLER_PREFIX_ONE = 'filler1:';
+export const CLAUSE_FILLER_PREFIX_TWO = 'filler2:';
+
