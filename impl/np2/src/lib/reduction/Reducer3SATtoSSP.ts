@@ -91,19 +91,15 @@ export class Reducer3SATtoSSP implements Reducer<CNF3, SSP> {
         // add the rows representing the SSP numbers
         for (let i = 0; i < variables.length; i++) {
             const v = variables[i];
-            ssp.addNumber(new SSPNumber(VARIABLE_TRUE_PREFIX + v, matrix[2 * i]))
-            ssp.addNumber(new SSPNumber(VARIABLE_FALSE_PREFIX + v, matrix[2 * i + 1]))
+            ssp.addNumber(new SSPNumber(VARIABLE_TRUE_PREFIX + v, matrix[2 * i]));
+            ssp.addNumber(new SSPNumber(VARIABLE_FALSE_PREFIX + v, matrix[2 * i + 1]));
         }
 
         // add the clause filler rows
         for (let i = 0; i < clauses.length; i++) {
-            ssp.addNumber(new SSPNumber(CLAUSE_FILLER_PREFIX_ONE + i, matrix[(2 * i) + (2 * variables.length)]))
-            ssp.addNumber(new SSPNumber(CLAUSE_FILLER_PREFIX_TWO + i, matrix[(2 * i + 1) + (2 * variables.length)]))
+            ssp.addNumber(new SSPNumber(CLAUSE_FILLER_PREFIX_ONE + i, matrix[(2 * i) + (2 * variables.length)]));
+            ssp.addNumber(new SSPNumber(CLAUSE_FILLER_PREFIX_TWO + i, matrix[(2 * i + 1) + (2 * variables.length)]));
         }
-
-        // matrix.forEach((arr, i) => {
-        //     ssp.addNumber(new SSPNumber(`${i}`, arr));
-        // });
 
         /**
          * The target sum is simply v number of 1s and c number of 3s.
@@ -111,6 +107,7 @@ export class Reducer3SATtoSSP implements Reducer<CNF3, SSP> {
         const target = [...new Array(v).fill(1), ...new Array(c).fill(3)];
         ssp.setTarget(target);
 
+        // TODO: Separate the steps into multiple steps.
         steps.push({
             id: 'var-numbers',
             title: 'Add variable numbers',
@@ -226,9 +223,8 @@ export class Reducer3SATtoSSP implements Reducer<CNF3, SSP> {
                 </p>
             `,
             inSnapshot: this.inInstance.copy(),
-            mapping: {}
+            mapping: {},
         });
-
 
 
         return {
