@@ -49,6 +49,10 @@ export class SSP extends ProblemInstance {
     public static fromString(numbersText: string, targetText: string): SSP | ErrorMessage {
         const ssp = new SSP();
 
+        if (!numbersText) {
+            return `SSP cannot be constructed from an empty string`;
+        }
+
         const lines = numbersText.split('\n').map(x => x.trim()).filter(x => x.length);
 
         try {
@@ -71,4 +75,55 @@ export class SSP extends ProblemInstance {
 
         return ssp;
     }
+
+
+    public toSerializedString(): string {
+        const data = {
+            numbers: this.numbers.map(n => ({
+                id: n.id,
+                value: n.value,
+                used: n.used,
+                classes: n.classes ?? null,
+            })),
+            target: this.target,
+        };
+        
+        return JSON.stringify(data);
+    }
+
+    public static fromSerializedString(serialized: string): SSP {
+        const ssp = new SSP();
+        const data = JSON.parse(serialized);
+
+        ssp.setTarget(data.target)
+
+        if (Array.isArray(data.numbers)) {
+            for (const n of data.numbers) {
+                ssp.addNumber(new SSPNumber(n.id, n.value, n.used, n.classes));
+            }
+        }
+
+        return ssp;
+    }
+
+    copy(): SSP {
+        const copy = new SSP();
+
+        // Copy the target array
+        copy.setTarget([...this.target]);
+
+        // Copy all SSPNumbers
+        this.numbers.forEach(n => {
+            const nCopy = new SSPNumber(
+                n.id,
+                [...n.value], // copy the value array
+                n.used,
+                n.classes
+            );
+            copy.addNumber(nCopy);
+        });
+
+        return copy;
+    }
+
 }

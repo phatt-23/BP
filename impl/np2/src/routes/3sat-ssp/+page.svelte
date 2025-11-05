@@ -2,29 +2,23 @@
 
 <script lang="ts">
     import CertRenderer3SAT from "$lib/component/CertRenderer3SAT.svelte";
-    import CertRendererHCYCLE from "$lib/component/CertRendererHCYCLE.svelte";
     import CertRendererSSP from "$lib/component/CertRendererSSP.svelte";
     import Editor3CNF from "$lib/component/Editor3CNF.svelte";
     import ReductionStepper from "$lib/component/ReductionStepper.svelte";
     import Renderer3CNF from "$lib/component/Renderer3CNF.svelte";
-    import RendererGraph from "$lib/component/RendererGraph.svelte";
     import RendererSSP from "$lib/component/RendererSSP.svelte";
     import Spinner from "$lib/component/Spinner.svelte";
-    import { EDGE_ID_PREFIX, PREFIX_AND_ID_DELIM } from "$lib/core/Id";
     import localStorageKeys from "$lib/core/localStorageKeys";
     import { Unsolvable } from "$lib/core/Unsolvable";
     import useLocalStorage from "$lib/core/useLocalStorage.svelte";
-    import { DecoderHCYCLEto3SAT } from "$lib/decode/DecoderHCYCLEto3SAT";
     import { DecoderSSPto3SAT } from "$lib/decode/DecoderSSPto3SAT";
     import { CNF3 } from "$lib/instance/CNF3";
     import type { SSP } from "$lib/instance/SSP";
-    import { Reducer3SATtoHCYCLE } from "$lib/reduction/Reducer3SATtoHCYCLE";
     import { Reducer3SATtoSSP } from "$lib/reduction/Reducer3SATtoSSP";
     import { Certificate3SAT } from "$lib/solve/Certificate3SAT";
-    import { CertificateHCYCLE } from "$lib/solve/CertificateHCYCLE";
     import { CertificateSSP } from "$lib/solve/CertificateSSP";
     import { ReductionStore } from "$lib/state/ReductionStore.svelte";
-    import { onDestroy, onMount } from "svelte";
+    import { onDestroy } from "svelte";
 
     let storage = useLocalStorage(
         localStorageKeys.LS_3SAT_SSP, 
@@ -108,12 +102,7 @@
                 };
             });
 
-            const message = {
-                numbers: outInstance.numbers,
-                target: outInstance.target,
-            };
-
-            worker.postMessage(message);
+            worker.postMessage(outInstance.toSerializedString());
             outCert = await outCertPromise;
 
             // ignore if user changed CNF during solving
@@ -128,7 +117,14 @@
                     return rs;
                 });
             } else {
-                const numbers = outCert.numbers;
+                // tag numbers that are in the final ssp subset that sums up to the target
+                outCert.numbers.forEach((a) => {
+                    const num = outInstance.numbers.find(b => a.id == b.id);
+
+                    if (num) {
+                        num.used = true;
+                    }
+                });
 
                 const decoder = new DecoderSSPto3SAT()
                 inCert = decoder.decode(outInstance, outCert);
@@ -249,7 +245,10 @@
             <div>
                 {#if $redStore.stepIndex < $redStore.steps.length && 
                     $redStore.steps[$redStore.stepIndex].outSnapshot}
-                    <RendererSSP ssp={$redStore.steps[$redStore.stepIndex].outSnapshot!} />
+                    <RendererSSP 
+                        ssp={$redStore.steps[$redStore.stepIndex].outSnapshot!} 
+                        style='none'
+                    />
                 {/if}
             </div>
         {:else}
@@ -267,7 +266,11 @@
             </div>
             <div>
                 {#if $redStore.outInstance && !$redStore.outInstance.empty()}
-                    <RendererSSP ssp={$redStore.outInstance} />
+                    <RendererSSP 
+                        ssp={$redStore.outInstance} 
+                        style='3sat'
+                        cnfInstance={$redStore.inInstance ?? undefined}
+                    />
                 {/if}
                 {#if $redStore.outCert}
                     <CertRendererSSP cert={$redStore.outCert}/>

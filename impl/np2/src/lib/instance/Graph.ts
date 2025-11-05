@@ -117,6 +117,9 @@ export class Graph extends ProblemInstance {
     }
 
     public static fromString(text: string): Graph | ErrorMessage {
+        if (text.length == 0)
+            return "Cannot construct a graph from empty string";
+
         const lines = text.split('\n').map(x => x.trim()).filter(x => x.length).filter(onlyUnique);
         let graph = new Graph();
 

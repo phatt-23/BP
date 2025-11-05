@@ -122,14 +122,21 @@
                 for (let i = 0; i < path.length - 1; i++) {
                     const from = cutPrefix(path[i].id);
                     const to = cutPrefix(path[i + 1].id);
+
                     const edgeId = EDGE_ID_PREFIX + `${from}-${to}`;
-                    const edge = graph.edges.find(e => e.id == edgeId);
+                    const edgeIdMirror = EDGE_ID_PREFIX + `${to}-${from}`;
+
+                    const edge = graph.edges.find(e => e.id == edgeId || e.id == edgeIdMirror);
+
                     if (edge) {
                         graph.removeEdge(edge);
                         edge.classes += ' used';
                         graph.addEdge(edge);
                     }
                 }
+
+                console.debug('Path', path);
+                console.debug('After class assignment', graph.edges);
 
                 const decoder = new DecorderHCIRCUITtoHCYCLE()
                 inCert = decoder.decode(graph, outCert);
@@ -257,7 +264,7 @@
                     $redStore.steps[$redStore.stepIndex].outSnapshot}
                     <RendererGraph 
                         graph={$redStore.steps[$redStore.stepIndex].outSnapshot!} 
-                        style='UNDIRECTED'
+                        style='HCIRCUIT'
                         layout='preset'
                     />
                 {/if}
@@ -283,7 +290,7 @@
                 {#if $redStore.outInstance && !$redStore.outInstance.empty()}
                     <RendererGraph 
                         graph={$redStore.outInstance} 
-                        style='UNDIRECTED'
+                        style='HCIRCUIT'
                         layout='preset'
                     />
                 {/if}

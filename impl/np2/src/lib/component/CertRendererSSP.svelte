@@ -17,9 +17,10 @@
     {#if cert == Unsolvable}
         <p>SSP doesn't have a solution.</p>
     {:else} 
+        <p>Subset of numbers summing to to target.</p>
         <ul>
             {#each cert.numbers as num, i}
-                <li>{num.value}</li>
+                <li>{num.value.join('')}</li>
             {/each}
         </ul> 
     {/if}

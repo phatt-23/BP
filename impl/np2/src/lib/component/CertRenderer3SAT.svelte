@@ -17,7 +17,9 @@
     {#if cert == Unsolvable}
         <p>The 3CNF formula is unsatisfiable.</p>
     {:else}
-        {#each cert.assignments as [varName, assgn],i}
+        {@const sorted = [...cert.assignments].sort(([a], [b]) => a.localeCompare(b))}
+
+        {#each sorted as [varName, assgn],i}
             <div>{varName} &coloneq; {assgn == true ? 'T' : assgn == false ? 'F' : 'Either' }</div>
         {/each}
     {/if}
