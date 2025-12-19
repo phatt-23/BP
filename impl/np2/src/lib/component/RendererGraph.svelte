@@ -1,40 +1,36 @@
 <!--
 Created by phatt-23 on 12/10/2025
+
+Component that renders the graph. 
 -->
 
 <script lang="ts">
     import { cytoscapeStyles } from "$lib/core/cytoscapeStyles";
-    import type { Graph } from "$lib/instance/Graph";
+    import type { Graph, GraphEdge } from "$lib/instance/Graph";
     import cytoscape, { type ElementDefinition } from "cytoscape";
-
-
-    type CytoscapeLayout = 
-        | 'null'
-        | 'random'
-        | 'preset'
-        | 'grid'
-        | 'circle'
-        | 'concentric'
-        | 'breadthfirst'
-        | 'cose'
-        | 'base';
+    import type { CytoscapeLayout } from "./RendererGraph";
 
     type Props = {
         graph: Graph;
         style?: keyof typeof cytoscapeStyles;
         layout?: CytoscapeLayout;
+        onNodeTap?: (event: cytoscape.EventObject) => void,
+        onEdgeTap?: (event: cytoscape.EventObject) => void,
     }
 
     let { 
-        graph, 
+        graph,
         style = 'DEFAULT',
         layout = 'preset',
+        onNodeTap = () => {},
+        onEdgeTap = () => {},
     }: Props = $props();
 
     let graphContainer: HTMLElement;
     let cy: cytoscape.Core; 
 
     let moveEnabled = $state(false);
+
 
     $effect(() => {
         const nodes: ElementDefinition[] = graph.nodes.map(n => ({
@@ -74,10 +70,18 @@ Created by phatt-23 on 12/10/2025
 
         cy.nodes().ungrabify();
 
+        // handle adding of edges when clicking consecutivelly on two nodes
+        cy.on('tap', 'node', onNodeTap);
+        cy.on('tap', 'edge', onEdgeTap);
 
         // Restore viewport
-        // cy.zoom(currentZoom);
-        // cy.pan(currentPan);
+        cy.zoom(currentZoom);
+        cy.pan(currentPan);
+
+        return () => {
+            cy.off('tap', 'node', onNodeTap);
+            cy.off('tap', 'edge', onEdgeTap);
+        }
     });
 
     $effect(() => {

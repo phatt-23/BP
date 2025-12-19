@@ -1,14 +1,12 @@
 import { CLAUSE_FILLER_PREFIX_ONE, CLAUSE_FILLER_PREFIX_TWO, VARIABLE_FALSE_PREFIX, VARIABLE_TRUE_PREFIX } from "$lib/core/Id";
 import type { CNF3 } from "$lib/instance/CNF3";
 import { SSP, SSPNumber } from "$lib/instance/SSP";
-import type { Reducer } from "./Reducer";
+import { Reducer, type ReductionResult } from "./Reducer";
 import type { ReductionStep } from "./ReductionStep";
 
-export class Reducer3SATtoSSP implements Reducer<CNF3, SSP> {
-    inInstance: CNF3;
-
+export class Reducer3SATtoSSP extends Reducer<CNF3, SSP> {
     constructor(instance: CNF3) {
-        this.inInstance = instance;
+        super(instance);
     }
 
 
@@ -53,10 +51,9 @@ export class Reducer3SATtoSSP implements Reducer<CNF3, SSP> {
      * 
      * Note that each of these numbers/rows is unique.
      */
-    reduce(): { outInstance: SSP; steps: ReductionStep<CNF3, SSP>[]; } {
+    protected doReduce(): ReductionResult<CNF3, SSP> {
         const { variables, clauses } = this.inInstance;
         const ssp = new SSP();
-
 
         const v = variables.length;
         const c = clauses.length;

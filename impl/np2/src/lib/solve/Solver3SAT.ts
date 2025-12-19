@@ -14,7 +14,7 @@ export class Solver3SAT implements Solver<CNF3, Certificate3SAT> {
     }
 
     public async solve() : Promise<Certificate3SAT | Unsolvable> {
-        if (this.instance.empty()) {
+        if (this.instance.isEmpty()) {
             throw new Error("CNF instance is empty.");
         }
 

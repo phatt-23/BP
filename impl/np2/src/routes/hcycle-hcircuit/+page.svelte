@@ -5,6 +5,7 @@
     import CertRendererHCYCLE from "$lib/component/CertRendererHCYCLE.svelte";
     import EditorGraph from "$lib/component/EditorGraph.svelte";
     import ReductionStepper from "$lib/component/ReductionStepper.svelte";
+    import RendererEditableGraph from "$lib/component/RendererEditableGraph.svelte";
     import RendererGraph from "$lib/component/RendererGraph.svelte";
     import Spinner from "$lib/component/Spinner.svelte";
     import { EDGE_ID_PREFIX, PREFIX_AND_ID_DELIM } from "$lib/core/Id";
@@ -52,7 +53,7 @@
     }
 
     function onReduceClick() {
-        if ($redStore.inInstance) {
+        if ($redStore.inInstance && !$redStore.inInstance.isEmpty()) {
             const reducer = new ReducerHCYCLEtoHCIRCUIT($redStore.inInstance);
             const { outInstance, steps } = reducer.reduce();
 
@@ -230,7 +231,7 @@
             <div>
                 {#if stepIndex < steps.length &&
                     steps[stepIndex].inSnapshot && 
-                    !steps[stepIndex].inSnapshot.empty()
+                    !steps[stepIndex].inSnapshot.isEmpty()
                 }
                     <RendererGraph 
                         graph={steps[stepIndex].inSnapshot!} 
@@ -275,11 +276,36 @@
     {:else}
         <div class="panes">
             <div>
-                {#if $redStore.inInstance && !$redStore.inInstance.empty()}
-                    <RendererGraph 
+                {#if $redStore.inInstance && !$redStore.inInstance.isEmpty()}
+                    <RendererEditableGraph 
                         graph={$redStore.inInstance} 
                         style='DIRECTED' 
                         layout='circle'
+                        directed 
+                        onAddEdge={(edge) => {
+                            redStore.update(rs => {
+                                let inInstance = rs.inInstance!;
+                                inInstance.addEdge(edge);
+
+                                rs.reset();
+                                rs.setInInstance(inInstance);
+                                storage.save();
+
+                                return rs;
+                            });
+                        }}
+                        onRemoveEdge={(edge) => {
+                            redStore.update(rs => {
+                                let inInstance = rs.inInstance!;
+                                inInstance.removeEdgeById(edge.id());
+
+                                rs.reset();
+                                rs.setInInstance(inInstance);
+                                storage.save();
+
+                                return rs;
+                            });
+                        }}
                     />
                 {/if}
                 {#if $redStore.inCert}
@@ -287,7 +313,7 @@
                 {/if}
             </div>
             <div>
-                {#if $redStore.outInstance && !$redStore.outInstance.empty()}
+                {#if $redStore.outInstance && !$redStore.outInstance.isEmpty()}
                     <RendererGraph 
                         graph={$redStore.outInstance} 
                         style='HCIRCUIT'

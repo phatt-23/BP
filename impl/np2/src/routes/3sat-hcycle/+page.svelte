@@ -51,7 +51,7 @@
     }
 
     function onReduceClick() {
-        if ($redStore.inInstance) {
+        if ($redStore.inInstance && !$redStore.inInstance.isEmpty()) {
             const reducer = new Reducer3SATtoHCYCLE($redStore.inInstance);
             const { outInstance, steps } = reducer.reduce();
 
@@ -66,6 +66,10 @@
     }
 
     async function onSolveClick() {
+        if (!$redStore.inInstance || $redStore.inInstance.isEmpty()) {
+            throw "Input instance is not set or is empty.";
+        }
+
         let { inCert, outInstance, outCert } = $redStore;
         if (!outInstance || outCert) return;
 
@@ -187,6 +191,7 @@
         <button 
             disabled={!$redStore.hasInInstance() 
                 || $redStore.hasOutInstance() 
+                || $redStore.inInstance?.isEmpty()
                 || isSolving} 
             onclick={onReduceClick}
         >
@@ -196,6 +201,7 @@
         <button
             disabled={!$redStore.hasInstances() 
                 || $redStore.hasOutCertificate()
+                || $redStore.inInstance?.isEmpty()
                 || isSolving}
             onclick={() => onSolveClick()}
         >
@@ -221,7 +227,7 @@
             <div>
                 {#if stepIndex < steps.length &&
                     steps[stepIndex].inSnapshot && 
-                    !steps[stepIndex].inSnapshot.empty()
+                    !steps[stepIndex].inSnapshot.isEmpty()
                 }
                     <Renderer3CNF cnf={steps[stepIndex].inSnapshot!} />
                 {/if}
@@ -261,7 +267,7 @@
     {:else}
         <div class="panes">
             <div>
-                {#if $redStore.inInstance && !$redStore.inInstance.empty()}
+                {#if $redStore.inInstance && !$redStore.inInstance.isEmpty()}
                     <Renderer3CNF cnf={$redStore.inInstance} />
                 {/if}
                 {#if $redStore.inCert}
@@ -269,7 +275,7 @@
                 {/if}
             </div>
             <div>
-                {#if $redStore.outInstance && !$redStore.outInstance.empty()}
+                {#if $redStore.outInstance && !$redStore.outInstance.isEmpty()}
                     <RendererGraph graph={$redStore.outInstance} style={'3SAT-HCYCLE'}/>
                 {/if}
                 {#if $redStore.outCert}

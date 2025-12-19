@@ -36,7 +36,7 @@
 
 	<h4>Notes</h4>
 	<p>
-		As far as I know, there is no concrete/correct way to differentiate 
+		There is probably no concrete/correct way to differentiate 
 		between "hamiltonovsky cyklus" and "hamiltonovska kruznice" in the English language.
 		In this project I chose this naming:
 	</p>

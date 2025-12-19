@@ -4,7 +4,7 @@ import type { ErrorMessage } from "$lib/core/assert";
 import Serializer from "$lib/core/Serializer";
 import { ProblemInstance } from "./ProblemInstance";
 
-@Serializer.SerializableClass()
+@Serializer.SerializableClass("SSPNumber")
 export class SSPNumber {
     id: string;
     value: number[];
@@ -23,7 +23,7 @@ export class SSPNumber {
     }
 };
 
-@Serializer.SerializableClass()
+@Serializer.SerializableClass("SSP")
 export class SSP extends ProblemInstance {
     public numbers: SSPNumber[];
     public target: number[];
@@ -42,7 +42,7 @@ export class SSP extends ProblemInstance {
         this.target = target;
     }
 
-    public empty(): boolean {
+    public isEmpty(): boolean {
         return this.numbers.length == 0;
     }
 

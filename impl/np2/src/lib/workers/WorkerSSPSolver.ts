@@ -5,6 +5,9 @@ import { SSP } from "$lib/instance/SSP";
 import { SolverSSP } from "$lib/solve/SolverSSP";
 
 self.onmessage = async (e) => {
+    console.debug('WorkerSSPSolver::onmessage');
+
+    console.debug('Calling SSP.fromSerializedString method');
     const ssp = SSP.fromSerializedString(e.data);
 
     if (typeof ssp == 'string') {
@@ -12,9 +15,12 @@ self.onmessage = async (e) => {
         return;
     }
 
+    console.debug('Creating new solver');
+
     const solver = new SolverSSP(ssp);
 
     try {
+        console.debug('solving...');
         const result = solver.solve();
         postMessage(result || Unsolvable);
     } finally {

@@ -16,7 +16,7 @@ export class SolverHCYCLE implements Solver<Graph, CertificateHCYCLE> {
         const nodes = this.instance.nodes;
         const edges = this.instance.edges;
 
-        if (this.instance.empty()) {
+        if (this.instance.isEmpty()) {
             throw new Error("Graph is empty.");
         }
 

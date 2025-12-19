@@ -2,15 +2,14 @@
 
 import { EDGE_ID_PREFIX, NODE_ID_PREFIX, type Id } from "$lib/core/Id";
 import { Graph } from "$lib/instance/Graph";
-import type { Reducer } from "./Reducer";
+import { Reducer } from "./Reducer";
 import type { ReductionStep } from "./ReductionStep";
 
-export class ReducerHCIRCUITtoTSP implements Reducer<Graph, Graph> {
-    inInstance: Graph;
+export class ReducerHCIRCUITtoTSP extends Reducer<Graph, Graph> {
     nodeCount: number;
 
     constructor(inInstance: Graph) {
-        this.inInstance = inInstance;
+        super(inInstance);
 
         this.nodeCount = this.inInstance.nodes.length;
     }
@@ -113,7 +112,7 @@ export class ReducerHCIRCUITtoTSP implements Reducer<Graph, Graph> {
 
     }
 
-    reduce(): { outInstance: Graph; steps: ReductionStep<Graph, Graph>[]; } {
+    protected doReduce(): { outInstance: Graph; steps: ReductionStep<Graph, Graph>[]; } {
         const steps: ReductionStep<Graph, Graph>[] = [];
 
         steps.push({

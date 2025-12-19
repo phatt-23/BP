@@ -50,7 +50,7 @@
     }
 
     function onReduceClick() {
-        if ($redStore.inInstance) {
+        if ($redStore.inInstance && !$redStore.inInstance.isEmpty()) {
             const reducer = new Reducer3SATtoSSP($redStore.inInstance);
             const { outInstance, steps } = reducer.reduce();
 
@@ -63,6 +63,8 @@
             storage.save();
         }
     }
+
+    import WorkerSSPSolver from '$lib/workers/WorkerSSPSolver?worker&url';
 
     async function onSolveClick() {
         let { inCert, outInstance, outCert } = $redStore;
@@ -78,8 +80,9 @@
         }
 
         try {
-            const workerURL = new URL("$lib/workers/WorkerSSPSolver.ts", import.meta.url);
-            const worker = new Worker(workerURL, { type: "module" });
+            // const workerURL = new URL("$lib/workers/WorkerSSPSolver.ts", import.meta.url);
+            // const worker = new Worker(workerURL, { type: "module" });
+            const worker = new Worker(WorkerSSPSolver, { type: "module" });
 
             currentWorker = worker;
 
@@ -126,8 +129,12 @@
                     }
                 });
 
+                console.debug("Decoding...");
+
                 const decoder = new DecoderSSPto3SAT()
                 inCert = decoder.decode(outInstance, outCert);
+
+                console.debug("Done decoding...");
 
                 redStore.update(rs => {
                     rs.inCert = inCert;
@@ -217,7 +224,7 @@
             <div>
                 {#if stepIndex < steps.length &&
                     steps[stepIndex].inSnapshot && 
-                    !steps[stepIndex].inSnapshot.empty()
+                    !steps[stepIndex].inSnapshot.isEmpty()
                 }
                     <Renderer3CNF cnf={steps[stepIndex].inSnapshot!} />
                 {/if}
@@ -257,7 +264,7 @@
     {:else}
         <div class="panes">
             <div>
-                {#if $redStore.inInstance && !$redStore.inInstance.empty()}
+                {#if $redStore.inInstance && !$redStore.inInstance.isEmpty()}
                     <Renderer3CNF cnf={$redStore.inInstance} />
                 {/if}
                 {#if $redStore.inCert}
@@ -265,7 +272,7 @@
                 {/if}
             </div>
             <div>
-                {#if $redStore.outInstance && !$redStore.outInstance.empty()}
+                {#if $redStore.outInstance && !$redStore.outInstance.isEmpty()}
                     <RendererSSP 
                         ssp={$redStore.outInstance} 
                         style='3sat'

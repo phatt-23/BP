@@ -2,6 +2,13 @@
 
 import type { StylesheetStyle } from 'cytoscape';
 
+const selectedNode = {
+    selector: 'node.selected-node',
+    style: {
+        'background-color': '#ff0000',
+    },
+};
+
 export const cytoscapeStyles: Record<string, StylesheetStyle[]> = {
     'DEFAULT': [
         {
@@ -25,7 +32,8 @@ export const cytoscapeStyles: Record<string, StylesheetStyle[]> = {
                 'line-color': 'black',
                 'width': 2
             }
-        }
+        },
+        selectedNode,
     ],
     '3SAT-HCYCLE': [
         {
@@ -132,6 +140,7 @@ export const cytoscapeStyles: Record<string, StylesheetStyle[]> = {
                 'line-opacity': 1,
             },
         },
+        selectedNode,
     ],
     'UNDIRECTED': [
         {
@@ -155,7 +164,8 @@ export const cytoscapeStyles: Record<string, StylesheetStyle[]> = {
                 'line-color': 'black',
                 'width': 2
             }
-        }
+        },
+        selectedNode,
     ],
     'DIRECTED': [
         {
@@ -184,6 +194,7 @@ export const cytoscapeStyles: Record<string, StylesheetStyle[]> = {
                 'width': 2
             },
         },
+        selectedNode,
     ],
     'HCIRCUIT': [
         {
@@ -238,6 +249,7 @@ export const cytoscapeStyles: Record<string, StylesheetStyle[]> = {
                 'line-color': 'red'
             }
         },
+        selectedNode,
     ],
     'TSP': [
         {
@@ -293,5 +305,6 @@ export const cytoscapeStyles: Record<string, StylesheetStyle[]> = {
                 'line-color': 'red'
             }
         },
+        selectedNode,
     ]
 };

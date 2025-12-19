@@ -98,7 +98,7 @@ export class CNF3 extends ProblemInstance {
     public get clauses() : Array<Clause> {
         return Array.from(this._clauses.values());
     }
-    public empty() : boolean {
+    public isEmpty() : boolean {
         const empty = this.clauses.length == 0 || this.variables.length == 0;
         console.debug("empty", empty);
         return empty;
