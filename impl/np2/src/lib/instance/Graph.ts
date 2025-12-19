@@ -76,9 +76,20 @@ export class Graph extends ProblemInstance {
         const edgesToRemove = Array.from(this.edges).filter(e => e.to === node.id || e.from === node.id);
         edgesToRemove.forEach(edge => this._edges.delete(edge));
     }
-    public removeEdge(edge: GraphEdge) { this._edges.delete(edge);
+    public removeEdge(edge: GraphEdge) { 
+        this._edges.delete(edge);
     }
-    public empty() : boolean {
+    public removeEdgeById(id: string) { 
+        const edge = this.edges.find(e => e.id == id);
+        if (edge) {
+            console.log('deleting edge with id', id);
+            this._edges.delete(edge);
+        }
+        else {
+            console.log('edge with id', id, 'not found');
+        }
+    }
+    public isEmpty() : boolean {
         return this.nodes.length == 0; 
     }
 

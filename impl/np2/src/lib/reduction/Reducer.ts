@@ -5,7 +5,23 @@
 import type { ProblemInstance } from "$lib/instance/ProblemInstance";
 import type { ReductionStep } from "./ReductionStep";
 
-export interface Reducer<I extends ProblemInstance, O extends ProblemInstance> {
-    inInstance: I; 
-    reduce(): { outInstance: O, steps: ReductionStep<I, O>[] };
+export type ReductionResult<
+    I extends ProblemInstance, 
+    O extends ProblemInstance
+    > = { outInstance: O, steps: ReductionStep<I, O>[] };
+
+export abstract class Reducer<I extends ProblemInstance, O extends ProblemInstance> 
+{
+    constructor(public inInstance: I) {
+    }
+
+    public reduce(): ReductionResult<I, O> {
+        if (this.inInstance.isEmpty()) {
+            throw "Call to reduce failed. Input instance is empty.";
+        }
+        const result = this.doReduce();
+        return result;
+    }
+
+    protected abstract doReduce(): ReductionResult<I, O>;
 }

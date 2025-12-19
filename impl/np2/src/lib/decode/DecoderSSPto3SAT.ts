@@ -10,6 +10,7 @@ import type { Decoder } from "./Decoder";
 
 export class DecoderSSPto3SAT implements Decoder<SSP, CertificateSSP, Certificate3SAT> {
     decode(outInstance: SSP, outCert: CertificateSSP): Certificate3SAT {
+        console.debug("DecoderSSPto3SAT::decode");
 
         const assignment = new Map<VarName, TriBool>()
 

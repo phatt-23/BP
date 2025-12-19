@@ -15,12 +15,10 @@ import {
 } from "$lib/core/Id";
 import type { CNF3 } from "$lib/instance/CNF3";
 import { Graph, type GraphEdge, type GraphNode } from "$lib/instance/Graph";
-import type { Reducer } from "./Reducer";
+import { Reducer, type ReductionResult } from "./Reducer";
 import type { ReductionStep } from "./ReductionStep";
 
-export class Reducer3SATtoHCYCLE implements Reducer<CNF3, Graph> {
-    inInstance: CNF3;
-
+export class Reducer3SATtoHCYCLE extends Reducer<CNF3, Graph> {
     private rowNodeCount: number;
     private rowXOffset: number;
     private varCount: number;
@@ -32,7 +30,7 @@ export class Reducer3SATtoHCYCLE implements Reducer<CNF3, Graph> {
     private yDist = 300;
 
     public constructor(inInstance: CNF3) {
-        this.inInstance = inInstance;
+        super(inInstance);
         const { variables, clauses } = this.inInstance;
 
         this.yOffset = this.yDist / 2;
@@ -47,7 +45,7 @@ export class Reducer3SATtoHCYCLE implements Reducer<CNF3, Graph> {
         this.rowXOffset = (this.rowNodeCount - 1)/2 * this.xDist;
     }
 
-    reduce(): { outInstance: Graph, steps: ReductionStep<CNF3, Graph>[] } {
+    protected doReduce(): ReductionResult<CNF3, Graph> {
         let steps : ReductionStep<CNF3, Graph>[] = [];
 
         const step1 = this.createVarGadgets();
@@ -63,7 +61,6 @@ export class Reducer3SATtoHCYCLE implements Reducer<CNF3, Graph> {
             steps,
         }
     }
-
 
     private createClauseGadgets(graph: Graph): { graph: Graph, interSteps: ReductionStep<CNF3, Graph>[] } {
         const { clauses } = this.inInstance;
@@ -145,9 +142,6 @@ export class Reducer3SATtoHCYCLE implements Reducer<CNF3, Graph> {
             mapping: {},
         });
 
-        // these are output snapshot Graphs for each clause
-        let graphs : Graph[] = [];
-
         /**
          * For each clause, create a node 
          * and based on literals it contains, 
@@ -173,7 +167,7 @@ export class Reducer3SATtoHCYCLE implements Reducer<CNF3, Graph> {
             graph.addNode(node);
 
             // For its literals.
-            c.literals.forEach((l,j) => {
+            c.literals.forEach((l) => {
                 const litId = `${l.varName}_${3 * idx}`;
                 const adjLitId = `${l.varName}_${3 * idx + 1}`;
 

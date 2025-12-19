@@ -3,6 +3,7 @@
 //
 
 export abstract class ProblemInstance {
+    public abstract isEmpty(): boolean;
 }
 
 

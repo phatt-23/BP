@@ -29,3 +29,9 @@ export const VARIABLE_FALSE_PREFIX = 'F:';
 export const CLAUSE_FILLER_PREFIX_ONE = 'filler1:';
 export const CLAUSE_FILLER_PREFIX_TWO = 'filler2:';
 
+export const cutNodeIdPrefix = (id: string) => {
+    if (id.startsWith(NODE_ID_PREFIX)) {
+        return id.slice(NODE_ID_PREFIX.length);
+    }
+    return id;
+}

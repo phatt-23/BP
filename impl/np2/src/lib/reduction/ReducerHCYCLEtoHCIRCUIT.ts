@@ -2,12 +2,10 @@
 
 import { EDGE_ID_PREFIX, NODE_GAP_POSTFIX, NODE_ID_PREFIX, NODE_IN_POSTFIX, NODE_OUT_POSTFIX } from "$lib/core/Id";
 import { Graph, type Position } from "$lib/instance/Graph";
-import type { Reducer } from "./Reducer";
+import { Reducer } from "./Reducer";
 import type { ReductionStep } from "./ReductionStep";
 
-export class ReducerHCYCLEtoHCIRCUIT implements Reducer<Graph, Graph> {
-    inInstance: Graph;
-
+export class ReducerHCYCLEtoHCIRCUIT extends Reducer<Graph, Graph> {
     private nodeDist = 80;  // vzdalenost mezi vrcholy v trojici
     private tripletDist = 2 * 3 * this.nodeDist;  // vzdalenost mezi trojicemi vrcholu
     private nodeCount: number;
@@ -17,11 +15,11 @@ export class ReducerHCYCLEtoHCIRCUIT implements Reducer<Graph, Graph> {
     private startRot: number;
 
     constructor(instance: Graph) {
-        if (instance.empty()) {
+        super(instance);
+
+        if (instance.isEmpty()) {
             throw new Error("Reducer doesn't accept empty graphs (Graph with node nodes).");
         }
-
-        this.inInstance = instance;
 
         this.nodeCount = instance.nodes.length; 
 
@@ -39,7 +37,7 @@ export class ReducerHCYCLEtoHCIRCUIT implements Reducer<Graph, Graph> {
         this.startRot = 0.5 * Math.PI;  
     }
 
-    reduce(): { outInstance: Graph; steps: ReductionStep<Graph, Graph>[]; } {
+    protected doReduce(): { outInstance: Graph; steps: ReductionStep<Graph, Graph>[]; } {
         const steps: ReductionStep<Graph, Graph>[] = [];
 
         const step1 = this.createNodeTriplets();

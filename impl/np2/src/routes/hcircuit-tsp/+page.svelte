@@ -13,12 +13,13 @@
     import { Unsolvable } from "$lib/core/Unsolvable";
     import useLocalStorage from "$lib/core/useLocalStorage.svelte";
     import { DecoderTSPtoHCIRCUIT } from "$lib/decode/DecoderTSPtoHCIRCUIT";
-    import type { Graph } from "$lib/instance/Graph";
     import { ReducerHCIRCUITtoTSP } from "$lib/reduction/ReducerHCIRCUITtoTSP";
+    import { ReductionStore } from "$lib/state/ReductionStore.svelte";
+    import { onDestroy } from "svelte";
+    import type { Graph } from "$lib/instance/Graph";
     import type { CertificateHCIRCUIT } from "$lib/solve/CertificateHCIRCUIT";
     import type { CertificateTSP } from "$lib/solve/CertificateTSP";
-    import { ReductionStore } from "$lib/state/ReductionStore.svelte";
-    import { onDestroy, onMount } from "svelte";
+    import RendererEditableGraph from "$lib/component/RendererEditableGraph.svelte";
 
     let storage = useLocalStorage(
         localStorageKeys.LS_HCIRCUIT_TSP,
@@ -51,7 +52,7 @@
     }
 
     function onReduceClick() {
-        if ($redStore.inInstance) {
+        if ($redStore.inInstance && !$redStore.inInstance.isEmpty()) {
             const reducer = new ReducerHCIRCUITtoTSP($redStore.inInstance);
             const { outInstance, steps } = reducer.reduce();
 
@@ -166,14 +167,14 @@
             rs.resetStepIndex();
             return rs;
         });
-    })
+    });
 
     onDestroy(() => {
         if (currentWorker) {
             currentWorker.terminate();
             currentWorker = null;
         }
-    })
+    });
 </script>
 
 <svelte:head>
@@ -230,7 +231,7 @@
             <div>
                 {#if stepIndex < steps.length &&
                     steps[stepIndex].inSnapshot && 
-                    !steps[stepIndex].inSnapshot.empty()
+                    !steps[stepIndex].inSnapshot.isEmpty()
                 }
                     <RendererGraph 
                         graph={steps[stepIndex].inSnapshot!} 
@@ -275,11 +276,35 @@
     {:else}
         <div class="panes">
             <div>
-                {#if $redStore.inInstance && !$redStore.inInstance.empty()}
-                    <RendererGraph 
+                {#if $redStore.inInstance && !$redStore.inInstance.isEmpty()}
+                    <RendererEditableGraph 
                         graph={$redStore.inInstance} 
                         style='UNDIRECTED' 
                         layout='circle'
+                        onAddEdge={(edge) => {
+                            redStore.update(rs => {
+                                let inInstance = rs.inInstance!;
+                                inInstance.addEdge(edge);
+
+                                rs.reset();
+                                rs.setInInstance(inInstance);
+                                storage.save();
+
+                                return rs;
+                            });
+                        }}
+                        onRemoveEdge={(edge) => {
+                            redStore.update(rs => {
+                                let inInstance = rs.inInstance!;
+                                inInstance.removeEdgeById(edge.id());
+
+                                rs.reset();
+                                rs.setInInstance(inInstance);
+                                storage.save();
+
+                                return rs;
+                            });
+                        }}
                     />
                 {/if}
                 {#if $redStore.inCert}
@@ -287,7 +312,7 @@
                 {/if}
             </div>
             <div>
-                {#if $redStore.outInstance && !$redStore.outInstance.empty()}
+                {#if $redStore.outInstance && !$redStore.outInstance.isEmpty()}
                     <RendererGraph 
                         graph={$redStore.outInstance} 
                         style='TSP'
