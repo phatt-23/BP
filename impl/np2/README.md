@@ -15,6 +15,7 @@ do not allow reducing nor solving (UI constraint and logic constraint)
 - [ ] - rename asString() to format() as it is formatting the problem instance to a format that the editor accepts, now it's confusing because problem instances have toSerializedString()
 - [ ] - decide on the final UI layout
 - [ ] - style the components
+- [ ] - style the 3CG (from 3SAT to 3CG) so it's more readable
 
 ## 3SAT to 3CG
 

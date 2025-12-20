@@ -44,6 +44,23 @@
                 return;
             }
 
+            outInst.nodes.forEach(n => {
+                n.color = outCert.coloring.get(n.id);
+                switch (n.color) {
+                    case 0: 
+                        n.classes += ' red'
+                        break;
+                    case 1:
+                        n.classes += ' green'
+                        break;
+                    case 2:
+                        n.classes += ' blue'
+                        break;
+                    default:
+                        throw new Error(`Value ${n.color} not supported.`);
+                }
+            });
+
             // outInst.labelSolved({ path: outCert.path, directed: true });
 
             // decode and update reduction store

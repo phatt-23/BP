@@ -297,10 +297,43 @@ export const cytoscapeStyles: Record<string, StylesheetStyle[]> = {
                 'label': 'data(id)',
                 'font-size': 12,
                 'text-valign': 'top',
-                'background-color': 'blue',
+                'background-color': 'white',
                 'border-color': 'black',
                 'border-style': 'solid',
                 'border-width': 2,
+            },
+        },
+        {
+            selector: 'edge.muted',  // hrany, u kterych neni dulezite jejich viditelnost
+            style: {
+                'line-opacity': 0.2,
+                'line-color': 'black',
+            },
+        },
+        {
+            selector: 'node.green',
+            style: {
+                'background-color': 'green',
+            }
+        },
+        {
+            selector: 'node.red',
+            style: {
+                'background-color': 'red',
+            }
+        },
+        {
+            selector: 'node.blue',
+            style: {
+                'background-color': 'blue',
+            }
+        },
+        {
+            selector: 'edge.core',
+            style: {
+                'curve-style': 'bezier',
+                'line-color': 'black',
+                'width': 1,
             },
         },
         ...solvedNode,

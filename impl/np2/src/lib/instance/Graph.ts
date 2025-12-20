@@ -24,6 +24,7 @@ export type GraphEdge = {
 export type GraphNode = {
     id: Id;
     label?: string;
+    color?: number;  
     position?: Position;
     classes?: string;
 }
@@ -102,6 +103,7 @@ export class Graph extends ProblemInstance {
             newGraph.addNode({
                 id: node.id,
                 label: node.label,
+                color: node.color,
                 position: node.position ? { ...node.position } : undefined,
                 classes: node.classes,
             });
@@ -189,6 +191,7 @@ export class Graph extends ProblemInstance {
             nodes: this.nodes.map(n => ({
                 id: n.id,
                 label: n.label ?? null,
+                color: n.color ?? null,
                 position: n.position ?? null,
                 classes: n.classes ?? '',
             })),
@@ -212,6 +215,7 @@ export class Graph extends ProblemInstance {
                 graph.addNode({
                     id: node.id,
                     label: node.label ?? undefined,
+                    color: node.color ?? undefined,
                     position: node.position ?? undefined,
                     classes: node.classes ?? '',
                 });
