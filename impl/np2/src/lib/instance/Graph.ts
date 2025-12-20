@@ -5,7 +5,7 @@
 import { ProblemInstance } from "./ProblemInstance";
 import Serializer from "$lib/core/Serializer";
 import { EDGE_ID_PREFIX, NODE_ID_PREFIX, PREFIX_AND_ID_DELIM, type Id } from "$lib/core/Id";
-import type { ErrorMessage } from "$lib/core/assert";
+import { assert, type ErrorMessage } from "$lib/core/assert";
 import { onlyUnique } from "$lib/core/filters";
 
 export type Position = {
@@ -19,6 +19,7 @@ export type GraphEdge = {
     to: Id;
     weight?: number;
     classes?: string;
+    controlPointDistances?: number[];  // pair of control points distances from the tangent of an edge
 }
 
 export type GraphNode = {
@@ -55,6 +56,12 @@ export class Graph extends ProblemInstance {
         if (edge.classes == undefined) {
             edge.classes = '';
         }
+
+        if (edge.controlPointDistances == undefined) {
+            edge.controlPointDistances = [0,0];
+        }
+        assert(edge.controlPointDistances.length == 2, 
+            "There must be 2 control points.");
 
         // if there's an edge with the same id, don't add it
         if (this.edges.find(e => e.id == edge.id)) 
@@ -117,6 +124,7 @@ export class Graph extends ProblemInstance {
                 to: edge.to,
                 weight: edge.weight,
                 classes: edge.classes,
+                controlPointDistances: edge.controlPointDistances,
             });
         }
 
@@ -201,6 +209,7 @@ export class Graph extends ProblemInstance {
                 to: e.to,
                 weight: e.weight ?? null,
                 classes: e.classes ?? '',
+                controlPointDistances: e.controlPointDistances ?? [0,0],
             })),
         };
         return JSON.stringify(data, null);
@@ -230,6 +239,7 @@ export class Graph extends ProblemInstance {
                     to: edge.to,
                     weight: edge.weight ?? undefined,
                     classes: edge.classes ?? '',
+                    controlPointDistances: edge.controlPointDistances ?? [0,0],
                 });
             }
         }

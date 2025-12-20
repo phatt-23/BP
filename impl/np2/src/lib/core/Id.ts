@@ -38,6 +38,9 @@ export const CG3_ID = {
     },
     VAR_NODE_PREFIX: 'nv:',
     CLAUSE_NODE_PREFIX: 'nc:',
+    COLOR_TRUE: 1,
+    COLOR_FALSE: 0,
+    COLOR_BUFFER: 2,
 };
 
 export const cutNodeIdPrefix = (id: string) => {
