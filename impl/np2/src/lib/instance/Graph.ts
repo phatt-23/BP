@@ -4,7 +4,7 @@
 
 import { ProblemInstance } from "./ProblemInstance";
 import Serializer from "$lib/core/Serializer";
-import { EDGE_ID_PREFIX, NODE_ID_PREFIX, type Id } from "$lib/core/Id";
+import { EDGE_ID_PREFIX, NODE_ID_PREFIX, PREFIX_AND_ID_DELIM, type Id } from "$lib/core/Id";
 import type { ErrorMessage } from "$lib/core/assert";
 import { onlyUnique } from "$lib/core/filters";
 
@@ -184,14 +184,7 @@ export class Graph extends ProblemInstance {
         return graph;
     }
 
-
-    /**
-     * When using workers, these are the methods that serialize and desearialize the Graph
-     * The Serializer class cannot be used. Worker has a different context to the main thread
-     * and the classes are not registered.
-     */
-
-     public toSerializedString(pretty = false): string {
+    public toSerializedString(): string {
         const data = {
             nodes: this.nodes.map(n => ({
                 id: n.id,
@@ -207,7 +200,7 @@ export class Graph extends ProblemInstance {
                 classes: e.classes ?? '',
             })),
         };
-        return JSON.stringify(data, null, pretty ? 2 : 0);
+        return JSON.stringify(data, null);
     }
 
     public static fromSerializedString(serialized: string): Graph {
@@ -238,5 +231,45 @@ export class Graph extends ProblemInstance {
         }
 
         return graph;
+    }
+
+    /*
+     * Labels the edges used in the path.
+     * It adds classes 'solved' and 'used'.
+     */
+    public labelSolved(params: { path: GraphNode[], directed: boolean }) {
+        const cutPrefix = (id: string) => id.slice(id.search(PREFIX_AND_ID_DELIM) + 1);
+
+        const { path, directed } = params;
+
+        this.edges.forEach(e => e.classes += ' solved');
+
+        for (let i = 0; i < path.length - 1; i++) {
+            const from = cutPrefix(path[i].id);
+            const to = cutPrefix(path[i + 1].id);
+
+            const edgeId = EDGE_ID_PREFIX + `${from}-${to}`;
+            const edgeIdMirror = EDGE_ID_PREFIX + `${to}-${from}`;
+            const edge = this.edges.find(e => (e.id == edgeId) || (!directed && e.id == edgeIdMirror));
+
+            if (edge) {
+                edge.classes += ' used';
+            }
+        }
+    }
+
+
+    /*
+     * Removes the 'solved' and 'used' classes added by labelSolved method.
+     */
+    public unlabelSolved() {
+        this._edges.forEach(e => {
+            if (!e.classes) {
+                return
+            }
+
+            e.classes = e.classes.replaceAll('used', '');
+            e.classes = e.classes.replaceAll('solved', '');
+        })
     }
 }

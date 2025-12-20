@@ -20,6 +20,9 @@
 			<li aria-current={page.url.pathname === '/3sat-ssp' ? 'page' : undefined}>
 				<a href="/3sat-ssp">3SAT to SSP</a>
 			</li>
+			<li aria-current={page.url.pathname === '/3sat-3cg' ? 'page' : undefined}>
+				<a href="/3sat-3cg">3SAT to 3CG</a>
+			</li>
 		</ul>
 	</nav>
 </header>

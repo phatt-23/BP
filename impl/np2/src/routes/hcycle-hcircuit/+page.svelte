@@ -11,170 +11,55 @@
     import { EDGE_ID_PREFIX, PREFIX_AND_ID_DELIM } from "$lib/core/Id";
     import localStorageKeys from "$lib/core/localStorageKeys";
     import { Unsolvable } from "$lib/core/Unsolvable";
-    import useLocalStorage from "$lib/core/useLocalStorage.svelte";
-    import { DecorderHCIRCUITtoHCYCLE } from "$lib/decode/DecoderHCIRCUITtoHCYCLE";
-    import type { Graph } from "$lib/instance/Graph";
+    import { useLocalStorage } from "$lib/core/useLocalStorage.svelte";
+    import { DecoderHCIRCUITtoHCYCLE } from "$lib/decode/DecoderHCIRCUITtoHCYCLE";
+    import type { Graph, GraphNode } from "$lib/instance/Graph";
+    import { useReductionController } from "$lib/page/useReductionController.svelte";
     import { ReducerHCYCLEtoHCIRCUIT } from "$lib/reduction/ReducerHCYCLEtoHCIRCUIT";
     import type { CertificateHCIRCUIT } from "$lib/solve/CertificateHCIRCUIT";
     import type { CertificateHCYCLE } from "$lib/solve/CertificateHCYCLE";
     import { ReductionStore } from "$lib/state/ReductionStore.svelte";
-    import { onDestroy, onMount } from "svelte";
 
     let storage = useLocalStorage(
         localStorageKeys.LS_HCYCLE_HCIRCUIT,
         new ReductionStore<Graph, Graph, CertificateHCYCLE, CertificateHCIRCUIT>()
     );
 
-    let redStore = storage.value
-    console.debug('input instance:', $redStore.inInstance)
-
-    let showStepper = $state(false);
-    let isSolving = $state(false);
-    let solveMessage = $state('');
-    let currentWorker: Worker | null = null;
-
-    function onEditorChange(graph: Graph) {
-        console.debug('onEditorChange');
-
-        // terminate the solver if running
-        if (currentWorker) {
-            currentWorker.terminate();
-            currentWorker = null;
-            isSolving = false;
-            solveMessage = 'Solving cancelled — formula changed.';
-        }
-
-        redStore.update(rs => { 
-            rs.reset();
-            rs.setInInstance(graph); 
-            storage.save();
-            return rs; 
-        });
-    }
-
-    function onReduceClick() {
-        if ($redStore.inInstance && !$redStore.inInstance.isEmpty()) {
-            const reducer = new ReducerHCYCLEtoHCIRCUIT($redStore.inInstance);
-            const { outInstance, steps } = reducer.reduce();
-
-            redStore.update(rs => {
-                rs.setSteps(steps);
-                rs.setOutInstance(outInstance);
-                storage.save();
-                return rs;
-            });
-        }
-    }
-
-    async function onSolveClick() {
-        let { inCert, outInstance, outCert } = $redStore;
-        if (!outInstance || outCert) return;
-
-        isSolving = true;
-        solveMessage = 'Solving Hamiltonian circuit...';
-
-        // terminate any previous worker just in case
-        if (currentWorker) {
-            currentWorker.terminate();
-            currentWorker = null;
-        }
-
-        try {
-            const worker = new Worker(
-                new URL("$lib/workers/WorkerHCIRCUITSolver.ts", import.meta.url),
-                { type: "module" }
-            );
-            currentWorker = worker;
-
-            const outCertPromise = new Promise<CertificateHCIRCUIT | Unsolvable>((resolve, reject) => {
-                worker.onmessage = (e) => {
-                    if (worker !== currentWorker) return; // ignore stale workers
-                    worker.terminate();
-                    currentWorker = null;
-                    resolve(e.data);
-                };
-                worker.onerror = (err) => {
-                    if (worker !== currentWorker) return;
-                    worker.terminate();
-                    currentWorker = null;
-                    reject(err);
-                };
-            });
-
-            worker.postMessage(outInstance.toSerializedString());
-            outCert = await outCertPromise;
-
-            // ignore if user changed CNF during solving
-            if (!currentWorker && !isSolving) return;
-
+    let {
+        redStore,
+        showStepper,
+        isSolving,
+        solveMessage,
+        editorChanged, 
+        reduce,
+        solve,
+    } = useReductionController({ 
+        storage: storage,  
+        workerUrl: new URL("$lib/workers/WorkerHCIRCUITSolver.ts", import.meta.url),
+        reducerFactory: (inInstance) => new ReducerHCYCLEtoHCIRCUIT(inInstance),
+        decoderFactory: () => new DecoderHCIRCUITtoHCYCLE(),
+        onSolveFinished: (outInst, outCert) => {
             if (outCert == Unsolvable) {
-                redStore.update(rs => {
-                    rs.inCert = Unsolvable;
-                    rs.outCert = Unsolvable;
-                    return rs;
-                });
-            } else {
-                const graph = outInstance;
-                const path = outCert.path;
-                graph.edges.forEach(e => e.classes += ' solved');
-
-                const cutPrefix = (id: string) => id.slice(id.search(PREFIX_AND_ID_DELIM) + 1);
-
-                for (let i = 0; i < path.length - 1; i++) {
-                    const from = cutPrefix(path[i].id);
-                    const to = cutPrefix(path[i + 1].id);
-
-                    const edgeId = EDGE_ID_PREFIX + `${from}-${to}`;
-                    const edgeIdMirror = EDGE_ID_PREFIX + `${to}-${from}`;
-
-                    const edge = graph.edges.find(e => e.id == edgeId || e.id == edgeIdMirror);
-
-                    if (edge) {
-                        graph.removeEdge(edge);
-                        edge.classes += ' used';
-                        graph.addEdge(edge);
-                    }
-                }
-
-                console.debug('Path', path);
-                console.debug('After class assignment', graph.edges);
-
-                const decoder = new DecorderHCIRCUITtoHCYCLE()
-                inCert = decoder.decode(graph, outCert);
-
-                redStore.update(rs => {
-                    rs.inCert = inCert;
-                    rs.outCert = outCert;
-                    rs.outInstance = graph;
-                    return rs;
-                });
+                return;
             }
 
-            storage.save();
-        } catch (e) {
-            console.error('Error during solving:', e);
-            solveMessage = 'An error occurred while solving.';
-        } finally {
-            isSolving = false;
-            solveMessage = '';
-            currentWorker = null;
-        }
-    }
+            const decoder = new DecoderHCIRCUITtoHCYCLE()
+            const inCert = decoder.decode(outInst, outCert);
+            const inInst = $redStore.inInstance!;
 
-    // reset the step index back to 0, if anything changes
-    $effect(() => {
-        redStore.update(rs => {
-            rs.resetStepIndex();
-            return rs;
-        });
-    })
+            inInst.labelSolved({ path: inCert.path, directed: false });
+            outInst.labelSolved({ path: outCert.path, directed: false });
 
-    onDestroy(() => {
-        if (currentWorker) {
-            currentWorker.terminate();
-            currentWorker = null;
+            redStore.update(rs => {
+                rs.inInstance = inInst;
+                rs.inCert = inCert;
+                rs.outCert = outCert;
+                rs.outInstance = outInst;
+                return rs;
+            });
+
         }
-    })
+    });
 </script>
 
 <svelte:head>
@@ -189,7 +74,7 @@
 
     <EditorGraph
         graph={$redStore.inInstance}
-        onChange={(graph) => onEditorChange(graph)}
+        onChange={(graph) => editorChanged(graph)}
         onWrongFormat={(msg) => alert("From graph editor: " + msg)}
     />
 
@@ -197,8 +82,8 @@
         <button 
             disabled={!$redStore.hasInInstance() 
                 || $redStore.hasOutInstance() 
-                || isSolving} 
-            onclick={onReduceClick}
+                || $isSolving} 
+            onclick={reduce}
         >
             Reduce
         </button>
@@ -206,25 +91,25 @@
         <button
             disabled={!$redStore.hasInstances() 
                 || $redStore.hasOutCertificate()
-                || isSolving}
-            onclick={() => onSolveClick()}
+                || $isSolving}
+            onclick={solve}
         >
-            {#if isSolving}
+            {#if $isSolving}
                 Solving...
             {:else}
                 Solve
             {/if}
         </button>
 
-        <input type="checkbox" bind:checked={showStepper} name="showStepperCheckbox">
+        <input type="checkbox" bind:checked={$showStepper} name="showStepperCheckbox">
         <label for="showStepperCheckbox">Show steps</label>
     </div>
 
-    {#if isSolving}
+    {#if $isSolving}
         <Spinner>{solveMessage}</Spinner>
     {/if}
 
-    {#if showStepper}
+    {#if $showStepper}
         {@const steps = $redStore.steps}
         {@const stepIndex = $redStore.stepIndex}
         {#if steps.length}
@@ -249,7 +134,7 @@
                         rs.prevStep();
                         return rs;
                     });
-                    storage.save();
+                    storage.save();  // save the current index
                 }}
                 onNextClick={() => { 
                     redStore.update(rs => { 
@@ -286,25 +171,29 @@
                             redStore.update(rs => {
                                 let inInstance = rs.inInstance!;
                                 inInstance.addEdge(edge);
+                                inInstance.unlabelSolved();
 
                                 rs.reset();
                                 rs.setInInstance(inInstance);
-                                storage.save();
 
                                 return rs;
                             });
+
+                            storage.save();
                         }}
                         onRemoveEdge={(edge) => {
                             redStore.update(rs => {
                                 let inInstance = rs.inInstance!;
                                 inInstance.removeEdgeById(edge.id());
+                                inInstance.unlabelSolved();
 
                                 rs.reset();
                                 rs.setInInstance(inInstance);
-                                storage.save();
 
                                 return rs;
                             });
+
+                            storage.save();
                         }}
                     />
                 {/if}

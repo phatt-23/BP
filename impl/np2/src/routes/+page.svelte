@@ -28,10 +28,7 @@
 			</ul>
 		</ul>
 		<li>3SAT {@html rP} SSP</li>
-		<li>3SAT {@html rP} 3DM</li>
-		<ul>
-			<li>3DM {@html rP} SSP</li>
-		</ul>
+		<li>3SAT {@html rP} 3CG</li>
 	</ul>
 
 	<h4>Notes</h4>

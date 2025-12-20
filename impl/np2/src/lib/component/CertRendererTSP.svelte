@@ -17,7 +17,7 @@
     <h2>CertRenderer TSP</h2>
 
     {#if cert == Unsolvable}
-        <p>The graph doesn't contain a Hamiltonian cycle.</p>
+        <p>The graph doesn't contain a Hamiltonian cycle (TSP with given weight).</p>
     {:else}
         <div class="controls">
             <input type="checkbox" bind:checked={showAsList} name="showAsListCheckbox">

@@ -5,6 +5,7 @@ const localStorageKeys = {
     LS_HCYCLE_HCIRCUIT: "$_hcycle_hcircuit",
     LS_HCIRCUIT_TSP: "$_hcircuit_tsp",
     LS_3SAT_SSP: "$_3sat_ssp",
+    LS_3SAT_3CG: "$_3sat_3cg",
 };
 
 export default localStorageKeys;

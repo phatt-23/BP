@@ -7,11 +7,16 @@ import type { ReductionStep } from "./ReductionStep";
 
 export type ReductionResult<
     I extends ProblemInstance, 
-    O extends ProblemInstance
-    > = { outInstance: O, steps: ReductionStep<I, O>[] };
+    O extends ProblemInstance,
+> = { 
+    outInstance: O, 
+    steps: ReductionStep<I, O>[] 
+};
 
-export abstract class Reducer<I extends ProblemInstance, O extends ProblemInstance> 
-{
+export abstract class Reducer<
+    I extends ProblemInstance, 
+    O extends ProblemInstance,
+> {
     constructor(public inInstance: I) {
     }
 
