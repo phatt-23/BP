@@ -6,6 +6,11 @@ import { Graph, type GraphEdge, type GraphNode } from "$lib/instance/Graph";
 import { Reducer, type ReductionResult } from "./Reducer";
 import type { ReductionStep } from "./ReductionStep";
 
+type ReductionPart = { 
+    graph: Graph, 
+    step: ReductionStep<CNF3, Graph> 
+};
+
 export class Reducer3SATto3CG extends Reducer<CNF3, Graph> {
 
     constructor(i: CNF3) {
@@ -13,44 +18,121 @@ export class Reducer3SATto3CG extends Reducer<CNF3, Graph> {
     }
 
     protected doReduce(): ReductionResult<CNF3, Graph> {
-        const graph = new Graph();
         const steps: ReductionStep<CNF3,Graph>[] = [];
+        
+        const step1 = this.createCoreGadget(new Graph());
+        const step2 = this.createVariableGadgets(step1.graph);
+        const step3 = this.createClauseGadgets(step2.graph);
 
-        // add core nodes and join them together
-        const coreNodes: Record<string, GraphNode> = {
-            T: {
-                id: CG3_ID.CORE.T,
-                label: 'T',
-                classes: 'T',
-            },
-            F: {
-                id: CG3_ID.CORE.F,
-                label: 'F',
-                classes: 'F',
-            },
-            B: {
-                id: CG3_ID.CORE.B,
-                label: 'B',
-                classes: 'B',
-            },
+        const graph = step3.graph;
+        steps.push(step1.step, step2.step, step3.step);
+
+        return {
+            outInstance: graph, 
+            steps: steps,
         };
-        const coreNodeValues = Object.values(coreNodes);
+    }
 
-        coreNodeValues.forEach(n => graph.addNode(n));
+    private createClauseGadgets(graph: Graph): ReductionPart {
+        // add clause nodes
+        this.inInstance.clauses.forEach(c => {
+            const nodes: GraphNode[] = [];
+            const edges: GraphEdge[] = [];
 
-        for (let i = 0; i < coreNodeValues.length; i++) {
-            for (let j = i + 1; j < coreNodeValues.length; j++) {
-                const from = coreNodeValues[i].label;
-                const to = coreNodeValues[j].label;
-                const edge: GraphEdge = {
-                    id: EDGE_ID_PREFIX + `${from}-${to}`,
-                    from: NODE_ID_PREFIX + from,
-                    to: NODE_ID_PREFIX + to,
-                };
-                graph.addEdge(edge);
+            // add the six
+            for (let i = 0; i < 6; i++) {
+                const label = c.id + '-' + i;
+
+                nodes.push({
+                    id: CG3_ID.CLAUSE_NODE_PREFIX + label,
+                    label: label,
+                });
             }
-        }
 
+            ([ 
+                // connect the clause nodes vertically
+                [0,3], [1,4], [2,5], 
+                // connect T to top line
+                [this.coreNodes.T, 0], [this.coreNodes.T, 1], [this.coreNodes.T, 2],
+                // connect the bottom line
+                [this.coreNodes.T, 3], [3,4], [4,5], [5,this.coreNodes.F]
+            ]).forEach(c => {
+                const from = typeof(c[0]) == "number" ? nodes[c[0]] : c[0];
+                const to = typeof(c[1]) == "number" ? nodes[c[1]] : c[1];
+
+                edges.push({
+                    id: EDGE_ID_PREFIX + `${from.label}-${to.label}`,
+                    from: from.id,
+                    to: to.id,
+                    classes: 'muted',
+                });
+            });
+
+            c.literals.forEach((v, i) => {
+                const varNode: string = (v.negated ? NODE_ID_PREFIX_FALSE : NODE_ID_PREFIX_TRUE) + v.varName;
+                const node: GraphNode = nodes[i];
+                
+                edges.push({
+                    id: EDGE_ID_PREFIX + `${varNode}-${node.label}`,
+                    from: varNode,
+                    to: node.id,
+                });
+            });
+
+            nodes.forEach(n => graph.addNode(n));
+            edges.forEach(e => graph.addEdge(e));
+        });
+    
+        return {
+            graph: graph,
+            step: {
+                id: 'add-clause-gadgets',
+                title: 'Add clause gadgets',
+                description: `
+                    <p>
+                        Create a clause gadget for each clause in the formula <span>${this.inInstance.asHtmlString()}</span>, namely:
+                        <ul>
+                            ${this.inInstance.clauses.map(x => {
+                                return `
+                                    <li>
+                                        <span>${x.asHtmlString()}</span>
+                                    </li>
+                                `;
+                            }).join('')}
+                        </ul>
+                    </p>
+                    <p>
+                        For some clause <i>C = (X &or; Y &or; Z)</i>, where <i>X,Y,Z</i> are it's literals (they can be negated) and <i>x,y,z</i> are the variables,
+                        a clause gadget G = (V,E) consists of nodes: <br>
+                        <p>
+                            <i>V = {X,Y,Z,c0,c1,c2,c3,c4,c5,T,F}</i> <br>
+                        </p>
+                        and edges: <br>
+                        <p>
+                            <i>
+                                E = { {X,c0}, {Y,c1}, {Z,c2} } &cup; <br>
+                                    { {c0,c3}, {c1,c4}, {c2,c5} } &cup; <br>
+                                    { {T,c0}, {T,c1}, {T,c2} } &cup; <br>
+                                    { {T,c3}, {c3,c4}, {c4,c5}, {c5,F} }
+                            </i>
+                        </p>
+                    </p>
+                    <p>
+                        The nodes <i>c0,c1,...,c5</i> are unique for each clause gadget.
+                    </p>
+                    <p>
+                        This newly created clause gadget ensures that there exists a valid 3-coloring iff at least one of the literal nodes <i>X,Y,Z</i> is green, 
+                        which would mean that the clause C evaluates to True. 
+                        If all of the literal nodes are red, then a valid 3-coloring of the gadget <i>G</i> doesn't exist.
+                    </p>
+                `,
+                inSnapshot: this.inInstance,
+                outSnapshot: graph.copy(),
+            }
+        };
+    }
+
+    createVariableGadgets(graph: Graph): ReductionPart {
         // add variable nodes
         this.inInstance.variables.forEach(v => {
             const trueNode: GraphNode = {
@@ -69,73 +151,140 @@ export class Reducer3SATto3CG extends Reducer<CNF3, Graph> {
                     id: EDGE_ID_PREFIX + v + 'true-false',
                     from: trueNode.id,
                     to: falseNode.id,
+                    classes: 'muted'
                 },
                 {
                     id: EDGE_ID_PREFIX + v + 'true-B',
                     from: trueNode.id,
                     to: CG3_ID.CORE.B,
+                    classes: 'muted'
                 },
                 {
                     id: EDGE_ID_PREFIX + v + 'false-B',
                     from: falseNode.id,
                     to: CG3_ID.CORE.B,
+                    classes: 'muted'
                 },
             ];
 
             edges.forEach(e => graph.addEdge(e));
         });
 
-        // add clause nodes
-        this.inInstance.clauses.forEach(c => {
-            const nodes: GraphNode[] = [];
-            const edges: GraphEdge[] = [];
-
-            // add the six
-            for (let i = 0; i < 6; i++) {
-                const label = c.id + '-' + i;
-
-                nodes.push({
-                    id: CG3_ID.CLAUSE_NODE_PREFIX + label,
-                    label: label,
-                });
-            }
-
-            const connections = [
-                [0,3], [1,4], [2,5], 
-                [coreNodes.T, 0], [coreNodes.T, 1], [coreNodes.T, 2],
-                [coreNodes.T, 3], [3,4], [4,5], [5,coreNodes.F]
-            ];
-
-            connections.forEach(c => {
-                const from = (typeof(c[0]) == "number") ? nodes[c[0]] : c[0];
-                const to = (typeof(c[1]) == "number") ? nodes[c[1]] : c[1];
-
-                edges.push({
-                    id: EDGE_ID_PREFIX + `${from.label}-${to.label}`,
-                    from: from.id,
-                    to: to.id,
-                });
-            });
-
-            c.literals.forEach((v, i) => {
-                const varNode: string = (v.negated ? NODE_ID_PREFIX_FALSE : NODE_ID_PREFIX_TRUE) + v.varName;
-                const node: GraphNode = nodes[i];
-                
-                edges.push({
-                    id: EDGE_ID_PREFIX + `${varNode}-${node.label}`,
-                    from: varNode,
-                    to: node.id,
-                });
-            });
-
-            nodes.forEach(n => graph.addNode(n));
-            edges.forEach(e => graph.addEdge(e));
-        });
-
         return {
-            outInstance: graph, 
-            steps: steps,
+            graph: graph,
+            step: {
+                id: 'add-vars',
+                title: 'Add variable gadgets',
+                description: `
+                    <p>
+                        Create a variable gadget for each variable in the formula <span>${this.inInstance.asHtmlString()}</span>, namely:
+                        <ul>
+                            ${this.inInstance.variables.map(v => {
+                                return `
+                                    <li>
+                                        ${v}
+                                    </li>
+                                `;
+                            }).join('')}
+                        </ul>
+                        There will be ${this.inInstance.variables.length} variable gadgets, because there are ${this.inInstance.variables.length} variables.
+                    </p>
+                    <p>
+                        A variable gadget <i>G = (V,E)</i> for a variable <i>x</i> consists of three nodes, 
+                        <i>V = {x, &not;x, B}</i>, 
+                        where the node <i>B</i> is the blue "buffer" node.
+                        These nodes nodes are connected in such a way that makes this gadget <i>G</i> a complete graph, 
+                        <i>E = { {x, &not;x}, {x, B}, {&not;x, B} }</i>.
+                    </p>
+                    <p>
+                        Since the nodes <i>x</i> and <i>&not;x</i> are connected to the B node that is colored blue, 
+                        they themselves can only be colored either green, or red. 
+                        This encodes the truth assignment for the variable <i>x</i>.
+                    </p>
+                    <p>
+                        If the node <i>x</i> is green then the node <i>&not;x</i> must be red, meaning <i>x &coloneq; True</i>.
+                        However, if the node <i>x</i> is red then the node <i>&not;x</i> must be green, meaning <i>x &coloneq; False</i>.
+                    </p>
+                `,
+                inSnapshot: this.inInstance,
+                outSnapshot: graph.copy(),
+            }
         };
     }
 
+    createCoreGadget(graph: Graph): ReductionPart {
+
+        // add core nodes and join them together
+        const coreNodeValues = Object.values(this.coreNodes);
+
+        coreNodeValues.forEach(n => graph.addNode(n));
+
+        for (let i = 0; i < coreNodeValues.length; i++) {
+            for (let j = i + 1; j < coreNodeValues.length; j++) {
+                const from = coreNodeValues[i].label;
+                const to = coreNodeValues[j].label;
+                graph.addEdge({
+                    id: EDGE_ID_PREFIX + `${from}-${to}`,
+                    from: NODE_ID_PREFIX + from,
+                    to: NODE_ID_PREFIX + to,
+                    classes: 'muted core'
+                });
+            }
+        }
+        
+        return { 
+            graph: graph, 
+            step: {
+                id: 'add-core',
+                title: 'Create the core',
+                description: `
+                    <p>
+                        Let's assume that the 3 colors are: red, green and blue.
+                        The meaning for these colors is that green represents "True" values, red represents "False" values and blue is a buffer color.
+                    </p>
+                    <p>
+                        Start by creating the "core" gadget. 
+                        The core gadget has three nodes - T, F, B - and they are connected to one another.
+                    </p>
+                    <p>
+                        The coloring for these nodes is as follows:
+                        <ul>
+                            <li>
+                                T node - green,
+                            </li>
+                            <li>
+                                F node - red,
+                            </li>
+                            <li>
+                                B node - blue.
+                            </li>
+                        </ul>
+                    </p>
+                `,
+                inSnapshot: this.inInstance,
+                outSnapshot: graph.copy(),
+            }
+        };
+    }
+
+    private coreNodes: Record<string, GraphNode> = {
+        T: {
+            id: CG3_ID.CORE.T,
+            label: 'T',
+            classes: 'T',
+            color: 1,
+        },
+        F: {
+            id: CG3_ID.CORE.F,
+            label: 'F',
+            classes: 'F',
+            color: 0,
+        },
+        B: {
+            id: CG3_ID.CORE.B,
+            label: 'B',
+            classes: 'B',
+            color: 2,
+        },
+    };
 }

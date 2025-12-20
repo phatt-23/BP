@@ -19,7 +19,7 @@ export interface ReductionStep<I extends ProblemInstance, O extends ProblemInsta
     outSnapshot?: O;  
 
     // I element id -> O element ids (shows correspondence between I element and O elements)
-    mapping: Record<string, string[]>;  
+    mapping?: Record<string, string[]>;  
 
     // children steps
     interSteps?: ReductionStep<I, O>[];
