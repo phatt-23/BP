@@ -4,12 +4,12 @@
 
 export type Id = string;
 
-// 3SAT to HCYCLE
 export const PREFIX_AND_ID_DELIM = ':';
-
 export const NODE_ID_PREFIX = 'n:';
-export const NODE_ID_PREFIX_SPECIAL = 'n%:';
 export const EDGE_ID_PREFIX = 'e:';
+export const NODE_ID_PREFIX_SPECIAL = 'n%:';
+
+// 3SAT to HCYCLE
 export const SOURCE_NODE_ID = 'source';
 export const TARGET_NODE_ID = 'target';
 
@@ -28,6 +28,17 @@ export const VARIABLE_TRUE_PREFIX = 'T:';
 export const VARIABLE_FALSE_PREFIX = 'F:';
 export const CLAUSE_FILLER_PREFIX_ONE = 'filler1:';
 export const CLAUSE_FILLER_PREFIX_TWO = 'filler2:';
+
+// 3SAT to 3CG
+export const CG3_ID = {
+    CORE: {
+        T: NODE_ID_PREFIX + 'T',
+        F: NODE_ID_PREFIX + 'F',
+        B: NODE_ID_PREFIX + 'B',
+    },
+    VAR_NODE_PREFIX: 'nv:',
+    CLAUSE_NODE_PREFIX: 'nc:',
+};
 
 export const cutNodeIdPrefix = (id: string) => {
     if (id.startsWith(NODE_ID_PREFIX)) {

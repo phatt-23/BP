@@ -7,6 +7,8 @@ import { SolverTSP } from "$lib/solve/SolverTSP";
 self.onmessage = async (e) => {
     const serializedGraph: string = e.data.graph;
     const maxCost: number = e.data.maxCost;
+    console.debug(serializedGraph);
+    console.debug(maxCost);
 
     const instance: Graph = Graph.fromSerializedString(serializedGraph);
 

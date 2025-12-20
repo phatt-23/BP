@@ -9,6 +9,21 @@ const selectedNode = {
     },
 };
 
+const solvedNode: StylesheetStyle[] = [
+    {
+        selector: 'edge.solved',  
+        style: {
+            'line-opacity': 0.4,
+        },
+    },
+    {
+        selector: 'edge.solved.used',  
+        style: {
+            'line-opacity': 1,
+        },
+    },
+];
+
 export const cytoscapeStyles: Record<string, StylesheetStyle[]> = {
     'DEFAULT': [
         {
@@ -33,6 +48,7 @@ export const cytoscapeStyles: Record<string, StylesheetStyle[]> = {
                 'width': 2
             }
         },
+        ...solvedNode,
         selectedNode,
     ],
     '3SAT-HCYCLE': [
@@ -128,18 +144,7 @@ export const cytoscapeStyles: Record<string, StylesheetStyle[]> = {
                 'line-color': 'red',
             },
         },
-        {
-            selector: 'edge.solved',  
-            style: {
-                'line-opacity': 0.2,
-            },
-        },
-        {
-            selector: 'edge.solved.used',  
-            style: {
-                'line-opacity': 1,
-            },
-        },
+        ...solvedNode,
         selectedNode,
     ],
     'UNDIRECTED': [
@@ -165,6 +170,7 @@ export const cytoscapeStyles: Record<string, StylesheetStyle[]> = {
                 'width': 2
             }
         },
+        ...solvedNode,
         selectedNode,
     ],
     'DIRECTED': [
@@ -194,6 +200,7 @@ export const cytoscapeStyles: Record<string, StylesheetStyle[]> = {
                 'width': 2
             },
         },
+        ...solvedNode,
         selectedNode,
     ],
     'HCIRCUIT': [
@@ -236,19 +243,7 @@ export const cytoscapeStyles: Record<string, StylesheetStyle[]> = {
                 'line-opacity': 0.4,
             }
         },
-        {
-            selector: 'edge.solved',
-            style: {
-                'line-opacity': 0.4,
-            }
-        },
-        {
-            selector: 'edge.used',
-            style: {
-                'line-opacity': 1.0,
-                'line-color': 'red'
-            }
-        },
+        ...solvedNode,
         selectedNode,
     ],
     'TSP': [
@@ -292,19 +287,24 @@ export const cytoscapeStyles: Record<string, StylesheetStyle[]> = {
                 'line-opacity': 0.4,
             }
         },
-        {
-            selector: 'edge.solved',
-            style: {
-                'line-opacity': 0.4,
-            }
-        },
-        {
-            selector: 'edge.used',
-            style: {
-                'line-opacity': 1.0,
-                'line-color': 'red'
-            }
-        },
+        ...solvedNode,
         selectedNode,
+    ],
+    '3SAT-3CG': [
+        {
+            selector: 'node',
+            style: {
+                'label': 'data(id)',
+                'font-size': 12,
+                'text-valign': 'top',
+                'background-color': 'blue',
+                'border-color': 'black',
+                'border-style': 'solid',
+                'border-width': 2,
+            },
+        },
+        ...solvedNode,
+        selectedNode,
+        
     ]
 };

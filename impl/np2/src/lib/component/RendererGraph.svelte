@@ -31,7 +31,6 @@ Component that renders the graph.
 
     let moveEnabled = $state(false);
 
-
     $effect(() => {
         const nodes: ElementDefinition[] = graph.nodes.map(n => ({
             data: { id: n.id, label: n.id },
@@ -68,7 +67,8 @@ Component that renders the graph.
         cy.style(cytoscapeStyles[style]);
         cy.layout({ name: layout }).run();
 
-        cy.nodes().ungrabify();
+        // cy.nodes().ungrabify();
+        cy.nodes().grabify();
 
         // handle adding of edges when clicking consecutivelly on two nodes
         cy.on('tap', 'node', onNodeTap);

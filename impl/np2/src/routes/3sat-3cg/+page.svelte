@@ -1,6 +1,7 @@
-<!-- Created by phatt-23 on 11/10/2025 -->
+<!-- Created by phatt-23 on 20/12/2025-->
 
 <script lang="ts">
+    import CertRenderer3CG from "$lib/component/CertRenderer3CG.svelte";
     import CertRenderer3SAT from "$lib/component/CertRenderer3SAT.svelte";
     import CertRendererHCYCLE from "$lib/component/CertRendererHCYCLE.svelte";
     import Editor3CNF from "$lib/component/Editor3CNF.svelte";
@@ -11,18 +12,18 @@
     import localStorageKeys from "$lib/core/localStorageKeys";
     import { Unsolvable } from "$lib/core/Unsolvable";
     import { useLocalStorage } from "$lib/core/useLocalStorage.svelte";
-    import { DecoderHCYCLEto3SAT } from "$lib/decode/DecoderHCYCLEto3SAT";
+    import { Decoder3CGto3SAT } from "$lib/decode/Decoder3CGo3SAT";
     import { CNF3 } from "$lib/instance/CNF3";
     import { Graph } from "$lib/instance/Graph";
     import { useReductionController } from "$lib/page/useReductionController.svelte";
-    import { Reducer3SATtoHCYCLE } from "$lib/reduction/Reducer3SATtoHCYCLE";
+    import { Reducer3SATto3CG } from "$lib/reduction/Reducer3SATto3CG";
+    import { Certificate3CG } from "$lib/solve/Certificate3CG";
     import { Certificate3SAT } from "$lib/solve/Certificate3SAT";
-    import { CertificateHCYCLE } from "$lib/solve/CertificateHCYCLE";
     import { ReductionStore } from "$lib/state/ReductionStore.svelte";
 
     let storage = useLocalStorage(
-        localStorageKeys.LS_3SAT_HCYCLE, 
-        new ReductionStore<CNF3, Graph, Certificate3SAT, CertificateHCYCLE>()
+        localStorageKeys.LS_3SAT_3CG, 
+        new ReductionStore<CNF3, Graph, Certificate3SAT, Certificate3CG>()
     );
 
     let {
@@ -35,18 +36,18 @@
         solve,
     } = useReductionController({ 
         storage: storage,  
-        workerUrl: new URL("$lib/workers/WorkerHCYCLESolver.ts", import.meta.url),
-        reducerFactory: (inInstance) => new Reducer3SATtoHCYCLE(inInstance),
-        decoderFactory: () => new DecoderHCYCLEto3SAT(),
+        workerUrl: new URL("$lib/workers/Worker3CGSolver.ts", import.meta.url),
+        reducerFactory: (inInstance) => new Reducer3SATto3CG(inInstance),
+        decoderFactory: () => new Decoder3CGto3SAT(),
         onSolveFinished: (outInst, outCert) => {
             if (outCert == Unsolvable) {
                 return;
             }
 
-            outInst.labelSolved({ path: outCert.path, directed: true });
+            // outInst.labelSolved({ path: outCert.path, directed: true });
 
             // decode and update reduction store
-            const decoder = new DecoderHCYCLEto3SAT();
+            const decoder = new Decoder3CGto3SAT();
             const inCert = decoder.decode(outInst, outCert);
 
             redStore.update(rs => {
@@ -60,12 +61,13 @@
 </script>
 
 <svelte:head>
-    <title>3SAT to HCYCLE</title>
-	<meta name="description" content="Redcution from 3SAT to HCYCLE" />
+    <title>3SAT to 3CG</title>
+	<meta name="description" content="Redcution from 3SAT to 3CG" />
 </svelte:head>
 
+
 <main>
-    <h1>3SAT to HCYCLE reduction</h1>
+    <h1>3SAT to 3CG reduction</h1>
 
     <Editor3CNF
         cnf={$redStore.inInstance} 
@@ -143,7 +145,8 @@
                     $redStore.steps[$redStore.stepIndex].outSnapshot}
                     <RendererGraph 
                         graph={$redStore.steps[$redStore.stepIndex].outSnapshot!} 
-                        style={'3SAT-HCYCLE'}
+                        layout={'circle'}
+                        style={'3SAT-3CG'}
                     />
                 {/if}
             </div>
@@ -162,10 +165,15 @@
             </div>
             <div>
                 {#if $redStore.outInstance && !$redStore.outInstance.isEmpty()}
-                    <RendererGraph graph={$redStore.outInstance} style={'3SAT-HCYCLE'}/>
+                    <RendererGraph 
+                        graph={$redStore.outInstance} 
+                        layout={'circle'}
+                        style={'3SAT-3CG'}
+                    />
+                    {$redStore.outInstance.toSerializedString()}
                 {/if}
                 {#if $redStore.outCert}
-                    <CertRendererHCYCLE cert={$redStore.outCert}/>
+                    <CertRenderer3CG cert={$redStore.outCert}/>
                 {/if}
             </div>
         </div>
@@ -179,3 +187,8 @@
     gap: 1rem;
 }
 </style>
+
+
+
+
+

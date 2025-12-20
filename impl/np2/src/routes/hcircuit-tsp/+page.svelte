@@ -11,7 +11,7 @@
     import { EDGE_ID_PREFIX, NODE_ID_PREFIX, PREFIX_AND_ID_DELIM } from "$lib/core/Id";
     import localStorageKeys from "$lib/core/localStorageKeys";
     import { Unsolvable } from "$lib/core/Unsolvable";
-    import useLocalStorage from "$lib/core/useLocalStorage.svelte";
+    import { useLocalStorage } from "$lib/core/useLocalStorage.svelte";
     import { DecoderTSPtoHCIRCUIT } from "$lib/decode/DecoderTSPtoHCIRCUIT";
     import { ReducerHCIRCUITtoTSP } from "$lib/reduction/ReducerHCIRCUITtoTSP";
     import { ReductionStore } from "$lib/state/ReductionStore.svelte";
@@ -20,159 +20,50 @@
     import type { CertificateHCIRCUIT } from "$lib/solve/CertificateHCIRCUIT";
     import type { CertificateTSP } from "$lib/solve/CertificateTSP";
     import RendererEditableGraph from "$lib/component/RendererEditableGraph.svelte";
+    import { useReductionController } from "$lib/page/useReductionController.svelte";
 
     let storage = useLocalStorage(
         localStorageKeys.LS_HCIRCUIT_TSP,
         new ReductionStore<Graph, Graph, CertificateHCIRCUIT, CertificateTSP>()
     );
 
-    let redStore = storage.value
-    console.debug('input instance:', $redStore.inInstance)
+    let {
+        redStore,
+        showStepper,
+        isSolving,
+        solveMessage,
+        editorChanged, 
+        reduce,
+        solve,
+    } = useReductionController({ 
+        storage: storage,  
+        workerUrl: new URL("$lib/workers/WorkerTSPSolver.ts", import.meta.url),
+        createWorkerMessage: (outInst) => ({ 
+            graph: outInst.toSerializedString(), 
+            maxCost: outInst.nodes.length 
+        }),
+        reducerFactory: (outInst) => new ReducerHCIRCUITtoTSP(outInst),
+        decoderFactory: () => new DecoderTSPtoHCIRCUIT(),
+        onSolveFinished: (outInst, outCert) => {
+            if (outCert == Unsolvable) {
+                return;
+            }
 
-    let showStepper = $state(false);
-    let isSolving = $state(false);
-    let solveMessage = $state('');
-    let currentWorker: Worker | null = null;
+            const decoder = new DecoderTSPtoHCIRCUIT()
+            const inCert = decoder.decode(outInst, outCert);
+            const inInst = $redStore.inInstance!;
 
-    function onEditorChange(graph: Graph) {
-        // terminate the solver if running
-        if (currentWorker) {
-            currentWorker.terminate();
-            currentWorker = null;
-            isSolving = false;
-            solveMessage = 'Solving cancelled — formula changed.';
-        }
-
-        redStore.update(rs => { 
-            rs.reset();
-            rs.setInInstance(graph); 
-            storage.save();
-            return rs; 
-        });
-    }
-
-    function onReduceClick() {
-        if ($redStore.inInstance && !$redStore.inInstance.isEmpty()) {
-            const reducer = new ReducerHCIRCUITtoTSP($redStore.inInstance);
-            const { outInstance, steps } = reducer.reduce();
+            inInst.labelSolved({ path: inCert.path, directed: false });
+            outInst.labelSolved({ path: outCert.path, directed: false });
 
             redStore.update(rs => {
-                rs.setSteps(steps);
-                rs.setOutInstance(outInstance);
-                storage.save();
+                rs.inInstance = inInst;
+                rs.inCert = inCert;
+                rs.outCert = outCert;
+                rs.outInstance = outInst;
                 return rs;
             });
-        }
-    }
 
-    async function onSolveClick() {
-        let { inCert, outInstance, outCert } = $redStore;
-        if (!outInstance || outCert) return;
-
-        isSolving = true;
-        solveMessage = 'Solving TSP...';
-
-        // terminate any previous worker just in case
-        if (currentWorker) {
-            currentWorker.terminate();
-            currentWorker = null;
-        }
-
-        try {
-            const worker = new Worker(
-                new URL("$lib/workers/WorkerTSPSolver.ts", import.meta.url),
-                { type: "module" }
-            );
-            currentWorker = worker;
-
-            const outCertPromise = new Promise<CertificateTSP | Unsolvable>((resolve, reject) => {
-                worker.onmessage = (e) => {
-                    if (worker !== currentWorker) return; // ignore stale workers
-                    worker.terminate();
-                    currentWorker = null;
-                    resolve(e.data);
-                };
-                worker.onerror = (err) => {
-                    if (worker !== currentWorker) return;
-                    worker.terminate();
-                    currentWorker = null;
-                    reject(err);
-                };
-            });
-
-
-            const message = {
-                graph: outInstance.toSerializedString(),
-                maxCost: outInstance.nodes.length,
-            }
-
-            worker.postMessage(message);
-            outCert = await outCertPromise;
-
-            if (!currentWorker && !isSolving) return;
-
-            if (outCert == Unsolvable) {
-                redStore.update(rs => {
-                    rs.inCert = Unsolvable;
-                    rs.outCert = Unsolvable;
-                    return rs;
-                });
-            } else {
-                const graph = outInstance;
-                const path = outCert.path;
-                graph.edges.forEach(e => e.classes += ' solved');
-
-                const cutPrefix = (id: string) => id.slice(NODE_ID_PREFIX.length);
-
-                for (let i = 0; i < path.length - 1; i++) {
-                    const from = cutPrefix(path[i].id);
-                    const to = cutPrefix(path[i + 1].id);
-
-                    const edgeId = EDGE_ID_PREFIX + `${from}-${to}`;
-                    const edgeIdMirror = EDGE_ID_PREFIX + `${to}-${from}`;
-                    const edge = graph.edges.find(e => e.id == edgeId || e.id == edgeIdMirror);
-
-                    if (edge) {
-                        graph.removeEdge(edge);
-                        edge.classes += ' used';
-                        graph.addEdge(edge);
-                    }
-                }
-
-                const decoder = new DecoderTSPtoHCIRCUIT()
-                inCert = decoder.decode(graph, outCert);
-
-                redStore.update(rs => {
-                    rs.inCert = inCert;
-                    rs.outCert = outCert;
-                    rs.outInstance = graph;
-                    return rs;
-                });
-            }
-
-            storage.save();
-        } catch (e) {
-            console.error('Error during solving:', e);
-            solveMessage = 'An error occurred while solving.';
-        } finally {
-            isSolving = false;
-            solveMessage = '';
-            currentWorker = null;
-        }
-    }
-
-    // reset the step index back to 0, if anything changes
-    $effect(() => {
-        redStore.update(rs => {
-            rs.resetStepIndex();
-            return rs;
-        });
-    });
-
-    onDestroy(() => {
-        if (currentWorker) {
-            currentWorker.terminate();
-            currentWorker = null;
         }
     });
 </script>
@@ -189,7 +80,7 @@
 
     <EditorGraph
         graph={$redStore.inInstance}
-        onChange={(graph) => onEditorChange(graph)}
+        onChange={(graph) => editorChanged(graph)}
         onWrongFormat={(msg) => alert("From graph editor: " + msg)}
     />
 
@@ -197,8 +88,8 @@
         <button 
             disabled={!$redStore.hasInInstance() 
                 || $redStore.hasOutInstance() 
-                || isSolving} 
-            onclick={onReduceClick}
+                || $isSolving} 
+            onclick={reduce}
         >
             Reduce
         </button>
@@ -206,25 +97,25 @@
         <button
             disabled={!$redStore.hasInstances() 
                 || $redStore.hasOutCertificate()
-                || isSolving}
-            onclick={() => onSolveClick()}
+                || $isSolving}
+            onclick={solve}
         >
-            {#if isSolving}
+            {#if $isSolving}
                 Solving...
             {:else}
                 Solve
             {/if}
         </button>
 
-        <input type="checkbox" bind:checked={showStepper} name="showStepperCheckbox">
+        <input type="checkbox" bind:checked={$showStepper} name="showStepperCheckbox">
         <label for="showStepperCheckbox">Show steps</label>
     </div>
 
-    {#if isSolving}
-        <Spinner>{solveMessage}</Spinner>
+    {#if $isSolving}
+        <Spinner>{$solveMessage}</Spinner>
     {/if}
 
-    {#if showStepper}
+    {#if $showStepper}
         {@const steps = $redStore.steps}
         {@const stepIndex = $redStore.stepIndex}
         {#if steps.length}
@@ -285,25 +176,27 @@
                             redStore.update(rs => {
                                 let inInstance = rs.inInstance!;
                                 inInstance.addEdge(edge);
+                                inInstance.unlabelSolved();
 
                                 rs.reset();
                                 rs.setInInstance(inInstance);
-                                storage.save();
 
                                 return rs;
                             });
+                            storage.save();
                         }}
                         onRemoveEdge={(edge) => {
                             redStore.update(rs => {
                                 let inInstance = rs.inInstance!;
                                 inInstance.removeEdgeById(edge.id());
+                                inInstance.unlabelSolved();
 
                                 rs.reset();
                                 rs.setInInstance(inInstance);
-                                storage.save();
 
                                 return rs;
                             });
+                            storage.save();
                         }}
                     />
                 {/if}

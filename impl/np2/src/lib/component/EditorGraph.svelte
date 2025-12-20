@@ -14,7 +14,6 @@
 
     let { graph, onChange, onWrongFormat } : Props = $props();
 
-
     let text = $state(graph?.asString() ?? '');
 
     onMount(() => {
@@ -23,7 +22,6 @@
 
     let selectedDemo = $state('');
     const demos = DemoProvider.getTextInputs(Graph);
-
 
     function onTextChange() {
         const result = Graph.fromString(text);

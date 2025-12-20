@@ -6,7 +6,7 @@ import type { CertificateHCIRCUIT } from "$lib/solve/CertificateHCIRCUIT";
 import { CertificateHCYCLE } from "$lib/solve/CertificateHCYCLE";
 import type { Decoder } from "./Decoder";
 
-export class DecorderHCIRCUITtoHCYCLE implements Decoder<Graph, CertificateHCIRCUIT, CertificateHCYCLE> {
+export class DecoderHCIRCUITtoHCYCLE implements Decoder<Graph, CertificateHCIRCUIT, CertificateHCYCLE> {
     decode(outInstance: Graph, outCert: CertificateHCIRCUIT): CertificateHCYCLE {
         console.debug(outCert.path);
 

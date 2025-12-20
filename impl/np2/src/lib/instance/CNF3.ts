@@ -98,7 +98,8 @@ export class CNF3 extends ProblemInstance {
     public get clauses() : Array<Clause> {
         return Array.from(this._clauses.values());
     }
-    public isEmpty() : boolean {
+
+    public isEmpty(): boolean {
         const empty = this.clauses.length == 0 || this.variables.length == 0;
         console.debug("empty", empty);
         return empty;
@@ -161,5 +162,14 @@ export class CNF3 extends ProblemInstance {
         });
 
         return cnf;
+    }
+
+
+    public toSerializedString(): string {
+        throw 'Not implemented';
+    }
+
+    public static fromSerializedString(serialized: string): CNF3 {
+        throw 'Not implemented';
     }
 }
