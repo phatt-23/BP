@@ -44,6 +44,7 @@ Component that renders the graph.
                 source: e.from, 
                 target: e.to,
                 weight: e.weight,
+                controlPointDistances: e.controlPointDistances,
             },
             classes: e.classes,
         }));

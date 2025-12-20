@@ -311,19 +311,19 @@ export const cytoscapeStyles: Record<string, StylesheetStyle[]> = {
             },
         },
         {
-            selector: 'node.green',
+            selector: 'node.green, node.T',
             style: {
                 'background-color': 'green',
             }
         },
         {
-            selector: 'node.red',
+            selector: 'node.red, node.F',
             style: {
                 'background-color': 'red',
             }
         },
         {
-            selector: 'node.blue',
+            selector: 'node.blue, node.B',
             style: {
                 'background-color': 'blue',
             }
@@ -336,8 +336,16 @@ export const cytoscapeStyles: Record<string, StylesheetStyle[]> = {
                 'width': 1,
             },
         },
+        {
+            "selector": "edge.outer-circle",
+            "style": {
+                "curve-style": "unbundled-bezier",
+                "control-point-distances": 'data(controlPointDistances)',
+                "control-point-weights": [0.250, 0.75],
+                "width": 8,
+            }
+        },
         ...solvedNode,
         selectedNode,
-        
     ]
 };

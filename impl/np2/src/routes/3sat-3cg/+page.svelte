@@ -162,9 +162,9 @@
                     $redStore.steps[$redStore.stepIndex].outSnapshot}
                     <RendererGraph 
                         graph={$redStore.steps[$redStore.stepIndex].outSnapshot!} 
-                        layout={'circle'}
                         style={'3SAT-3CG'}
                     />
+                    <!-- {$redStore.steps[$redStore.stepIndex].outSnapshot!.toSerializedString()} -->
                 {/if}
             </div>
         {:else}
@@ -184,10 +184,9 @@
                 {#if $redStore.outInstance && !$redStore.outInstance.isEmpty()}
                     <RendererGraph 
                         graph={$redStore.outInstance} 
-                        layout={'circle'}
                         style={'3SAT-3CG'}
                     />
-                    {$redStore.outInstance.toSerializedString()}
+                    <!-- {$redStore.outInstance.toSerializedString()} -->
                 {/if}
                 {#if $redStore.outCert}
                     <CertRenderer3CG cert={$redStore.outCert}/>

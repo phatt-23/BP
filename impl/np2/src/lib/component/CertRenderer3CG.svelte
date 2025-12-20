@@ -9,6 +9,16 @@
     };
 
     const { cert } : Props = $props();
+
+    function toText(colorNum: number) {
+        switch (colorNum) {
+            case 0: return 'Red';
+            case 1: return 'Green';
+            case 2: return 'Blue';
+            default:
+                throw new Error(`The colorNum ${colorNum} not supported.`);
+        }
+    }
 </script>
 
 <main>
@@ -17,9 +27,14 @@
     {#if cert == Unsolvable}
         <p>The graph can't be colored by 3 colors.</p>
     {:else}
-        {cert.rNodes}
-        {cert.gNodes}
-        {cert.bNodes}
+        The color mapping for 3-coloring:
+        <ul>
+            {#each cert.coloring as [nodeId, colorNumber]}
+                <li>
+                    {nodeId} &rightarrow; {colorNumber} ({toText(colorNumber)})
+                </li>
+            {/each}
+        </ul>
     {/if}
 </main>
 
