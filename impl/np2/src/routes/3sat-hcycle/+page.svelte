@@ -40,6 +40,7 @@
         decoderFactory: () => new DecoderHCYCLEto3SAT(),
         onSolveFinished: (outInst, outCert) => {
             if (outCert == Unsolvable) {
+                $redStore.inCert = Unsolvable;
                 return;
             }
 

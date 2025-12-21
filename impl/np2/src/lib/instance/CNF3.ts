@@ -4,7 +4,7 @@
 
 import { assert, type ErrorMessage } from "$lib/core/assert";
 import { onlyUnique } from "$lib/core/filters";
-import type { Id } from "$lib/core/Id";
+import { CNF3_ID, type Id } from "$lib/core/Id";
 import Serializer from "$lib/core/Serializer";
 import { ProblemInstance } from "./ProblemInstance";
 
@@ -115,9 +115,12 @@ export class CNF3 extends ProblemInstance {
             const words = line.split(" ").map(word => word.trim()).filter(word => word.length);
 
             if (words.length != 3) {
-                return `Clause number ${i + 1} (${line}) doesn't have exactly 3 literals. Instead it has ${words.length} literals.`;
+                return `Clause number ${i + 1} (${line}) doesn't have exactly 3 literals.` +
+                       `Instead it has ${words.length} literals.`;
             }
-            
+           
+            const clauseId = CNF3_ID.CLAUSE_PREFIX + i;
+
             let lits: Literal[] = [];
             for (let j = 0; j < words.length; j++) {
                 let word = words[j];
@@ -133,13 +136,15 @@ export class CNF3 extends ProblemInstance {
                     return `Literal ${negated ? "!" : ""}${word} is invalid.`;
                 }
 
-                const lit = new Literal(`v:${j}-c:${i}`, word, negated);
+                const varId = CNF3_ID.VAR_PREFIX + j;
+
+                const lit = new Literal(`${varId}-${clauseId}`, word, negated);
                 lits.push(lit);
             }
 
             assert(lits.length == 3);
 
-            const clause = new Clause(`c:${i}`, lits);
+            const clause = new Clause(clauseId, lits);
             cnf.addClause(clause);
         }
 

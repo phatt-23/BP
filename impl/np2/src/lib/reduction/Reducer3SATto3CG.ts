@@ -1,6 +1,6 @@
 // Created by phatt-23 on 20/12/2025
 
-import { CG3_ID, cutNodeIdPrefix, EDGE_ID_PREFIX, NODE_ID_PREFIX, NODE_ID_PREFIX_FALSE, NODE_ID_PREFIX_TRUE } from "$lib/core/Id";
+import { CG3_ID, CNF3_ID, cutNodeIdPrefix, EDGE_ID_PREFIX, NODE_ID_PREFIX, NODE_ID_PREFIX_FALSE, NODE_ID_PREFIX_TRUE } from "$lib/core/Id";
 import type { CNF3 } from "$lib/instance/CNF3";
 import { Graph, type GraphEdge, type GraphNode } from "$lib/instance/Graph";
 import { Reducer, type ReductionResult } from "./Reducer";
@@ -38,6 +38,8 @@ export class Reducer3SATto3CG extends Reducer<CNF3, Graph> {
         const xStep = this.d / this.dc;
         let xCurrent = 0;
 
+        const cutClausePrefix = (id: string) => id.slice(CNF3_ID.CLAUSE_PREFIX.length)
+
         // add clause nodes
         this.inInstance.clauses.forEach(c => {
             const nodes: GraphNode[] = [];
@@ -45,7 +47,7 @@ export class Reducer3SATto3CG extends Reducer<CNF3, Graph> {
 
             // add the six
             for (let i = 0; i < 6; i++) {
-                const label = c.id + '-' + i;
+                const label = cutClausePrefix(c.id) + '-' + i;
 
                 nodes.push({
                     id: CG3_ID.CLAUSE_NODE_PREFIX + label,
@@ -79,7 +81,10 @@ export class Reducer3SATto3CG extends Reducer<CNF3, Graph> {
             });
 
             c.literals.forEach((v, i) => {
-                const varNode: string = (v.negated ? NODE_ID_PREFIX_FALSE : NODE_ID_PREFIX_TRUE) + v.varName;
+                const varNode: string = (v.negated 
+                    ? CG3_ID.FALSE_VAR_NODE_PREFIX 
+                    : CG3_ID.TRUE_VAR_NODE_PREFIX) + v.varName;
+
                 const node: GraphNode = nodes[i];
                 
                 edges.push({
@@ -171,7 +176,7 @@ export class Reducer3SATto3CG extends Reducer<CNF3, Graph> {
         // add variable nodes
         this.inInstance.variables.forEach((v, i) => {
             const trueNode: GraphNode = {
-                id: NODE_ID_PREFIX_TRUE + v,
+                id: CG3_ID.TRUE_VAR_NODE_PREFIX + v,
                 position: {
                     x: (xCurrent + xShift) * this.unit, 
                     y: (y) * this.unit,
@@ -179,7 +184,7 @@ export class Reducer3SATto3CG extends Reducer<CNF3, Graph> {
             };
 
             const falseNode: GraphNode = {
-                id: NODE_ID_PREFIX_FALSE + v,
+                id: CG3_ID.FALSE_VAR_NODE_PREFIX + v,
                 position: {
                     x: (xCurrent + xStep + xShift) * this.unit,
                     y: (y) * this.unit,
@@ -236,10 +241,12 @@ export class Reducer3SATto3CG extends Reducer<CNF3, Graph> {
                     because there are ${this.inInstance.variables.length} variables.
                 </p>
                 <p>
-                    A variable gadget <i>G = (V,E)</i> for a variable <i>x</i> consists of three nodes, 
+                    A variable gadget <i>G = (V,E)</i> for a variable <i>x</i> consists 
+                    of three nodes, 
                     <i>V = {x, &not;x, B}</i>, 
                     where the node <i>B</i> is the blue "buffer" node.
-                    These nodes nodes are connected in such a way that makes this gadget <i>G</i> a complete graph, 
+                    These nodes nodes are connected in such a way 
+                    that makes this gadget <i>G</i> a complete graph, 
                     <i>E = { {x, &not;x}, {x, B}, {&not;x, B} }</i>.
                 </p>
                 <p>

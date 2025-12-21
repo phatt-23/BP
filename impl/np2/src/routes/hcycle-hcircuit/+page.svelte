@@ -40,6 +40,7 @@
         decoderFactory: () => new DecoderHCIRCUITtoHCYCLE(),
         onSolveFinished: (outInst, outCert) => {
             if (outCert == Unsolvable) {
+                $redStore.inCert = Unsolvable;
                 return;
             }
 

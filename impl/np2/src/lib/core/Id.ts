@@ -37,10 +37,17 @@ export const CG3_ID = {
         B: NODE_ID_PREFIX + 'B',
     },
     VAR_NODE_PREFIX: 'nv:',
+    TRUE_VAR_NODE_PREFIX: 'nvt:',
+    FALSE_VAR_NODE_PREFIX: 'nvf:',
     CLAUSE_NODE_PREFIX: 'nc:',
     COLOR_TRUE: 1,
     COLOR_FALSE: 0,
     COLOR_BUFFER: 2,
+};
+
+export const CNF3_ID = {
+    CLAUSE_PREFIX: 'c:',
+    VAR_PREFIX: 'v:',
 };
 
 export const cutNodeIdPrefix = (id: string) => {

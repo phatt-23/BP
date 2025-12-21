@@ -46,6 +46,7 @@
         decoderFactory: () => new DecoderTSPtoHCIRCUIT(),
         onSolveFinished: (outInst, outCert) => {
             if (outCert == Unsolvable) {
+                $redStore.inCert = Unsolvable;
                 return;
             }
 
