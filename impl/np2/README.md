@@ -11,11 +11,12 @@ Also the file must have .svelte.ts extension.
 
 - [x] - if inInstance is empty, could be different for each problem (add a pure virtual function)
 do not allow reducing nor solving (UI constraint and logic constraint)
-- [ ] - 3SAT to 3CG reduction
+- [x] - 3SAT to 3CG reduction
 - [ ] - rename asString() to format() as it is formatting the problem instance to a format that the editor accepts, now it's confusing because problem instances have toSerializedString()
 - [ ] - decide on the final UI layout
 - [ ] - style the components
-- [ ] - style the 3CG (from 3SAT to 3CG) so it's more readable
+- [x] - style the 3CG (from 3SAT to 3CG) so it's more readable
+- [ ] - change the hcycle-hcircuit node naming to be prefixes not postfixes (n:x_in, n:x_gap, n:x_out -> nin:x, ngap:x, nout:x)
 
 ## 3SAT to 3CG
 
