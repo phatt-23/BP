@@ -6,15 +6,17 @@
     import Spinner from "../Spinner.svelte";
     import type { ReductionStore } from "$lib/state/ReductionStore.svelte";
     import type { Writable } from "svelte/store";
+    import type { ProblemInstance } from "$lib/instance/ProblemInstance";
+    import type { Certificate } from "$lib/solve/Certificate";
 
-    type Props<I,O,IC,OC> = {
+    type Props<I extends ProblemInstance,O extends ProblemInstance,IC extends Certificate,OC extends Certificate> = {
         title: () => ReturnType<Snippet>,
         editor: () => ReturnType<Snippet>,
         redStore: Writable<ReductionStore<I,O,IC,OC>>,
         isSolving: Writable<boolean>,
         solveMessage: Writable<string>,
-        reduce: () => {},
-        solve: () => {},
+        reduce: () => void,
+        solve: () => void,
         showStepper: Writable<boolean>,
     };
 
@@ -65,7 +67,17 @@
                     {/if}
                 </button>
 
-                <button class="dev" onclick={() => { 
+
+                <div>
+                    {#if $isSolving}
+                        <Spinner>{$solveMessage}</Spinner>
+                    {/if}
+                </div>
+            </div>
+
+            <!-- TODO: DEBUG ONLY, REMOVE IN RELEASE -->
+            <div class="debug">
+                <button onclick={() => { 
                     reduce();
 
                     showStepper.update(s => { 
@@ -76,20 +88,14 @@
                     Reduce and Show steps
                 </button>
 
-                <button class="dev" onclick={() => { 
+                <button onclick={() => { 
                     reduce(); 
                     solve();
                 }}>
                     Reduce and Solve
                 </button>
-
-                <div>
-                    {#if $isSolving}
-                        <Spinner>{$solveMessage}</Spinner>
-                    {/if}
-                </div>
             </div>
-
+            
             <div class="right-controls">
                 <label class="checkbox-wrapper">
                     <input type="checkbox" bind:checked={$showStepper}>
