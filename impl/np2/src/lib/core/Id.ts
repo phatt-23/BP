@@ -19,9 +19,9 @@ export const NODE_ID_PREFIX_TRUE = 'n%t:';
 export const NODE_ID_PREFIX_FALSE = 'n%f:';
 
 // HCYCLE to HCIRCUIT
-export const NODE_IN_POSTFIX = '_in';
-export const NODE_GAP_POSTFIX = '_gap';
-export const NODE_OUT_POSTFIX = '_out';
+// export const NODE_IN_POSTFIX = '_in';
+// export const NODE_GAP_POSTFIX = '_gap';
+// export const NODE_OUT_POSTFIX = '_out';
 
 // 3SAT to SSP
 export const VARIABLE_TRUE_PREFIX = 'T:';
@@ -50,9 +50,8 @@ export const CNF3_ID = {
     VAR_PREFIX: 'v:',
 };
 
-export const cutNodeIdPrefix = (id: string) => {
-    if (id.startsWith(NODE_ID_PREFIX)) {
-        return id.slice(NODE_ID_PREFIX.length);
-    }
-    return id;
-}
+export const HCYCLE_HCIRCUIT_ID = {
+    INCOMING_NODE_PREFIX: 'nin:',
+    GAP_NODE_PREFIX: 'ngap:',
+    OUTGOING_NODE_PREFIX: 'nout:',
+};

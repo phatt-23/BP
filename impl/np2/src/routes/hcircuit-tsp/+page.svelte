@@ -1,31 +1,43 @@
 <!-- Created by phatt-23 on 21/10/2025 -->
 
+<svelte:head>
+    <title>HCIRCUIT to TSP</title>
+	<meta name="description" content="Reduction from HCIRCUIT to TSP" />
+</svelte:head>
+
 <script lang="ts">
     import CertRendererHCIRCUIT from "$lib/component/CertRendererHCIRCUIT.svelte";
-    import CertRendererHCYCLE from "$lib/component/CertRendererHCYCLE.svelte";
     import CertRendererTSP from "$lib/component/CertRendererTSP.svelte";
     import EditorGraph from "$lib/component/EditorGraph.svelte";
     import ReductionStepper from "$lib/component/ReductionStepper.svelte";
     import RendererGraph from "$lib/component/RendererGraph.svelte";
     import Spinner from "$lib/component/Spinner.svelte";
-    import { EDGE_ID_PREFIX, NODE_ID_PREFIX, PREFIX_AND_ID_DELIM } from "$lib/core/Id";
     import localStorageKeys from "$lib/core/localStorageKeys";
     import { Unsolvable } from "$lib/core/Unsolvable";
     import { useLocalStorage } from "$lib/core/useLocalStorage.svelte";
     import { DecoderTSPtoHCIRCUIT } from "$lib/decode/DecoderTSPtoHCIRCUIT";
     import { ReducerHCIRCUITtoTSP } from "$lib/reduction/ReducerHCIRCUITtoTSP";
     import { ReductionStore } from "$lib/state/ReductionStore.svelte";
-    import { onDestroy } from "svelte";
     import type { Graph } from "$lib/instance/Graph";
     import type { CertificateHCIRCUIT } from "$lib/solve/CertificateHCIRCUIT";
-    import type { CertificateTSP } from "$lib/solve/CertificateTSP";
+    import { CertificateTSP } from "$lib/solve/CertificateTSP";
     import RendererEditableGraph from "$lib/component/RendererEditableGraph.svelte";
     import { useReductionController } from "$lib/page/useReductionController.svelte";
+    import WorkerTSPSolver from "$lib/workers/WorkerTSPSolver?worker";
+    import { WorkerResponseType, type WorkerRequestTSP, type WorkerResponseTSP } from "$lib/workers/types";
+    import { assert } from "$lib/core/assert";
+    import EditorCard from "$lib/component/red-page/EditorCard.svelte";
+    import StepsCard from "$lib/component/red-page/StepsCard.svelte";
+    import OutputInstanceCard from "$lib/component/red-page/OutputInstanceCard.svelte";
+    import InputInstanceCard from "$lib/component/red-page/InputInstanceCard.svelte";
+    import CertRendererHCYCLE from "$lib/component/CertRendererHCYCLE.svelte";
+
 
     let storage = useLocalStorage(
         localStorageKeys.LS_HCIRCUIT_TSP,
         new ReductionStore<Graph, Graph, CertificateHCIRCUIT, CertificateTSP>()
     );
+
 
     let {
         redStore,
@@ -37,13 +49,22 @@
         solve,
     } = useReductionController({ 
         storage: storage,  
-        workerUrl: new URL("$lib/workers/WorkerTSPSolver.ts", import.meta.url),
-        createWorkerMessage: (outInst) => ({ 
-            graph: outInst.toSerializedString(), 
-            maxCost: outInst.nodes.length 
-        }),
+        workerFactory: () => new WorkerTSPSolver(),
         reducerFactory: (outInst) => new ReducerHCIRCUITtoTSP(outInst),
         decoderFactory: () => new DecoderTSPtoHCIRCUIT(),
+        createWorkerRequest: (outInst) => {
+            const ret: WorkerRequestTSP = {
+                graph: outInst.toSerializedString(), 
+                maxCost: outInst.nodes.length, 
+            };
+
+            return ret;
+        }, 
+        resolveWorkerResponse: (data) => {
+            const res = data as WorkerResponseTSP;
+            assert(res.type == WorkerResponseType.RESULT);
+            return new CertificateTSP(res.path);
+        },
         onSolveFinished: (outInst, outCert) => {
             if (outCert == Unsolvable) {
                 $redStore.inCert = Unsolvable;
@@ -67,156 +88,152 @@
 
         }
     });
+
+    
+    let cost = $state(0);
+
+    $effect(() => {
+        if ($redStore.inInstance) {
+            cost = $redStore.inInstance.nodes.length;
+        }
+    });
 </script>
 
-<svelte:head>
-    <title>HCIRCUIT to TSP</title>
-	<meta name="description" content="Reduction from HCIRCUIT to TSP" />
-</svelte:head>
+
+
 
 <main>
-    <h1>
-        HCIRCUIT to TSP reduction
-    </h1>
+    <h1>HCIRCUIT to TSP reduction</h1>
 
-    <EditorGraph
-        graph={$redStore.inInstance}
-        onChange={(graph) => editorChanged(graph)}
-        onWrongFormat={(msg) => alert("From graph editor: " + msg)}
-    />
+    <div class="card-list">
+        
+        <EditorCard {redStore} {isSolving} {solveMessage} {showStepper} {reduce} {solve}>
+            {#snippet title()}
+                <h2>Graph Editor</h2>
+            {/snippet}
+            
+            {#snippet editor()}
+                <EditorGraph
+                    graph={$redStore.inInstance}
+                    onChange={(graph) => editorChanged(graph)}
+                    displayErrorMessages
+                />
+            {/snippet}
+        </EditorCard>
 
-    <div class="controls">
-        <button 
-            disabled={!$redStore.hasInInstance() 
-                || $redStore.hasOutInstance() 
-                || $isSolving} 
-            onclick={reduce}
-        >
-            Reduce
-        </button>
 
-        <button
-            disabled={!$redStore.hasInstances() 
-                || $redStore.hasOutCertificate()
-                || $isSolving}
-            onclick={solve}
-        >
-            {#if $isSolving}
-                Solving...
-            {:else}
-                Solve
-            {/if}
-        </button>
-
-        <input type="checkbox" bind:checked={$showStepper} name="showStepperCheckbox">
-        <label for="showStepperCheckbox">Show steps</label>
-    </div>
-
-    {#if $isSolving}
-        <Spinner>{$solveMessage}</Spinner>
-    {/if}
-
-    {#if $showStepper}
-        {@const steps = $redStore.steps}
-        {@const stepIndex = $redStore.stepIndex}
-        {#if steps.length}
-            <div>
-                {#if stepIndex < steps.length &&
-                    steps[stepIndex].inSnapshot && 
-                    !steps[stepIndex].inSnapshot.isEmpty()
-                }
+        {#if $showStepper}
+            
+            {@render inputInstanceCard(true)}
+            
+            <StepsCard {redStore} {storage}>
+                {#snippet instance(inst)}
                     <RendererGraph 
-                        graph={steps[stepIndex].inSnapshot!} 
-                        style='UNDIRECTED'
-                        layout='circle'
-                    />
-                {/if}
-            </div>
-
-            <ReductionStepper 
-                steps={$redStore.steps} 
-                stepIndex={$redStore.stepIndex}
-                onPrevClick={() => {
-                    redStore.update(rs => { 
-                        rs.prevStep();
-                        return rs;
-                    });
-                    storage.save();
-                }}
-                onNextClick={() => { 
-                    redStore.update(rs => { 
-                        rs.nextStep();
-                        return rs;
-                    });
-                    storage.save();
-                }}
-            />
-
-            <div>
-                {#if $redStore.stepIndex < $redStore.steps.length && 
-                    $redStore.steps[$redStore.stepIndex].outSnapshot}
-                    <RendererGraph 
-                        graph={$redStore.steps[$redStore.stepIndex].outSnapshot!} 
+                        graph={inst} 
                         style='TSP'
                         layout='circle'
                     />
-                {/if}
-            </div>
+                {/snippet}
+            </StepsCard>
+
         {:else}
-            <span>There are no steps to step through.</span>
-        {/if}
-    {:else}
-        <div class="panes">
-            <div>
-                {#if $redStore.inInstance && !$redStore.inInstance.isEmpty()}
-                    <RendererEditableGraph 
-                        graph={$redStore.inInstance} 
-                        style='UNDIRECTED' 
-                        layout='circle'
-                        onAddEdge={(edge) => {
-                            redStore.update(rs => {
-                                let inInstance = rs.inInstance!;
-                                inInstance.addEdge(edge);
-                                inInstance.unlabelSolved();
+        
+            {@render inputInstanceCard(false)}
+          
+            <OutputInstanceCard {redStore}>
+                {#snippet title()}
+                    <h2>Output TSP Instance</h2>
+                {/snippet}
 
-                                rs.reset();
-                                rs.setInInstance(inInstance);
-
-                                return rs;
-                            });
-                            storage.save();
-                        }}
-                        onRemoveEdge={(edge) => {
-                            redStore.update(rs => {
-                                let inInstance = rs.inInstance!;
-                                inInstance.removeEdgeById(edge.id());
-                                inInstance.unlabelSolved();
-
-                                rs.reset();
-                                rs.setInInstance(inInstance);
-
-                                return rs;
-                            });
-                            storage.save();
-                        }}
-                    />
-                {/if}
-                {#if $redStore.inCert}
-                    <CertRendererHCIRCUIT cert={$redStore.inCert} />
-                {/if}
-            </div>
-            <div>
-                {#if $redStore.outInstance && !$redStore.outInstance.isEmpty()}
+                {#snippet instance(inst)}
                     <RendererGraph 
-                        graph={$redStore.outInstance} 
+                        graph={inst} 
                         style='TSP'
                         layout='circle'
                     />
-                {/if}
-                {#if $redStore.outCert}
-                    <CertRendererTSP cert={$redStore.outCert}/>
-                {/if}
-            </div>
-        </div>
-    {/if}
+                {/snippet}
+
+                {#snippet certificate(cert)}
+                   <CertRendererTSP {cert} {cost}/>
+                {/snippet}
+
+                {#snippet certificatePlaceholder()}
+                    <span class='placeholder'>Certificate for TSP will appear here.</span>
+                {/snippet}
+            </OutputInstanceCard>
+
+        {/if}
+        
+    </div>
 </main>
+
+
+{#snippet inputInstanceCard(viewingSteps: boolean)}
+
+    <InputInstanceCard {redStore} hideCertificate={viewingSteps}>
+        {#snippet title()}
+            <h2>Input HCIRCUIT Instance</h2>
+        {/snippet}  
+
+        {#snippet instance(inst)}
+            {#if viewingSteps}
+                <RendererGraph 
+                    graph={inst} 
+                    style='UNDIRECTED'
+                    layout='circle'
+                />
+            {:else}
+                <RendererEditableGraph 
+                    graph={inst} 
+                    style='UNDIRECTED' 
+                    layout='circle'
+                    onAddEdge={(edge) => {
+                        redStore.update(rs => {
+                            let inInstance = rs.inInstance!;
+                            inInstance.addEdge(edge);
+                            inInstance.unlabelSolved();
+
+                            rs.reset();
+                            rs.setInInstance(inInstance);
+
+                            return rs;
+                        });
+                        storage.save();
+                    }}
+                    onRemoveEdge={(edge) => {
+                        redStore.update(rs => {
+                            let inInstance = rs.inInstance!;
+                            inInstance.removeEdgeById(edge.id());
+                            inInstance.unlabelSolved();
+
+                            rs.reset();
+                            rs.setInInstance(inInstance);
+
+                            return rs;
+                        });
+                        storage.save();
+                    }}
+                />
+            {/if}
+        {/snippet}
+
+        {#snippet certificate(cert)}
+            <CertRendererHCYCLE {cert} />
+        {/snippet}
+
+        {#snippet certificatePlaceholder()}
+            <span>Certificate for HCYCLE will appear here.</span>
+        {/snippet}
+    </InputInstanceCard>
+
+{/snippet}
+
+
+<style lang="sass">
+    main
+        align-items: center
+
+    .card-list > :global(*) + :global(*)
+        margin-top: 8px
+</style>
+

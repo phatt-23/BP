@@ -19,12 +19,13 @@ export type GraphEdge = {
     to: Id;
     weight?: number;
     classes?: string;
-    controlPointDistances?: number[];  // pair of control points distances from the tangent of an edge
+    controlPointDistances?: number[];  
 }
 
 export type GraphNode = {
     id: Id;
     label?: string;
+    texLabel?: string;
     color?: number;  
     position?: Position;
     classes?: string;
@@ -42,13 +43,22 @@ export class Graph extends ProblemInstance {
     }
 
     public addNode(node: GraphNode) {
-        if (node.classes == undefined) {
-            node.classes = '';
-        }
 
         // if there's a node with the same id, don't add it
         if (this.nodes.find(n => n.id == node.id)) 
             return;
+
+        if (node.classes == undefined) {
+            node.classes = '';
+        }
+
+        if (!node.label) {
+            node.label = node.id;
+        }
+
+        if (!node.texLabel) {
+            node.texLabel = node.label;
+        }
 
         this._nodes.add(node);
     }
@@ -57,11 +67,12 @@ export class Graph extends ProblemInstance {
             edge.classes = '';
         }
 
-        if (edge.controlPointDistances == undefined) {
-            edge.controlPointDistances = [0,0];
-        }
-        assert(edge.controlPointDistances.length == 2, 
-            "There must be 2 control points.");
+        // doesn't matter how many control points
+        // if (edge.controlPointDistances == undefined) {
+        //     edge.controlPointDistances = [0,0];
+        // }
+        // assert(edge.controlPointDistances.length == 2, 
+        //     "There must be 2 control points.");
 
         // if there's an edge with the same id, don't add it
         if (this.edges.find(e => e.id == edge.id)) 
@@ -90,11 +101,7 @@ export class Graph extends ProblemInstance {
     public removeEdgeById(id: string) { 
         const edge = this.edges.find(e => e.id == id);
         if (edge) {
-            console.log('deleting edge with id', id);
             this._edges.delete(edge);
-        }
-        else {
-            console.log('edge with id', id, 'not found');
         }
     }
     public isEmpty() : boolean {
@@ -110,6 +117,7 @@ export class Graph extends ProblemInstance {
             newGraph.addNode({
                 id: node.id,
                 label: node.label,
+                texLabel: node.texLabel,
                 color: node.color,
                 position: node.position ? { ...node.position } : undefined,
                 classes: node.classes,
@@ -138,13 +146,12 @@ export class Graph extends ProblemInstance {
     }
 
     public static fromString(text: string): Graph | ErrorMessage {
-        if (text.length == 0)
+        if (text.length == 0) {
             return "Cannot construct a graph from empty string";
+        }
 
         const lines = text.split('\n').map(x => x.trim()).filter(x => x.length).filter(onlyUnique);
         let graph = new Graph();
-
-        console.debug("LINES", lines);
 
         for (let i = 0; i < lines.length; i++) {
             const line = lines[i];
@@ -153,41 +160,67 @@ export class Graph extends ProblemInstance {
             
             // single node
             if (words.length == 1) {
-                const n = words;
+                const n = words[0];
                 graph.addNode({
                     id: NODE_ID_PREFIX + n,
+                    label: n,
                 });
             }
 
-            // edge between n1 and n2 (optinal weight)
+            // edge between n1 and n2 (optional weight)
             else if (words.length <= 3) {
                 const n1 = words[0];
                 const n2 = words[1];
 
                 let w = undefined;
                 if (words.length == 3) {
-                    try {
-                        w = Number.parseFloat(words[2]);
-                    } catch (e) {
-                        return `On the line ${i}, couldn't parse the weight: '${words[2]}` +
-                            `Please enter a number (floating allowed)`;
+
+                    function isStringNumber(value: string): boolean {
+                        // Using Number constructor to attempt conversion
+                        for (const c of value) {
+                            if (
+                                c == '0' || c == '1' || c == '2' || c == '3' || 
+                                c == '4' || c == '5' || c == '6' || c == '7' ||
+                                c == '8' || c == '9' 
+                            ) {
+                                continue;
+                            }
+                            return false;
+                        }
+                        return true;
                     }
+
+                    if (!isStringNumber(words[2])) {
+                        return `
+                            Encountered illegal syntax on line ${i}. 
+                            Couldn't parse the weight "${words[2]}".
+                            Please enter an integer.
+                            The line: "${line}"
+                        `;
+                    }
+
+                    w = Number.parseFloat(words[2]);
                 }
 
-                graph.addNode({
-                    id: NODE_ID_PREFIX + n1,
-                });
+                const fromNodeId = NODE_ID_PREFIX + n1;
+                const toNodeId = NODE_ID_PREFIX + n2;
 
-                graph.addNode({
-                    id: NODE_ID_PREFIX + n2,
-                });
+                graph.addNode({ id: fromNodeId, label: n1 });
+                graph.addNode({ id: toNodeId, label: n2 });
 
                 graph.addEdge({
-                    id: EDGE_ID_PREFIX + `${n1}-${n2}`,
-                    from: NODE_ID_PREFIX + n1,
-                    to: NODE_ID_PREFIX + n2,
+                    id: EDGE_ID_PREFIX + `${fromNodeId}-${toNodeId}`,
+                    from: fromNodeId,
+                    to: toNodeId,
                     weight: w,
                 });
+            }
+
+            else {
+                return `
+                    Encountered illegal syntax on line ${i}. 
+                    Expected of these "{x}" or "{x} {y}" or "{x} {y} {w?}" on a single line, where {x} and {y} are node labels and {w?} is optional weight. 
+                    Instead got: "${line}"`;
             }
         }
 
@@ -199,6 +232,7 @@ export class Graph extends ProblemInstance {
             nodes: this.nodes.map(n => ({
                 id: n.id,
                 label: n.label ?? null,
+                texLabel: n.texLabel ?? null,
                 color: n.color ?? null,
                 position: n.position ?? null,
                 classes: n.classes ?? '',
@@ -224,6 +258,7 @@ export class Graph extends ProblemInstance {
                 graph.addNode({
                     id: node.id,
                     label: node.label ?? undefined,
+                    texLabel: node.texLabel ?? undefined,
                     color: node.color ?? undefined,
                     position: node.position ?? undefined,
                     classes: node.classes ?? '',
@@ -251,16 +286,24 @@ export class Graph extends ProblemInstance {
      * Labels the edges used in the path.
      * It adds classes 'solved' and 'used'.
      */
-    public labelSolved(params: { path: GraphNode[], directed: boolean }) {
-        const cutPrefix = (id: string) => id.slice(id.search(PREFIX_AND_ID_DELIM) + 1);
-
-        const { path, directed } = params;
+    public labelSolved({
+        path = [],
+        directed = false,
+        edgeIdUsesNodeIds = true,  // todo: remove this, all reductions should use the same edge naming scheme (use the whole node ids, don't cut the prefix)
+    }: {
+        path?: GraphNode[]
+        directed?: boolean
+        edgeIdUsesNodeIds?: boolean
+    } = {}) {
+        const preprocess = edgeIdUsesNodeIds 
+            ? ( (id: string) => id )  // id function
+            : ( (id: string) => id.slice(id.search(PREFIX_AND_ID_DELIM) + 1) ); // cuts the prefix
 
         this.edges.forEach(e => e.classes += ' solved');
 
         for (let i = 0; i < path.length - 1; i++) {
-            const from = cutPrefix(path[i].id);
-            const to = cutPrefix(path[i + 1].id);
+            const from = preprocess(path[i].id);
+            const to = preprocess(path[i + 1].id);
 
             const edgeId = EDGE_ID_PREFIX + `${from}-${to}`;
             const edgeIdMirror = EDGE_ID_PREFIX + `${to}-${from}`;

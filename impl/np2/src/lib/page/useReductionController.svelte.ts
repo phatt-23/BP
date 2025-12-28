@@ -5,9 +5,9 @@ import type { LocalStorage } from "$lib/core/useLocalStorage.svelte";
 import type { Decoder } from "$lib/decode/Decoder";
 import type { ProblemInstance } from "$lib/instance/ProblemInstance";
 import type { Reducer } from "$lib/reduction/Reducer";
-import type { ReductionStep } from "$lib/reduction/ReductionStep";
 import type { Certificate } from "$lib/solve/Certificate";
 import type { ReductionStore } from "$lib/state/ReductionStore.svelte";
+import { WorkerResponseType } from "$lib/workers/types";
 import { onDestroy } from "svelte";
 import { writable, type Writable } from "svelte/store";
 
@@ -21,11 +21,12 @@ type Params<
     OC extends CR,
 > = {
     storage: LocalStorage<I, O, IC, OC>;
-    workerUrl?: URL;
+    workerFactory: () => Worker;
     reducerFactory: (inInstance: I) => Reducer<I, O>;
     decoderFactory: () => Decoder<O, OC, IC>;
+    createWorkerRequest: (outInst: O) => object;
+    resolveWorkerResponse: (data: any) => Certificate | Unsolvable;
     onSolveFinished?: (outInstance: O, outCert: OC | Unsolvable) => void;
-    createWorkerMessage?: (outInst: O) => object;
 }
 
 type Controller<
@@ -66,7 +67,6 @@ export function useReductionController<
     });
 
     function editorChanged(i: I) {
-        console.debug("editorChanged");
         // terminate the solver if running
         if (currentWorker) {
             currentWorker.terminate();
@@ -102,12 +102,20 @@ export function useReductionController<
     }
 
     async function solve(): Promise<void> {
-        if (!params.workerUrl) 
-            throw 'Worker URL not provided';
-        if (!outInstance) 
-            throw 'Output instance is not set';
-        if (hasOutCert)
-            throw 'Reduction storage already has certificate of the output problem';
+        if (!params.workerFactory) {
+            console.debug('workerFactory was not provided');
+            throw new Error('workerFactory was not provided');
+        }
+
+        if (!outInstance) {
+            console.debug('Output instance is not set');
+            throw new Error('Output instance is not set');
+        }
+
+        if (hasOutCert) {
+            console.debug('Reduction storage already has certificate of the output problem');
+            throw new Error('Reduction storage already has certificate of the output problem');
+        }
 
         isSolving.set(true);
         solveMessage.set('Solving...');
@@ -116,15 +124,30 @@ export function useReductionController<
             currentWorker.terminate();
         }
 
-        const worker = new Worker(params.workerUrl, { type: "module" });
+        const worker: Worker = params.workerFactory();
         currentWorker = worker;
 
-        const message = params.createWorkerMessage?.(outInstance) ?? outInstance.toSerializedString();
+        const message = params.createWorkerRequest?.(outInstance) ?? outInstance.toSerializedString();
         worker.postMessage(message);
 
         try {
             const result = await new Promise<any>((resolve, reject) => {
-                worker.onmessage = (e) => resolve(e.data);
+                worker.onmessage = (e) => {
+                    const data = e.data;
+
+                    switch (data.type) {
+                        case WorkerResponseType.UNSOLVABLE:
+                            resolve(Unsolvable);
+                            break;
+                        case WorkerResponseType.ERROR:
+                            resolve(data.message);
+                            break;
+                        case WorkerResponseType.RESULT:
+                            resolve(params.resolveWorkerResponse(data));
+                            break;
+                    }
+                };
+
                 worker.onerror = (err) => reject(err);
             });
 
@@ -132,6 +155,7 @@ export function useReductionController<
                 rs.outCert = result;
                 if (result != Unsolvable) {
                     const decoder = params.decoderFactory();
+
                     rs.inCert = decoder.decode(rs.outInstance!, result);
                 }
 
@@ -141,13 +165,13 @@ export function useReductionController<
             params.onSolveFinished?.(outInstance, result);
 
             params.storage.save();
+
+            solveMessage.set('');
         } catch (exception) {
-            console.debug(`Error occured while solving: ${exception}`);
+            console.error('Error occured while solving:', exception);
             solveMessage.set(`Error occured while solving: ${exception}`);
         } finally {
-            solveMessage.set('');
             isSolving.set(false);
-
             worker.terminate();
             currentWorker = null;
         }

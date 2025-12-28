@@ -1,7 +1,7 @@
 // Created by phatt-23 on 21/10/2025
 
 import { Unsolvable } from "$lib/core/Unsolvable";
-import type { Graph, GraphNode } from "$lib/instance/Graph";
+import type { Graph } from "$lib/instance/Graph";
 import { CertificateTSP } from "./CertificateTSP";
 import type { Solver } from "./Solver";
 

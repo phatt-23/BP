@@ -1,18 +1,26 @@
 <!-- Created by phatt-23 on 20/12/2025-->
 
+<svelte:head>
+    <title>3SAT to 3CG</title>
+	<meta name="description" content="Redcution from 3SAT to 3CG" />
+</svelte:head>
+
 <script lang="ts">
     import CertRenderer3CG from "$lib/component/CertRenderer3CG.svelte";
     import CertRenderer3SAT from "$lib/component/CertRenderer3SAT.svelte";
-    import CertRendererHCYCLE from "$lib/component/CertRendererHCYCLE.svelte";
     import Editor3CNF from "$lib/component/Editor3CNF.svelte";
-    import ReductionStepper from "$lib/component/ReductionStepper.svelte";
+    import EditorCard from "$lib/component/red-page/EditorCard.svelte";
+    import InputInstanceCard from "$lib/component/red-page/InputInstanceCard.svelte";
+    import OutputInstanceCard from "$lib/component/red-page/OutputInstanceCard.svelte";
+    import StepsCard from "$lib/component/red-page/StepsCard.svelte";
     import Renderer3CNF from "$lib/component/Renderer3CNF.svelte";
     import RendererGraph from "$lib/component/RendererGraph.svelte";
-    import Spinner from "$lib/component/Spinner.svelte";
+    import { assert } from "$lib/core/assert";
+    import type { Id } from "$lib/core/Id";
     import localStorageKeys from "$lib/core/localStorageKeys";
     import { Unsolvable } from "$lib/core/Unsolvable";
     import { useLocalStorage } from "$lib/core/useLocalStorage.svelte";
-    import { Decoder3CGto3SAT } from "$lib/decode/Decoder3CGo3SAT";
+    import { Decoder3CGto3SAT } from "$lib/decode/Decoder3CGto3SAT";
     import { CNF3 } from "$lib/instance/CNF3";
     import { Graph } from "$lib/instance/Graph";
     import { useReductionController } from "$lib/page/useReductionController.svelte";
@@ -20,6 +28,8 @@
     import { Certificate3CG } from "$lib/solve/Certificate3CG";
     import { Certificate3SAT } from "$lib/solve/Certificate3SAT";
     import { ReductionStore } from "$lib/state/ReductionStore.svelte";
+    import { WorkerResponseType, type WorkerRequest3CG, type WorkerResponse3CG } from "$lib/workers/types";
+    import Worker3CGSolver from "$lib/workers/Worker3CGSolver?worker";
 
     let storage = useLocalStorage(
         localStorageKeys.LS_3SAT_3CG, 
@@ -36,9 +46,28 @@
         solve,
     } = useReductionController({ 
         storage: storage,  
-        workerUrl: new URL("$lib/workers/Worker3CGSolver.ts", import.meta.url),
+        workerFactory: () => new Worker3CGSolver(),
         reducerFactory: (inInstance) => new Reducer3SATto3CG(inInstance),
         decoderFactory: () => new Decoder3CGto3SAT(),
+        createWorkerRequest: (outInst) => {
+            const ret: WorkerRequest3CG = { 
+                graph: outInst.toSerializedString(),
+            };
+            return ret;
+        },
+        resolveWorkerResponse: (data) => {
+            const response = data as WorkerResponse3CG;
+            assert(response.type == WorkerResponseType.RESULT);
+            
+            const coloring: Map<Id, number> = new Map();
+            response.coloring.forEach(c => {
+                const id = c[0];
+                const color = c[1];
+                coloring.set(id, color);
+            });
+
+            return new Certificate3CG(coloring);
+        },
         onSolveFinished: (outInst, outCert) => {
             if (outCert == Unsolvable) {
                 $redStore.inCert = Unsolvable;
@@ -78,134 +107,93 @@
     });
 </script>
 
-<svelte:head>
-    <title>3SAT to 3CG</title>
-	<meta name="description" content="Redcution from 3SAT to 3CG" />
-</svelte:head>
-
-
 <main>
-    <h1>3SAT to 3CG reduction</h1>
+    <h1>3-SAT to 3-CG reduction</h1>
 
-    <Editor3CNF
-        cnf={$redStore.inInstance} 
-        onChange={(cnf) => editorChanged(cnf)}
-        onWrongFormat={(msg) => alert("From editor: " + msg)}
-    />
+    <div class="card-list">
+        
+        <EditorCard {redStore} {isSolving} {solveMessage} {showStepper} {reduce} {solve}>
+            {#snippet title()}
+                <h2>3-CNF Editor</h2>
+            {/snippet}
+            
+            {#snippet editor()}
+                <Editor3CNF
+                    cnf={$redStore.inInstance} 
+                    onChange={(cnf) => editorChanged(cnf)} 
+                    displayErrorMessages
+                />
+            {/snippet}
+        </EditorCard>
 
-    <div class="controls">
-        <button 
-            disabled={!$redStore.hasInInstance() 
-                || $redStore.hasOutInstance() 
-                || $redStore.inInstance?.isEmpty()
-                || $isSolving} 
-            onclick={reduce}
-        >
-            Reduce
-        </button>
 
-        <button
-            disabled={!$redStore.hasInstances() 
-                || $redStore.hasOutCertificate()
-                || $redStore.inInstance?.isEmpty()
-                || $isSolving}
-            onclick={solve}
-        >
-            {#if $isSolving}
-                Solving...
-            {:else}
-                Solve
-            {/if}
-        </button>
-
-        <input type="checkbox" bind:checked={$showStepper} name="showStepperCheckbox">
-        <label for="showStepperCheckbox">Show steps</label>
-    </div>
-
-    {#if $isSolving}
-        <Spinner>{$solveMessage}</Spinner>
-    {/if}
-
-    {#if $showStepper}
-        {@const steps = $redStore.steps}
-        {@const stepIndex = $redStore.stepIndex}
-        {#if steps.length}
-            <div>
-                {#if stepIndex < steps.length &&
-                    steps[stepIndex].inSnapshot && 
-                    !steps[stepIndex].inSnapshot.isEmpty()
-                }
-                    <Renderer3CNF cnf={steps[stepIndex].inSnapshot!} />
-                {/if}
-            </div>
-
-            <ReductionStepper 
-                steps={$redStore.steps} 
-                stepIndex={$redStore.stepIndex}
-                onPrevClick={() => {
-                    redStore.update(rs => { 
-                        rs.prevStep();
-                        return rs;
-                    });
-                    storage.save();
-                }}
-                onNextClick={() => { 
-                    redStore.update(rs => { 
-                        rs.nextStep();
-                        return rs;
-                    });
-                    storage.save();
-                }}
-            />
-
-            <div>
-                {#if $redStore.stepIndex < $redStore.steps.length && 
-                    $redStore.steps[$redStore.stepIndex].outSnapshot}
+        {#if $showStepper}
+            
+            {@render inputInstanceCard(true)}
+            
+            <StepsCard {redStore} {storage}>
+                {#snippet instance(inst, _stepIndex)}
                     <RendererGraph 
-                        graph={$redStore.steps[$redStore.stepIndex].outSnapshot!} 
+                        graph={inst} 
                         style={'3SAT-3CG'}
                     />
-                    <!-- {$redStore.steps[$redStore.stepIndex].outSnapshot!.toSerializedString()} -->
-                {/if}
-            </div>
+                {/snippet}
+            </StepsCard>
+
         {:else}
-            <span>There are no steps to step through.</span>
+        
+            {@render inputInstanceCard(false)}
+          
+            <OutputInstanceCard {redStore}>
+                {#snippet title()}
+                    <h2>Output 3-CG Instance</h2>
+                {/snippet}
+
+                {#snippet instance(inst)}
+                    <RendererGraph graph={inst} style={'3SAT-3CG'}/>
+                {/snippet}
+
+                {#snippet certificate(cert)}
+                    <CertRenderer3CG {cert}/>
+                {/snippet}
+
+                {#snippet certificatePlaceholder()}
+                    <span class='placeholder'>Certificate for 3-CG will appear here.</span>
+                {/snippet}
+            </OutputInstanceCard>
+
         {/if}
-    {:else}
-        <div class="panes">
-            <div>
-                {#if $redStore.inInstance && !$redStore.inInstance.isEmpty()}
-                    <Renderer3CNF cnf={$redStore.inInstance} />
-                {/if}
-                {#if $redStore.inCert}
-                    <CertRenderer3SAT cert={$redStore.inCert} />
-                {/if}
-            </div>
-            <div>
-                {#if $redStore.outInstance && !$redStore.outInstance.isEmpty()}
-                    <RendererGraph 
-                        graph={$redStore.outInstance} 
-                        style={'3SAT-3CG'}
-                    />
-                    <!-- {$redStore.outInstance.toSerializedString()} -->
-                {/if}
-                {#if $redStore.outCert}
-                    <CertRenderer3CG cert={$redStore.outCert}/>
-                {/if}
-            </div>
-        </div>
-    {/if}
+        
+    </div>
 </main>
 
-<style>
-.panes {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
-}
+
+{#snippet inputInstanceCard(hideCertificate: boolean)}
+    <InputInstanceCard {redStore} {hideCertificate}>
+        {#snippet title()}
+            <h2>Input 3-SAT Instance</h2>
+        {/snippet}  
+
+        {#snippet instance(inst)}
+            <Renderer3CNF cnf={inst} />
+        {/snippet}
+
+        {#snippet certificate(cert)}
+            <CertRenderer3SAT {cert} />
+        {/snippet}
+
+        {#snippet certificatePlaceholder()}
+            <span>Certificate for 3-SAT will appear here.</span>
+        {/snippet}
+    </InputInstanceCard>
+{/snippet}
+
+
+<style lang="sass">
+    main
+        align-items: center
+
+    .card-list > :global(*) + :global(*)
+        margin-top: 8px
 </style>
-
-
-
-
 

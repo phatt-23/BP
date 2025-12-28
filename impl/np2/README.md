@@ -9,14 +9,21 @@ Also the file must have .svelte.ts extension.
 
 ## TODO
 
+- [ ] - implement for each problem (3SAT, 3CG, HCYCLE, HCIRCUIT, TSP, SSP) its page where the user can enter an instance and solve it, show the result (certificate or say its onsolvable)
+- [ ] - add intersteps for 3sat to 3cg, add clause gadgets one by one, not all at once
+- [ ] - decide on the final UI layout
+- [ ] - style the components
+- [ ] - rename asString() to format() as it is formatting the problem instance to a format that the editor accepts, now it's confusing because problem instances have toSerializedString()
+- [ ] - add editor checks for illegal symbols like %#@!-_() and so on
+- [ ] - 3sat to hcycle uses a different edge id naming scheme to the rest, change it (now it's using only the node names in its edge ids, it should use the entire id, including the prefix)
+- [x] - center cytoscape around 0,0 and make the whole graph visible
 - [x] - if inInstance is empty, could be different for each problem (add a pure virtual function)
 do not allow reducing nor solving (UI constraint and logic constraint)
 - [x] - 3SAT to 3CG reduction
-- [ ] - rename asString() to format() as it is formatting the problem instance to a format that the editor accepts, now it's confusing because problem instances have toSerializedString()
-- [ ] - decide on the final UI layout
-- [ ] - style the components
 - [x] - style the 3CG (from 3SAT to 3CG) so it's more readable
-- [ ] - change the hcycle-hcircuit node naming to be prefixes not postfixes (n:x_in, n:x_gap, n:x_out -> nin:x, ngap:x, nout:x)
+- [x] - change the hcycle-hcircuit node naming to be prefixes not postfixes (n:x_in, n:x_gap, n:x_out -> nin:x, ngap:x, nout:x)
+- [x] - hcycle to hcircuit has a bug, to reproduce: choose 'compolete' demo instance, add edge from n4 to n0, after solve it's not highlighted
+- [x] - hcircuit to tsp has a bug, after removing and adding edges, it doesn't consider them when solving TSP
 
 ## 3SAT to 3CG
 
@@ -72,6 +79,5 @@ union { {c1,c4}, {c2,c5}, {c3,c6},
         {T,c1}, {T,c2}, {T,c3},  
         {T,c4}, {c4,c5}, {c5,c6}, {c6,F} | for each clause c }
 ```
-
 
 

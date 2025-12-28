@@ -72,15 +72,7 @@
 
 // Intro. Is mandatory.
 #let intro = [
-  #lorem(40)
-
-  #lorem(40)
-
-  #lorem(80)
-
-  #lorem(160)
-
-  #lorem(320)
+  #include "/chapters/intro.typ"
 ]
 
 // Conclusion. Is mandatory.

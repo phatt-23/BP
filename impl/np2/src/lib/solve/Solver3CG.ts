@@ -1,4 +1,4 @@
-import { CG3_ID, type Id } from "$lib/core/Id";
+import { type Id } from "$lib/core/Id";
 import { Unsolvable } from "$lib/core/Unsolvable";
 import type { Graph, GraphNode } from "$lib/instance/Graph";
 import { Certificate3CG } from "./Certificate3CG";
