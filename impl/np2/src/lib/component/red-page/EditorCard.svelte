@@ -1,8 +1,22 @@
 <!-- Created by phatt-23 on 27/12/2025 -->
 
 <script lang="ts">
+    import type { Snippet } from "svelte";
     import Card from "../Card.svelte";
     import Spinner from "../Spinner.svelte";
+    import type { ReductionStore } from "$lib/state/ReductionStore.svelte";
+    import type { Writable } from "svelte/store";
+
+    type Props<I,O,IC,OC> = {
+        title: () => ReturnType<Snippet>,
+        editor: () => ReturnType<Snippet>,
+        redStore: Writable<ReductionStore<I,O,IC,OC>>,
+        isSolving: Writable<boolean>,
+        solveMessage: Writable<string>,
+        reduce: () => {},
+        solve: () => {},
+        showStepper: Writable<boolean>,
+    };
 
     let { 
         title,
@@ -13,7 +27,7 @@
         reduce,
         solve,
         showStepper,
-    } = $props();
+    }: Props<any,any,any,any> = $props();
 
 </script>
 
@@ -49,6 +63,24 @@
                     {:else}
                         Solve
                     {/if}
+                </button>
+
+                <button class="dev" onclick={() => { 
+                    reduce();
+
+                    showStepper.update(s => { 
+                        s = true; 
+                        return s; 
+                    });
+                }}>
+                    Reduce and Show steps
+                </button>
+
+                <button class="dev" onclick={() => { 
+                    reduce(); 
+                    solve();
+                }}>
+                    Reduce and Solve
                 </button>
 
                 <div>
