@@ -1,7 +1,7 @@
 // Created by phatt-23 on 21/10/2025
 
-import { EDGE_ID_PREFIX, NODE_GAP_POSTFIX, NODE_ID_PREFIX, NODE_IN_POSTFIX, NODE_OUT_POSTFIX } from "$lib/core/Id";
-import { Graph, type Position } from "$lib/instance/Graph";
+import { EDGE_ID_PREFIX, HCYCLE_HCIRCUIT_ID, NODE_ID_PREFIX } from "$lib/core/Id";
+import { Graph, type GraphNode, type Position } from "$lib/instance/Graph";
 import { Reducer } from "./Reducer";
 import type { ReductionStep } from "./ReductionStep";
 
@@ -51,21 +51,31 @@ export class ReducerHCYCLEtoHCIRCUIT extends Reducer<Graph, Graph> {
         return { outInstance, steps };
     }
 
-    private stripPrefix(x: string, prefix: string) : string {
-        return x.slice(prefix.length);
-    }
-
     private connectEdges(graph: Graph): { graph: Graph; steps: ReductionStep<Graph, Graph>[]; } {
         const steps: ReductionStep<Graph, Graph>[] = [];
 
+        const cutNodeIdPrefix = (id: string) => id.slice(NODE_ID_PREFIX.length);
+
+        type Conn = {
+            from: string;
+            to: string;
+        };
+
+        const edgesConns = new Array<Conn>();
+
         this.inInstance.edges.forEach(e => {
-            const fromName = e.from.slice(NODE_ID_PREFIX.length) + NODE_OUT_POSTFIX;
-            const toName = e.to.slice(NODE_ID_PREFIX.length) + NODE_IN_POSTFIX;
+            const fromName = cutNodeIdPrefix(e.from);
+            const toName = cutNodeIdPrefix(e.to); 
+
+            edgesConns.push({ from: fromName, to: toName });
+
+            const fromId = HCYCLE_HCIRCUIT_ID.OUTGOING_NODE_PREFIX + fromName;
+            const toId = HCYCLE_HCIRCUIT_ID.INCOMING_NODE_PREFIX + toName;
 
             graph.addEdge({
-                id: EDGE_ID_PREFIX + `${fromName}-${toName}`,
-                from: NODE_ID_PREFIX + fromName,
-                to: NODE_ID_PREFIX + toName,
+                id: EDGE_ID_PREFIX + `${fromId}-${toId}`,
+                from: fromId,
+                to: toId,
             });
         });
 
@@ -80,16 +90,9 @@ export class ReducerHCYCLEtoHCIRCUIT extends Reducer<Graph, Graph> {
                 <p>
                     In this particular case, add these edges:
                     <ul>
-                        ${this.inInstance.edges.map(e => {
-                            const fromName = this.stripPrefix(e.from, EDGE_ID_PREFIX) + NODE_OUT_POSTFIX;
-                            const toName = this.stripPrefix(e.to, EDGE_ID_PREFIX) + NODE_IN_POSTFIX;
-
-                            return `
-                                <li> 
-                                    (${fromName}, ${toName})
-                                </li>
-                            `;
-                        }).join('')}
+                        ${edgesConns.map(conn => 
+                            `<li>(${conn.from}_out, ${conn.to}_in)</li>`
+                        ).join('')}
                     </ul>
                 </p>
             `,
@@ -122,34 +125,40 @@ export class ReducerHCYCLEtoHCIRCUIT extends Reducer<Graph, Graph> {
                 y: this.radius * Math.sin(i * this.radStep - this.startRot + 0.2 * this.radStep),
             }
             
-            graph.addNode({
-                id: NODE_ID_PREFIX + nodeName + NODE_IN_POSTFIX,
-                position: inPos,
-                classes: n.classes
-            });
+            const triplet: Record<string, GraphNode> = {
+                'in': {
+                    id: HCYCLE_HCIRCUIT_ID.INCOMING_NODE_PREFIX + nodeName,
+                    label: `${nodeName}_{in}`,
+                    position: inPos,
+                    classes: n.classes
+                },
+                'gap': {
+                    id: HCYCLE_HCIRCUIT_ID.GAP_NODE_PREFIX + nodeName,
+                    label: `${nodeName}_{gap}`,
+                    position: gapPos,
+                    classes: n.classes
+                },
+                'out': {
+                    id: HCYCLE_HCIRCUIT_ID.OUTGOING_NODE_PREFIX + nodeName,
+                    label: `${nodeName}_{out}`,
+                    position: outPos,
+                    classes: n.classes
+                }
+            }
 
-            graph.addNode({
-                id: NODE_ID_PREFIX + nodeName + NODE_GAP_POSTFIX,
-                position: gapPos,
-                classes: n.classes
-            });
-
-            graph.addNode({
-                id: NODE_ID_PREFIX + nodeName + NODE_OUT_POSTFIX,
-                position: outPos,
-                classes: n.classes
-            });
+            // add triplet nodes
+            Object.values(triplet).forEach(n => graph.addNode(n));
 
             // connect the in-coming and out-going nodes with the gap node
             graph.addEdge({
-                id: EDGE_ID_PREFIX + `${nodeName}${NODE_IN_POSTFIX}-${nodeName}${NODE_GAP_POSTFIX}`,
-                from: NODE_ID_PREFIX + nodeName + NODE_IN_POSTFIX,
-                to: NODE_ID_PREFIX + nodeName + NODE_GAP_POSTFIX,
+                id: EDGE_ID_PREFIX + `${triplet.in.id}-${triplet.gap.id}`,
+                from: triplet.in.id,
+                to: triplet.gap.id, 
             });
             graph.addEdge({
-                id: EDGE_ID_PREFIX + `${nodeName}${NODE_OUT_POSTFIX}-${nodeName}${NODE_GAP_POSTFIX}`,
-                from: NODE_ID_PREFIX + nodeName + NODE_OUT_POSTFIX,
-                to: NODE_ID_PREFIX + nodeName + NODE_GAP_POSTFIX,
+                id: EDGE_ID_PREFIX + `${triplet.gap.id}-${triplet.out.id}`,
+                from: triplet.gap.id,
+                to: triplet.out.id, 
             });
         });
 
@@ -184,7 +193,11 @@ export class ReducerHCYCLEtoHCIRCUIT extends Reducer<Graph, Graph> {
 
                             return `
                                 <li>
-                                    ${nodeName} - (${nodeName + NODE_IN_POSTFIX}, ${nodeName + NODE_GAP_POSTFIX}, ${nodeName + NODE_OUT_POSTFIX})
+                                    ${nodeName} - (
+                                        ${HCYCLE_HCIRCUIT_ID.INCOMING_NODE_PREFIX + nodeName}, 
+                                        ${HCYCLE_HCIRCUIT_ID.GAP_NODE_PREFIX + nodeName}, 
+                                        ${HCYCLE_HCIRCUIT_ID.OUTGOING_NODE_PREFIX + nodeName}
+                                    )
                                 </li>
                             `;
                         }).join('')}

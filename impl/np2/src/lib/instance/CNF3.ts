@@ -38,6 +38,10 @@ export class Literal {
     public asHtmlString() : string {
         return (this.negated ? '&not;' : '') + this.varName;
     }
+
+    public toTexString(): string {
+        return (this.negated ? ' \\lnot ' : "") + this.varName;
+    }
 }
 
 @Serializer.SerializableClass("Clause")
@@ -67,6 +71,10 @@ export class Clause {
             id: this.id,
             literals: this.literals,
         }
+    }
+
+    public toTexString(): string {
+        return '(' + this.literals.map(l => l.toTexString()).join(' \\lor ') + ')';
     }
 }
 
@@ -101,7 +109,6 @@ export class CNF3 extends ProblemInstance {
 
     public isEmpty(): boolean {
         const empty = this.clauses.length == 0 || this.variables.length == 0;
-        console.debug("empty", empty);
         return empty;
     }
 
@@ -115,8 +122,7 @@ export class CNF3 extends ProblemInstance {
             const words = line.split(" ").map(word => word.trim()).filter(word => word.length);
 
             if (words.length != 3) {
-                return `Clause number ${i + 1} (${line}) doesn't have exactly 3 literals.` +
-                       `Instead it has ${words.length} literals.`;
+                return `The clause number ${i + 1} doesn't have exactly 3 literals, instead it has ${words.length} literals: "${line}"`;
             }
            
             const clauseId = CNF3_ID.CLAUSE_PREFIX + i;
@@ -174,7 +180,11 @@ export class CNF3 extends ProblemInstance {
         throw 'Not implemented';
     }
 
-    public static fromSerializedString(serialized: string): CNF3 {
+    public static fromSerializedString(_serialized: string): CNF3 {
         throw 'Not implemented';
+    }
+
+    public toTexString(): string {
+        return this.clauses.map(c => c.toTexString()).join(' \\land ');
     }
 }

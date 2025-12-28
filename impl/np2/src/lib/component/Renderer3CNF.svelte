@@ -2,6 +2,7 @@
 
 <script lang="ts">
     import type { CNF3 } from "$lib/instance/CNF3";
+    import Katex from "./Katex.svelte";
 
     type Props = {
         cnf: CNF3;
@@ -13,24 +14,33 @@
 </script>
 
 <div class="cnf-renderer">
-    <h2>CNF Renderer</h2>
+    <h2 class="dev">CNF Renderer</h2>
 
     <div>
         <input bind:checked={viewAsColumn} type="checkbox" name="viewAsColumnCheckbox">
         <label for="viewAsColumnCheckbox">View as column</label>
     </div>
 
-    {#if viewAsColumn}
-        {#each cnf.clauses as clause, i}
-            <div class="clause">
-                {@html clause.asHtmlString()}
-            </div> 
-        {/each}
-    {:else}
-        {@html cnf.asHtmlString()}
-    {/if}
+    <div class="katex-wrapper">
+        {#key cnf}
+            {#if viewAsColumn}
+                <Katex displayMode text={
+                    `\\begin{aligned}` +
+                    cnf.clauses.map(c => c.toTexString()).map(s => `&${s}`).join(String.raw` \\ `) +
+                    `\\end{aligned}`
+                }>
+                </Katex>
+            {:else}
+                <Katex text={cnf.clauses.map(c => c.toTexString()).map(s => `${s}`).join('\\allowbreak\\land')}>
+                </Katex>
+            {/if}
+        {/key}
+    </div>
+
 </div>
 
 <style>
-.clause { margin: 0.0em 0; }
+.katex-wrapper {
+    padding: 8px;
+}
 </style>

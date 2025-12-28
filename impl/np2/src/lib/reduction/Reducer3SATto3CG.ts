@@ -1,6 +1,6 @@
 // Created by phatt-23 on 20/12/2025
 
-import { CG3_ID, CNF3_ID, cutNodeIdPrefix, EDGE_ID_PREFIX, NODE_ID_PREFIX, NODE_ID_PREFIX_FALSE, NODE_ID_PREFIX_TRUE } from "$lib/core/Id";
+import { CG3_ID, CNF3_ID, EDGE_ID_PREFIX } from "$lib/core/Id";
 import type { CNF3 } from "$lib/instance/CNF3";
 import { Graph, type GraphEdge, type GraphNode } from "$lib/instance/Graph";
 import { Reducer, type ReductionResult } from "./Reducer";
@@ -61,14 +61,14 @@ export class Reducer3SATto3CG extends Reducer<CNF3, Graph> {
 
             xCurrent += (this.sc + this.wc) * xStep;
 
-            ([ 
+            [ 
                 // connect the clause nodes vertically
                 [0,3], [1,4], [2,5], 
                 // connect T to top line
                 [this.coreNodes.T, 0], [this.coreNodes.T, 1], [this.coreNodes.T, 2],
                 // connect the bottom line
                 [this.coreNodes.T, 3], [3,4], [4,5], [5,this.coreNodes.F]
-            ]).forEach(c => {
+            ].forEach(c => {
                 const from = typeof(c[0]) == "number" ? nodes[c[0]] : c[0];
                 const to = typeof(c[1]) == "number" ? nodes[c[1]] : c[1];
 
@@ -174,7 +174,7 @@ export class Reducer3SATto3CG extends Reducer<CNF3, Graph> {
         const xShift = -radius;
 
         // add variable nodes
-        this.inInstance.variables.forEach((v, i) => {
+        this.inInstance.variables.forEach(v => {
             const trueNode: GraphNode = {
                 id: CG3_ID.TRUE_VAR_NODE_PREFIX + v,
                 position: {

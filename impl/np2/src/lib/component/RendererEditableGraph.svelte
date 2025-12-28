@@ -7,7 +7,7 @@ Component rendering the graph and allowing the user to add and remove edges.
 <script lang="ts">
     import RendererGraph from '$lib/component/RendererGraph.svelte';
     import type { cytoscapeStyles } from '$lib/core/cytoscapeStyles';
-    import { cutNodeIdPrefix, EDGE_ID_PREFIX, NODE_ID_PREFIX } from '$lib/core/Id';
+    import { EDGE_ID_PREFIX } from '$lib/core/Id';
     import type { Graph, GraphEdge } from '$lib/instance/Graph';
     import type { CytoscapeLayout } from './RendererGraph';
 
@@ -31,15 +31,12 @@ Component rendering the graph and allowing the user to add and remove edges.
 
     let firstNode: any = null;
 
+    // handle adding of edges when clicking consecutivelly on two nodes
     const onNodeTap = (event: cytoscape.EventObject) => {
         const node = event.target;
 
-        console.debug('firstNode id:', firstNode?.id());
-        console.debug('tapped node id:', node.id());
-
         // first node selected
         if (firstNode == null) {
-            console.debug('firstNode selected');
             firstNode = node;
             node.addClass('selected-node');
             return;
@@ -47,7 +44,6 @@ Component rendering the graph and allowing the user to add and remove edges.
 
         // same node clicked twice, then reset
         if (firstNode.id() == node.id()) {
-            console.debug('Same node clicked twice');
             firstNode.removeClass('selected-node');
             firstNode = null;
             return;
@@ -59,8 +55,6 @@ Component rendering the graph and allowing the user to add and remove edges.
             (!directed && (e.from == node.id() && e.to == firstNode.id()))
         );
 
-        console.debug('Existing edge:', existingEdge);
-
         // Reset selection even if edge exists
         if (existingEdge) {
             firstNode.removeClass('selected-node');
@@ -68,8 +62,9 @@ Component rendering the graph and allowing the user to add and remove edges.
             return;
         }
 
-        const fromNodeId = cutNodeIdPrefix(firstNode.id());
-        const toNodeId = cutNodeIdPrefix(node.id());
+        const fromNodeId = firstNode.id();
+        const toNodeId = node.id();
+        
         const edgeId = EDGE_ID_PREFIX + `${fromNodeId}-${toNodeId}`;
 
         const edge: GraphEdge = {
@@ -87,6 +82,7 @@ Component rendering the graph and allowing the user to add and remove edges.
         firstNode = null;
     }
 
+    // handle removing edges
     const onEdgeTap = (event: cytoscape.EventObject) => {
         event.stopPropagation();
         const edge = event.target;
@@ -97,14 +93,15 @@ Component rendering the graph and allowing the user to add and remove edges.
     }
 </script>
 
-<h2>Renderer Editable Graph</h2>
+<main>
+    <h2 class="dev">Renderer Editable Graph</h2>
 
-<RendererGraph
-    {graph}
-    {style}
-    {layout}
-    {onNodeTap}
-    {onEdgeTap}
->
-</RendererGraph>
-
+    <RendererGraph
+        {graph}
+        {style}
+        {layout}
+        {onNodeTap}
+        {onEdgeTap}
+    >
+    </RendererGraph>
+</main>

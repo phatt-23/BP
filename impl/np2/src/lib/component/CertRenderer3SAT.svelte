@@ -3,6 +3,7 @@
 <script lang="ts">
     import { Unsolvable } from "$lib/core/Unsolvable";
     import type { Certificate3SAT } from "$lib/solve/Certificate3SAT";
+    import Katex from "./Katex.svelte";
 
     type Props = {
         cert : Certificate3SAT | Unsolvable;
@@ -12,15 +13,28 @@
 </script>
 
 <main>
-    <h2>CertRenderer 3SAT</h2>
+    <h2 class="dev">CertRenderer 3SAT</h2>
 
     {#if cert == Unsolvable}
         <p>The 3CNF formula is unsatisfiable.</p>
     {:else}
         {@const sorted = [...cert.assignments].sort(([a], [b]) => a.localeCompare(b))}
 
-        {#each sorted as [varName, assgn],i}
-            <div>{varName} &coloneq; {assgn == true ? 'T' : assgn == false ? 'F' : 'Either' }</div>
-        {/each}
+        <div class='sol'>
+            <Katex 
+                text={
+                    `\\begin{aligned}`+
+                    sorted.map(([varName, assign]) => `${varName} &= ${assign ? 'T' : 'F'}`).join(' \\\\ ')
+                    +`\\end{aligned}`
+                }
+            ></Katex>
+        </div>
     {/if}
 </main>
+
+<style>
+    .sol {
+        display: flex;
+        justify-content: center;
+    }
+</style>

@@ -55,14 +55,15 @@ export const cytoscapeStyles: Record<string, StylesheetStyle[]> = {
         {
             selector: 'node',
             style: {
-                'label': 'data(id)',
+                // 'label': 'data(id)',
+                // 'label': 'data(label)',
                 'font-size': 12,
                 'text-valign': 'top',
                 'background-color': 'blue',
                 'border-color': 'black',
                 'border-style': 'solid',
                 'border-width': 2,
-            },
+            }
         },
         {
             selector: 'node.true',  // vrchol na konci rady 
@@ -144,6 +145,14 @@ export const cytoscapeStyles: Record<string, StylesheetStyle[]> = {
                 'line-color': 'red',
             },
         },
+        {
+            selector: 'edge.target-to-source',
+            style: {
+                "curve-style": "round-segments",
+                "segment-distances": 'data(controlPointDistances)', 
+                "segment-weights": [0.0, 1.0],
+            },
+        },
         ...solvedNode,
         selectedNode,
     ],
@@ -151,7 +160,7 @@ export const cytoscapeStyles: Record<string, StylesheetStyle[]> = {
         {
             selector: 'node',
             style: {
-                'label': 'data(id)',
+                // 'label': 'data(id)',
                 'text-valign': 'top',
                 'color': '#000',
                 'background-color': '#61bffc',
@@ -177,7 +186,7 @@ export const cytoscapeStyles: Record<string, StylesheetStyle[]> = {
         {
             selector: 'node',
             style: {
-                'label': 'data(id)',
+                // 'label': 'data(id)',
                 'text-valign': 'top',
                 'color': '#000',
                 'background-color': '#61bffc',
@@ -207,7 +216,7 @@ export const cytoscapeStyles: Record<string, StylesheetStyle[]> = {
         {
             selector: 'node',
             style: {
-                'label': 'data(id)',
+                // 'label': 'data(id)',
                 'text-valign': 'top',
                 'color': '#000',
                 'background-color': '#61bffc',
@@ -250,7 +259,7 @@ export const cytoscapeStyles: Record<string, StylesheetStyle[]> = {
         {
             selector: 'node',
             style: {
-                'label': 'data(id)',
+                // 'label': 'data(id)',
                 'text-valign': 'top',
                 'color': '#000',
                 'background-color': '#61bffc',
@@ -294,7 +303,7 @@ export const cytoscapeStyles: Record<string, StylesheetStyle[]> = {
         {
             selector: 'node',
             style: {
-                'label': 'data(id)',
+                // 'label': 'data(id)',
                 'font-size': 12,
                 'text-valign': 'top',
                 'background-color': 'white',

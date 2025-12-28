@@ -64,17 +64,15 @@ export class ReducerHCIRCUITtoTSP extends Reducer<Graph, Graph> {
         // fast cache of edgeIds (for checking if they exist)
         const edgeIds = new Set<Id>(this.inInstance.edges.map(e => e.id));
 
-        // stripped of the node id prefix
-        const nodeNames = this.inInstance.nodes.map(n => {
+        const nodeIds = this.inInstance.nodes.map(n => {
             graph.addNode(n);
-            const nodeName = n.id.slice(NODE_ID_PREFIX.length);
-            return nodeName;
+            return n.id;
         });
 
         for (let i = 0; i < graph.nodes.length; i++) {
             for (let j = i + 1; j < graph.nodes.length; j++) {
-                const ni = nodeNames[i];
-                const nj = nodeNames[j];
+                const ni = nodeIds[i];
+                const nj = nodeIds[j];
 
                 const edgeId = EDGE_ID_PREFIX + `${ni}-${nj}`;
                 const edgeIdMirror = EDGE_ID_PREFIX + `${nj}-${ni}`;
@@ -83,8 +81,8 @@ export class ReducerHCIRCUITtoTSP extends Reducer<Graph, Graph> {
                 if (!edgeExists) {
                     graph.addEdge({
                         id: edgeId,
-                        from: NODE_ID_PREFIX + ni,
-                        to: NODE_ID_PREFIX + nj,
+                        from: ni,
+                        to: nj,
                         weight: 2,
                         classes: 'muted',
                     });
