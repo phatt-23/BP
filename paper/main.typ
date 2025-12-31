@@ -193,13 +193,20 @@
 #show link: set text(fill: document.link.fill, ..document.fonts.raw)
 #show link: underline.with(stroke: document.link.underline-stroke, offset: document.link.underline-offset)
 
-// BEGIN: chapters, conclusion, bibliography, appendices
+// BEGIN: chapters, conclusion
 //////////////////////////////////////////////////////////////////////////
 
 // Chapters
 #include "./chapters/1.typ"
 
+// END
+//////////////////////////////////////////////////////////////////////////
 
+
+// BEGIN: conclusion, bibliography, appendices
+//////////////////////////////////////////////////////////////////////////
+
+#set heading(numbering: none)
 
 // Conclusion
 #show: pages.conclusion-page.with(

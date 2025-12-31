@@ -56,8 +56,10 @@
 #let document = (
   // Use `auto` if you don't have these fonts downloaded.
   fonts: (
-    normal: fonts.normal.pagella,
-    math: fonts.math.pagella,
+    // normal: fonts.normal.pagella,
+    // math: fonts.math.pagella,
+    normal: fonts.normal.mcr,
+    math: fonts.math.lm,
     raw: fonts.raw.courier,
   ),
 
