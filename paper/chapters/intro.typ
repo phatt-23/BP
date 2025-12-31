@@ -1,112 +1,30 @@
-// Without title (automatic)
+Uvést čtenáře do kontextu.
 
-- psát v 1. pádu množném 
-  - Nyní se podíváme na NP problémy a vysvětlíme si jejich význam v teoretické informatice.
-- dostat čtenáře do kontextu, aby vědel o každém termínu co znamená
+- Vysvětlit stručně teorii složitosti algoritmů a v průběhu se zaměřit na termín NP-Complete.
+  
+Jaká je motivace téhle práce? Co je problémem, který se snaží vyřešit?
 
-- co jsou to problémy?
-  - řešitelné, existuje alg, a neřešitelné problémy, neexistuje alg
-  - co to je rozhodovací problém
-    - jak lze problémy vyjádřit jako rozhodovací problémy
-- třídy složitosti, krátký popis, příklady
-  - podle času i podle paměti potřebné k řešení problému
-    - T(f) třída rozhodovacích problémů s O(f) časovou složitostí
-    - S(f) třída rozhodovacích problémů s O(f) prostorovou složitostí
-    - rozlišujeme xTIME a xSPACE třídy
-      - PTIME a PSPACE, LOGTIME a LOGSPACE, EXPTIME a EXPSPACE
-      - v této práci nám jde o NPTIME-úplné problémy
-- definice třídy NP a její význam
-  - nepolynomiální alg pro nalezení řešení, jsou exponencionální
-  - poly čas ověřovací alg
-  - co to je svědek
-- co jsou NP-těžké a NP-úplné třídy
-  - ne každý NP-těžký problém je v NP, je těžší
-  - kažký NP problém lze redukovat na NP-těžké problémy
-  - NP-úplný problém P je: 
-    - NP-těžký, tedy lze na něj redukovat jakýkoliv NP problém
-    - P je zároveň ve třídě NP 
-    - NP-úplné problémy lze redukovat mezi sebou
-- v této práci:
-  - zaměření na určité redukce
-    - 3-SAT na HCYCLE, SSP, 3-CG
-    - HCYCLE na HCIRCUIT, orientovaný graf na neorientovaný graf
-    - HCIRCUIT na TSP, neorientovaný neohodnocený graf na neorientovaný ohodnocený graf
-  - skádá se z částí:
-    - use case analýza
-      - vybrat převod
-      - napsat do editoru instanci problému v textovém formátu
-        - kontrola formátu
-        - upozornit uživatele na chybnost vstupu
-      - převést problém
-        - převede instanci problému A na instanci problému B
-        - vytvoří kroky pro převod, které lze potom zobrazit
-      - vyřesit problém
-        - problém B se začne řešit
-          - pokud má řešení, převede se toto řešení na řešení problému A
-          - jinak oba problémy nemají řešení
-      - zobrazit postup převodu
-        - zobrait celý postup
-        - krokovat posutupně jednotlivé kroky
-      - načíst úkazkovou instanci
-        - výběr z listu
-      - zkopírovat instance problému
-        - nezpracovný text takový jak se jeví v editoru
-        - zformátovaný text
-      - zkopírovat řešení problému (zformatovaný)
-      - uložit si vlastní instance problémů
-        - u editoru bude tlačitko "uložit"
-        - u editoru bude list pro načtení ukázkových instancí a uložených (vlastních) instancí
-    - UI wireframe, jak si to představuju, že budou vypadat:
-      - stránky
-      - UI komponenty
-    - volba techonologií
-      - proč Svelte a Typescript?
-        - Typescript 
-          - nadstavba JavaScriptu, skriptovací jazyk všech podstatných browserů
-          - výhody:
-            - má striktnější typovací systém
-              - ukázky, v čem jsou si odlišné
-            - má třídy, stále prototypově objektivně-orientované programování a ne klasiké OOP s třídami
-            - pracuje se s ním velmi podobně jako s JavaScriptem
-          - nevýhody:
-            - nemá třídy jako C++, je to prototypový programovací jazyk
-            - při posílání objektů musí být serializovány a deserealizovány
-              - příkladový kód
-            - jelikož se transpiluje do JavaScriptu, který je čistě JIT skriptovací jazyk, není možné aplikaci debuggovat krokovaním intrukcí
-        - Svelte
-          - moderní, mainstream, podobné Reactu a všem moderním webovým-frontend frameworkům
-          - logika, rozložení stránky a styly jsou propojené v jednom souboru
-            - lokální CSS styly
-              - v Reactu jsou style globální
-            - Svelte komponenta vypadá a píše se jako HTML stránka
-              - logika se píše v <script> tagu
-              - v Reactu jsou to funkce, které vrací HTML
-          - umožňuje pracovat s UI komponenty jako s HTML tagy
-          - je tranpilovaný do HTML a JS, podobně jako React
-          - má stejné možnosti jako ostatní web-frameworky
-            - ze všech mi příjde nejelegantnější
-      - proč statická stránka a ne server-client přístup?
-        - server-client se hodí, pokud data ukládáme v databázi, či jsou výpočty až moc náročné na to, aby běželi na klientských počítačích
-        - server-client vyžaduje připojení k internetu
-        - instance serveru by musela být v provozu jako proces na nějakém počítači
-        - statická stránka umožňuje uživateli stránku celou stáhnout a použivat ji offline
-      - knihovny
-        - Cytoscape
-          - vykreslování grafů
-        - KaTeX
-          - sazba textu založená na syntaxi TeX
-          - pro vykreslování matematiky
-        - Boostrap
-          - stylizace CSS
-        - Tailwind CSS
-          - stylizace komponent
-        - Sass CSS
-          - nadstavba CSS, asi neni potreba
-      
-- struktura projektu
-  - Svelte-Kit framework struktura
-      - routes, lib, app.html, app.scss
-  - struktura mého projektu 
-    - solver, decoder, reducer, workers, ...
+- Studenti a vyučující TI, chtějí vizualizovat převody mezi problémy. 
+- Z vizualizací lze mnohem pochopit redukce, než ze čtení formálních textů.
+- Umožnit interaktivní zobrazení redukcí a jejich postup.
+- Zobecnění pro, každou instanci problému. Konec statických animací redukcí pro specifické vstupní instance.
+
+Jaké cíle má tahle práce? Co chce přínést, unsnadnit, v čem má pomoct?
+
+- Příjít s řešením pro satisfakci vylistovaných motivací.
+- Má za cíl, poskytnout interaktivní GUI pro zadavaní instancí. 
+- #[ 
+  Vizualizace vstupních a výstupních instancí, ať už to jsou logické výrazy,
+  orientované/neorientované grafy s nebo bez ohodnocení hran, tabulky pro čísla
+  jako vstupní instance pro problém SSP. 
+]
+
+- Zobrazit certifikáty k daným problémum, pokud existují. 
+- Zobrazit i certifikát pro vstupní instanci, pokud má certifikát výstupní instance.
+- Zobrazit postup pro jednotlivé redukce.
+
+Co bylo vytvořeno.
+
+- Webová aplikace, která funguje podobně jako online kalkulačky (např. integrální kalkulačky, zobrazujicí postup, atd...).
 
 
