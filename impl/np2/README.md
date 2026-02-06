@@ -1,5 +1,12 @@
 # NOTES TO MYSELF
 
+## Deployment
+
+```sh
+npm run build
+scp -r build/* tra0163@homel.vsb.cz:~/public_html/
+```
+
 ## OBSERVABLE CLASSES
 
 When using classes, you must use $state on every member variable, otherwise it won't be proxied.

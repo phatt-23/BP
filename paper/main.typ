@@ -198,6 +198,11 @@
 
 // Chapters
 #include "./chapters/1.typ"
+#include "./chapters/2.typ"
+#include "./chapters/3.typ"
+#include "./chapters/4.typ"
+#include "./chapters/5.typ"
+#include "./chapters/6.typ"
 
 // END
 //////////////////////////////////////////////////////////////////////////

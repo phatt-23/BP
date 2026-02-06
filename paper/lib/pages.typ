@@ -137,8 +137,8 @@
             #smallcaps[
               #linguify("supervisor"):
               #h(0.25em)
-              #supervisor
             ]
+            #supervisor
           ]
           #h(1fr)
           #smallcaps[#publish-location#if publish-location != none and publish-year != none [,] #publish-year]

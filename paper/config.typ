@@ -36,11 +36,14 @@
     // Normal Latin Modern. Too thin and hard to read.
     lm: (font: "Latin Modern Roman", size: 11pt),     
     mcr: (font: "New Computer Modern", size: 11pt),
+    liber: (font: "Libertinus Sans", size: 11pt),
   ),
   // Math fonts.
   math: (
     lm: (font: "Latin Modern Math"),
     pagella: (font: "TeX Gyre Pagella Math"),
+    mcr: (font: "New Computer Modern Math"),
+    // liber: (font: "Libertinus Math"),
   ),
   // Raw fonts for code and hyperlinks.
   raw: (
@@ -56,10 +59,8 @@
 #let document = (
   // Use `auto` if you don't have these fonts downloaded.
   fonts: (
-    // normal: fonts.normal.pagella,
-    // math: fonts.math.pagella,
     normal: fonts.normal.mcr,
-    math: fonts.math.lm,
+    math: fonts.math.mcr,
     raw: fonts.raw.courier,
   ),
 

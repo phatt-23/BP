@@ -77,11 +77,7 @@
 
 // Conclusion. Is mandatory.
 #let conclusion = [
-  #lorem(20)
-
-  #lorem(40)
-
-  #lorem(80)
+  #include "/chapters/outro.typ"
 ]
 
 // Appnedices. Is optional, if you leave an empty list it won't render anything.
