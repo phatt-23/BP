@@ -1,5 +1,108 @@
 #import "/lib/global.typ": *
 
+
+= Základní pojmy a terminologie
+
+Tato kapitola stručně zavádí základní pojmy z teorie výpočetní složitosti,
+které jsou nezbytné pro další části práce. 
+Nejde o úplný teoretický přehled, 
+ale o vymezení terminologie a konceptů, 
+se kterými bude práce dále operovat.
+
+== Algoritmus a problém 
+
+Algoritmem rozumíme konečný a jednoznačně definovaný postup, 
+který pro daný vstup produkuje výstup. 
+
+Problémem pak chápeme obecnou úlohu, 
+kterou se snažíme řešit, 
+typicky pro různé vstupní instance.
+Instance problému je konkrétní zadání problému, tj. konkrétní vstup, 
+pro který je požadováno rozhodnutí nebo řešení. 
+Například u problému splnitelnosti booleovských formulí je instancí konkrétní logický výraz, 
+zatímco u grafových problémů je instancí konkrétní graf se zadanými vlastnostmi. 
+Redukce problémů pak pracují právě na úrovni jednotlivých instancí.
+
+Řekneme, že algoritmus řeší problém, 
+pokud pro každou jeho vstupní instanci poskytne správnou odpověď. 
+Ne každý problém je však algoritmicky řešitelný.
+
+
+== Rozhodovací problém
+
+V teorii výpočetní složitosti se obvykle pracuje s tzv. rozhodovacími problémy. 
+Ty jsou formulovány tak, 
+že výstupem je pouze odpověď ano nebo ne.
+
+Každý algoritmický problém lze převést na rozhodovací problém. 
+Například optimalizační úlohu lze reformulovat zavedením prahové hodnoty a otázky, 
+zda existuje řešení splňující dané omezení. 
+Tento přístup umožňuje jednotnou analýzu problémů z hlediska jejich složitosti.
+
+== Výpočetní model a řešitelnost
+
+Pro analýzu algoritmů uvažujeme abstraktní výpočetní modely, 
+nejčastěji Turingův stroj. 
+Modely, které jsou schopny simulovat libovolný algoritmus, 
+nazýváme Turingovsky úplné.
+
+Ne všechny problémy jsou algoritmicky řešitelné. 
+Klasickým příkladem je problém zastavení, 
+který dokazuje, 
+že neexistuje obecný algoritmus rozhodující, 
+zda se libovolný program zastaví v konečném čase.
+
+== Asymptotická notace
+
+Časovou složitostí algoritmu rozumíme asymptotický 
+růst počtu vykonaných kroků v závislosti na velikosti vstupu. 
+K jejímu popisu se používá asymptotická notace 
+$O(dot)$,
+$Omega(dot)$
+a 
+$Theta(dot)$.
+
+Notace $O(f(n))$ udává horní asymptotickou hranici, 
+$Omega(f(n))$ dolní hranici a $Theta(f(n))$ přesný řád růstu. 
+Tyto pojmy umožňují porovnávat efektivitu algoritmů nezávisle na konkrétní implementaci.
+
+== Třídy složitosti
+
+Rozhodovací problémy lze klasifikovat do tříd složitosti podle jejich časové náročnosti. 
+V této práci budeme pracovat zejména s následujícími třídami
+
+- P #footnote[
+  V této práci jsou označení P, NP a EXP chápána ve smyslu časových tříd PTIME, NPTIME a EXPTIME.
+] <asymp-not> -- problémy řešitelné deterministickým algoritmem v polynomiálním čase,
+- NP #footnote(<asymp-not>) -- problémy, jejichž řešení lze ověřit v polynomiálním čase,
+- EXP #footnote(<asymp-not>)-- problémy řešitelné deterministickým algoritmem v exponenciálním čase.
+
+Platí vztah $P subset.eq "NP" subset.eq "EXP"$. 
+Zda platí rovnost $P = "NP"$, zůstává otevřenou otázkou teoretické informatiky.
+
+== Redukce
+
+Redukce problému $A$ na problém $B$ je převod instance problému 
+$A$ na instanci problému $B$ tak, 
+že řešení instance $B$ lze využít k získání řešení instance $A$.
+Redukci lze chápat jako algoritmickou transformaci jedné vstupní instance na jinou výstupní instanci.
+
+V kontextu této práce uvažujeme pouze polynomiální redukce, 
+tedy takové, které lze provést v polynomiálním čase. 
+Redukce slouží k porovnávání obtížnosti problémů a tvoří základ definice NP-úplnosti.
+
+== NP-úplné problémy
+
+Problém nazveme NP-těžkým, 
+pokud na něj lze polynomiálně redukovat každý problém z třídy NP. 
+Pokud je problém zároveň NP-těžký a patří do třídy NP, nazývá se NP-úplný.
+
+NP-úplné problémy představují nejobtížnější problémy třídy NP v tom smyslu, 
+že nalezení efektivního algoritmu pro libovolný z nich by znamenalo 
+efektivní řešení všech problémů v této třídě.
+
+
+/*
 = Základní teorie
 
 Než se vrhnem přímo do věci, je dobré si probrat základní teorii, 
@@ -248,4 +351,4 @@ nalezli jsme efektivní algoritmus pro každý NP-úplný problém.
 
 
 
-
+*/

@@ -66,7 +66,6 @@
 // List of symbols and abbreviations.
 #let symbols-and-abbrevs = (
   ([GCC], [GNU C Compiler]),
-  ([GNU], [GNU Is Not Linux]),
   ([NPTIME], [Non-Deterministic Polynomial Time]),
 )
 
@@ -84,16 +83,10 @@
 #let appendices = (
   ([Demo appendix], 
   [
-      Look at this quicksort algorithm written in Haskell.
+    Bla Bla popis.
 
-      #sourcecode(```hs
-      quicksort [] = []
-      quicksort (p:xs) = (quicksort lesser) ++ [p] ++ (quicksort greater)
-        where
-          lesser = filter (< p) xs
-          greater = filter (>= p) xs
-      ```)
-
-      Very cool.
+    #sourcecode(```txt
+      bla bla
+    ```)
   ]),
 )
