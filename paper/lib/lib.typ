@@ -204,7 +204,6 @@
     #text(size: if formal-fluff {document.heading.heading-1-size} else {document.heading.heading-size})[
       #if numbering [
         #current-numbering(current-heading)
-        #h(0.5em)
       ]
       #heading.body
     ]
