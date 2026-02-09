@@ -65,8 +65,15 @@
 
 // List of symbols and abbreviations.
 #let symbols-and-abbrevs = (
-  ([GCC], [GNU C Compiler]),
-  ([NPTIME], [Non-Deterministic Polynomial Time]),
+  ([EXP, EXPTIME], [Exponentional Time]),
+  ([P, PTIME], [Polynomial Time]),
+  ([NP, NPTIME], [Non-deterministic Polynomial Time]),
+  ([3-SAT], [3-Satisfiability]),
+  ([TSP], [Traveling Salesman Problem]),
+  ([HCYCLE], [Hamiltonian Cycle Problem]),
+  ([HCIRCUIT], [Hamiltonian Circuit Problem]),
+  ([SSP], [Subset Sum Problem]),
+  ([3-CG], [3-Coloring Problem]),
 )
 
 // Intro. Is mandatory.

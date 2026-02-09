@@ -68,14 +68,21 @@ Tyto pojmy umožňují porovnávat efektivitu algoritmů nezávisle na konkrétn
 
 == Třídy složitosti
 
+#let complex-classes = [
+  V této práci jsou označení P, NP a EXP chápána 
+  ve smyslu časových tříd PTIME, NPTIME a EXPTIME.
+]
+
+Některé problémy jsou těžší než jiné.
 Rozhodovací problémy lze klasifikovat do tříd složitosti podle jejich časové náročnosti. 
 V této práci budeme pracovat zejména s následujícími třídami
 
-- P #footnote[
-  V této práci jsou označení P, NP a EXP chápána ve smyslu časových tříd PTIME, NPTIME a EXPTIME.
-] <asymp-not> -- problémy řešitelné deterministickým algoritmem v polynomiálním čase,
-- NP #footnote(<asymp-not>) -- problémy, jejichž řešení lze ověřit v polynomiálním čase,
-- EXP #footnote(<asymp-not>)-- problémy řešitelné deterministickým algoritmem v exponenciálním čase.
+- P, PTIME #footnote[#complex-classes] <cc> -- 
+  problémy řešitelné deterministickým algoritmem v polynomiálním čase,
+- NP #footnote(<cc>) -- 
+  problémy, jejichž řešení lze ověřit v polynomiálním čase, 
+- EXP #footnote(<cc>) -- 
+  problémy řešitelné deterministickým algoritmem v exponenciálním čase.
 
 Platí vztah $P subset.eq "NP" subset.eq "EXP"$. 
 Zda platí rovnost $P = "NP"$, zůstává otevřenou otázkou teoretické informatiky.

@@ -159,6 +159,7 @@
   list: (
     // Markers for different levels.
     marker: (
+      [•],
       [--], 
     ),
   ),

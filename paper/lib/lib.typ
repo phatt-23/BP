@@ -42,10 +42,12 @@
 #let current-numbering(p-heading, p-numbering: none, p-supplement: false) = {
   return [
     #if p-supplement {p-heading.supplement}
-    #numbering(
-      if p-numbering != none {p-numbering} else {p-heading.numbering}, 
-      ..counter(heading).at(p-heading.location())
-    )
+    #if not (p-heading.numbering == none and p-numbering == none) {
+      numbering(
+        if p-numbering != none {p-numbering} else {p-heading.numbering}, 
+        ..counter(heading).at(p-heading.location())
+      )
+    }
   ]
 }
 
