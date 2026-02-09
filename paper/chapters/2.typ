@@ -1,11 +1,13 @@
 #import "/lib/global.typ": *
 #import "/czech-declension/out.typ": inflected as inf
+#import "@preview/diagraph:0.3.6": *
 
 #set math.equation(numbering: "1.")
 
 #let rozhod-forma = heading(level: 3, outlined: false, numbering: none)[Vyjádření problému jako rozhodovacího]
 #let kladna-odpo = heading(level: 3, outlined: false, numbering: none)[Instance s kladnou odpovědí]
 #let zaporna-odpo = heading(level: 3, outlined: false, numbering: none)[Instance se zápornou odpovědí]
+#let opt-pr-instance = heading(level: 3, outlined: false, numbering: none)[Příklady instancí problému]
 
 = Vybrané NP-úplné problémy
 
@@ -16,8 +18,8 @@ jeho formální definice,
 popis vstupu 
 a formulace rozhodovací otázky. 
 Ukážeme si také konkrétní  
-  instance těchto problémů s kladnou odpověďí 
-  i instance se zápornou odpověďí. 
+  instance těchto problémů s kladnou odpovědí 
+  i instance se zápornou odpovědí. 
 
 #let ham_cyklus_kruznice = [
   Obecně se pojem hamiltonovský cyklus vztahuje jak na orientované, tak na neorientované grafy.
@@ -42,38 +44,6 @@ V této práci se zaměřujeme na následující NP-úplné problémy:
 Tyto problémy slouží jako základní stavební kameny 
 pro demonstraci redukcí a jejich vizualizaci.
 
-// #table(
-//   columns: (auto, auto, 1fr),
-//   [3-SAT], [3-Satisfiability], [splnitelnost booleovské formule v 3-konjunktivní normální formě],
-//   [ HCYCLE ], [Hamiltonian Cycle], [existence hamiltonovského cyklu v orientovaném grafu],
-//   [ HCIRCUIT ], [Hamiltonian Circuit], [existence hamiltonovské kružnice #footnote[#ham_cyklus_kruznice] v neorientovaném grafu],
-//   [ TSP ], [Traveling Salesman Problem], [problém obchodního cestujícího v rozhodovací verzi],
-//   [ SSP ], [Subset Sum Problem], [problém podmnožinového součtu],
-//     [ 3-CG ], [3-Coloring], [3-obarvitelnost vrcholů grafu],
-// )
-
-
-/*
-= Vybrané NP-úplné problémy 
-
-// *Purpose:* 
-// - Define the concrete problems your system works with.
-// - Create one subsection per problem.
-
-// For each provide:
-// - Formal definition
-// - Input format
-// - Question being answered (YES/NO)
-// - Small illustrative example
-
-V této práci jsem se zaměřil na tyto NP-úplné problémy:
-- 3-SAT - splitelnost booleovské formule v 3-konjunktivní normální formě
-- HCYCLE - nalezení hamiltonosvkého cyklu v orientovaném grafu
-- HCIRCUIT - problém hamiltonovské kružnice, nalezení hamiltonovského cyklu v neorientovaném grafu
-- TSP - problém obchodního cestujicího, nalezení hamiltonovského cyklu s minimální cenou v ohodnoceném neorientovaném grafu
-- SSP - subset-sum problém, vybrat z (multi)množiny čísel čísla, tak aby byl součet roven cílové hodnotě  
-- 3-CG - barvení vrcholy grafu 3 barvami tak, aby žádné dva sousední vrcholy nemají stejnou barvu 
-*/
 
 == 3-SAT
 
@@ -89,7 +59,6 @@ kde $cal(V)$ je množina booleovských proměnných
 a $cal(K)$ je množina klauzulí v 3-konjunktivní normální formě (3-KNF), 
 tedy takové, že každá klauzule obsahuje právě tři literály.
 
-// Dále v textu budeme s touto formulací pracovat následovně.
 Každou klauzuli $kappa in cal(K)$ 
 lze chápat jako množinu obsahujicí právě 3 literály 
 #footnote[
@@ -229,24 +198,93 @@ Graf, který hamiltonovský cyklus obsahuje, nazýváme hamiltonovský graf.
   Obsahuje graf $G$ hamiltonovký cyklus?
 
 #kladna-odpo
+
+Mějme graf $G = (V,E)$, kde
+
+$
+  V = {A,B,C,D,E,F} \
+  E = {
+    {A , C},
+    {B , D},
+    {C , E},
+    {A , B}, 
+    {B , C}, \
+    {C , D}, 
+    {D , E}, 
+    {E , F}, 
+    {F , A}
+  }.
+$
+
+#figure(
+  raw-render(```dot
+    digraph CycleWithExtraEdges {
+      layout=neato
+      
+      node [
+        shape=circle 
+        width=0.1
+      ]
+
+      edge [
+        color=gray30
+        penwidth=1
+        style=solid
+      ]
+
+      A -> C
+      B -> D
+      C -> E
+
+      edge [color=red penwidth=2]
+      A -> B 
+      B -> C 
+      C -> D 
+      D -> E 
+      E -> F 
+      F -> A 
+    }
+  ```),
+  caption: [Instance problému HCYCLE se kladnou odpovědí],
+)
+
+Graf $G$ je hamiltonovský, protože obsahuje hamiltonovský cyklus popsán uzavřenou cestou
+$
+  P = (A,B,C,D,E,F,A).
+$
+
 #zaporna-odpo
 
-/*
+Mějme graf stromu
 
-Mějme orientovaný graf $G = (V,E)$, kde $V$ je množina vrcholů a $E$ je množina orientovaných hran.
-V grafu $G$ je hamiltonovký cyklus, jestliže existuje cesta $P$ taková, že:
+#figure(
+  raw-render(```dot
+    digraph Tree {
+      layout=dot
+      
+      node [
+        shape=circle 
+        width=0.1
+      ]
 
-$
-  P = (v_1, v_2, ..., v_(|V| - 1), v_(|V|), v_1) \
-  (P_i, P_(i+1)) in E text("pro") 0 <= i < |V|\
-$
+      edge [
+        color=gray30
+        penwidth=1
+        style=solid
+      ]
 
-Grafu, který má hamiltonovský cyklus, říkáme hamiltonovký graf.
+      A -> B
+      A -> C
+      B -> D
+      B -> E
+      C -> F
+    }
+  ```),
+  caption: [Instance problému HCYCLE se zápornou odpovědí],
+)
 
-Vstup: Orientovaný graf $G$.
-
-Otázka: Je $G$ hamiltonovký graf?
-*/
+Tento graf neobsahuje hamiltonovský cyklus, 
+protože je acyklický.
 
 
 == HCIRCUIT
@@ -275,32 +313,9 @@ která prochází každým vrcholem grafu právě jednou.
 / Otázka: 
   Obsahuje graf $G$ hamiltonovskou kružnici? 
 
-#kladna-odpo
-#zaporna-odpo
+// #kladna-odpo
+// #zaporna-odpo
 
-/*
-Uvažujme ne neorientovaný graf 
-$
-  G = (V,E),
-$ 
-kde $V$ je množina vrcholů a $E$ je množina neorientovaných hran. 
-Tedy $E subset.eq {{u,v} | u,v in V}$.
-
-Graf $G$ obsahuje hamiltonovký cyklus, pokud existuje posloupnost
-
-$
-  P = (v_1, v_2, ..., v_(|V| - 1), v_(|V|), v_1),
-$
-
-která splňuje následujicí podmínky:
-- každý vrchol z množiny $V$ se v posloupnosti $P$ vyskytuje právě jednou 
-  (s výjimkou počátečního a koncového vrcholu $v_1$,
-- pro každé $i$, kde $1 <= i < |V|$, platí ${v_i, v_(i+1)} in E$.
-
-Vstup: Neorientovaný graf $G$.
-
-Otázka: Je $G$ hamiltonovký graf?
-*/
 
 
 
@@ -338,6 +353,11 @@ která splňuje:
 
 - celková cena kružnice splňuje $sum_i^(|V|) w({v_i, v_(i+1)}) <= k$
 
+Abychom získali optimální řešení, 
+  kterou je uzavřená cesta s nejnižší cenou splňující zmíněné podmínky, 
+budeme hodnotu $k$ snižovat do té doby, než bude odpověď záporná.
+V tu chvíli víme, že cena optimální cesty je $k + 1$ a žádná jiná cesta s nižší cenou neexistuje.
+
 #rozhod-forma
 
 / Vstup: 
@@ -346,8 +366,112 @@ která splňuje:
 / Otázka: 
   Obsahuje graf $G$ hamiltonovskou kružnici s cenou nejvýše $k$?
 
-#kladna-odpo
-#zaporna-odpo
+#opt-pr-instance
+
+Mějme graf $G = (V,E)$
+
+#figure(
+  raw-render(```dot
+    graph {
+      rankdir=LR
+      
+      node [
+        shape=circle 
+        width=0.1
+      ]
+
+      edge [
+        color=gray30
+        penwidth=1
+        style=solid
+      ]
+
+      edge [label="2"]
+      A -- F
+      B -- D 
+      C -- E
+
+      edge [label="1"]
+      A -- B 
+      B -- C 
+      C -- D 
+      D -- E 
+      E -- F 
+      F -- A 
+    }
+  ```),
+  caption: [Instance problému TSP - ohodnocený neorientovaný graf],
+)
+
+Pro $k = 8$ existuje možné řešení 
+a odpověď na rozhodovací otázku je kladná.
+
+#figure(
+  raw-render(```dot
+    graph {
+      rankdir=LR
+      
+      node [
+        shape=circle 
+        width=0.1
+      ]
+
+      edge [
+        color=gray30
+        penwidth=1
+        style=solid
+      ]
+
+      A -- F [label="2"]
+      B -- D [color=red penwidth=2 label="2"]
+      C -- E [color=red penwidth=2 label="2"]
+      A -- B [color=red penwidth=2 label="1"]
+      B -- C [label="1"]
+      C -- D [color=red penwidth=2 label="1"]
+      D -- E [label="1"]
+      E -- F [color=red penwidth=2 label="1"]
+      F -- A [color=red penwidth=2 label="1"]
+    }
+  ```),
+  caption: [Řešení problému TSP pro $k = 8$],
+)
+
+Pro $k = 6$ existuje také možné řešení. Odpověď na rozhodovací otázku je kladná.
+
+#figure(
+  raw-render(```dot
+    graph {
+      rankdir=LR
+      
+      node [
+        shape=circle 
+        width=0.1
+      ]
+
+      edge [
+        color=gray30
+        penwidth=1
+        style=solid
+      ]
+
+      A -- F [label="2"]
+      B -- D [label="2"]
+      C -- E [label="2"]
+      A -- B [color=red penwidth=2 label="1"]
+      B -- C [color=red penwidth=2 label="1"]
+      C -- D [color=red penwidth=2 label="1"]
+      D -- E [color=red penwidth=2 label="1"]
+      E -- F [color=red penwidth=2 label="1"]
+      F -- A [color=red penwidth=2 label="1"]
+    }
+  ```),
+  caption: [Řešení problému TSP pro $k = 6$],
+) <tsp-opt-reseni>
+
+Pro $k = 5$ žádné řešení neexistuje, tudíž odpověď na rozhodovací otázku je záporná
+a nejnižší dosažitelná cena je $k + 1 = 5 + 1 = 6$.
+Cesta $(A,B,C,D,E,F,A)$ zobrazená na @tsp-opt-reseni[obrázku] je optminálním řešením.
+
 
 
 == SSP
@@ -386,18 +510,6 @@ $
 #kladna-odpo
 #zaporna-odpo
 
-/*
-Mějme množinu přirozených čísel $S$ a cílovou hodnotu $tau in NN$.
-V problému SSP je cílem nalézt podmnožinu $S' subset.eq S$ 
-
-Vstup: Množina přírozených čísel $S$ a cílová hodnota $tau in NN$.
-
-Otázka: Existuje $S' subset.eq S$ taková, že:
-
-$
-  tau = sum_(s in S') s
-$
-*/
 
 == 3-CG
 
@@ -427,18 +539,3 @@ $kappa(u) eq.not kappa(v)$.
 #kladna-odpo
 #zaporna-odpo
 
-/*
-Mějme neorientovaný graf $G = (V,E)$ a 3 barvy, např. červnenou, zelenou a modrou. 
-Pro lepší organizaci si barvy přidáme do množiky $Kappa = {R,G,B}$.
-V tomto problému jde o to, obarvit vrcholy $v in V$ tak, aby žádné dva sousední vrcholy neměli stejnou barvu.
-Hledáme předpis funkce $kappa : V -> K$ tak, aby splňovala:
-
-$
-  {v_0,v_1} in E \
-  kappa(v_0) eq.not kappa(v_1) 
-$
-
-Vstup: Neorientovaný graf $G = (V,E)$.
-
-Otázka: Lze vrcholy grafu obarvit 3 barvami tak, aby žádné dvě sousední nesdíleli stejnou barvu?
-*/
