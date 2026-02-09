@@ -483,8 +483,9 @@ $
 a cílovou hodnotu $tau in NN$ existuje podmnožina $S' subset.eq S$, 
 jejíchž součet prvků je roven dané cílové hodnotě $tau$.
 
-
-*Vyjádření jako rozhodovací problém*
+$
+  sum_(s in S') s = tau
+$
 
 #rozhod-forma
 
@@ -495,20 +496,35 @@ jejíchž součet prvků je roven dané cílové hodnotě $tau$.
   Existuje podmnožina $S' subset.eq S$ taková, 
   že součet jejích prvků je roven $tau$?
 
-Jelikož se jedná o rozhodovací problém, 
-zajímá nás pouze existence takové podmnožiny, 
-nikoli její konkrétní složení.
-
-Formálně řekneme, že instance problému SSP má kladnou odpověď, 
-pokud existuje množina 
-$S' subset.eq S$
-taková, že
-$
-  sum_(s in S') s = tau.
-$
-
 #kladna-odpo
+
+Mějme množinu čísel
+$
+  S = {3,7,10,5}
+$
+a cílovou hodnotu $tau = 15$.
+
+Validním řešením je $S' = {10,5}$, protože $10 + 5 = 15$.
+Dalším možným je $S'' = {3,7,5}$, protože $3 + 7 + 5 = 15$.
+
+
 #zaporna-odpo
+
+Mějme množinu čísel
+$
+  S = {3,5,11}
+$
+a cílovou hodnotu $tau = 10$.
+
+Tato instance nemá řešení. 
+Ať už vybereme jakoukoli kombinaci prvků z množiny $S$, 
+nikdy nebude součet těchto prvků roven $10$.
+
+$
+  S' subset.eq S \
+  S' in {emptyset, {3}, {5}, {11}, {3,5}, {3,11}, {5,11}, {3,5,11}} \
+  sum_(s in S') s != 10
+$
 
 
 == 3-CG
@@ -537,5 +553,132 @@ $kappa(u) eq.not kappa(v)$.
 / Otázka: Lze vrcholy grafu obarvit 3 barvami tak, aby žádné dvě sousední nesdíleli stejnou barvu?
 
 #kladna-odpo
+
+Mějme neorientovaný graf $G = (V,E)$, kde
+$
+  V = {A,B,C,D,E} \
+  E = {{A,B}, {A,C}, {B,C}, {B,D}, {C,E}, {D,E}}.
+$
+
+#figure(
+  raw-render(```dot
+    graph {
+      layout=neato
+      
+      node [
+        shape=circle 
+        width=0.1
+      ]
+
+      edge [
+        color=gray30
+        penwidth=1
+        style=solid
+      ]
+    
+      A -- B
+      A -- C
+      B -- C
+      B -- D
+      C -- E
+      D -- E
+    }
+  ```),
+  caption: [Instance problému 3-CG s kladnou odpovědí],
+)
+
+Pro tento graf existuje řešení, existuje validní předpis funkce $kappa : V -> K$
+
+$
+  A -> R \
+  B -> G \
+  C -> B \
+  D -> R \
+  E -> G. \
+$
+
+
+#figure(
+  raw-render(```dot
+    graph {
+      layout=neato
+      
+      node [
+        shape=circle 
+        width=0.1
+        penwidth=2
+      ]
+
+      edge [
+        color=gray30
+        penwidth=1
+        style=solid
+      ]
+
+      A [color=red]
+      B [color=green]
+      C [color=blue]
+      D [color=red]
+      E [color=green]
+    
+      A -- B
+      A -- C
+      B -- C
+      B -- D
+      C -- E
+      D -- E
+    }
+  ```),
+  caption: [Validní obarvení grafu třemi barvami],
+)
+
+
 #zaporna-odpo
+
+Mějme neorientovaný graf $G = (V,E)$, kde
+$
+  V = {A,B,C,D} \
+  E = {{A,B}, {A,C}, {A,D}, {D,C}, {B,D}, {B,C}}.
+$
+
+
+#figure(
+  raw-render(```dot
+    graph {
+      layout=neato
+      
+      node [
+        shape=circle 
+        width=0.1
+      ]
+
+      edge [
+        color=gray30
+        penwidth=1
+        style=solid
+      ]
+    
+      node [penwidth=2]
+      A [color=red]
+      B [color=blue]
+      C [color=green]
+
+      node [penwidth=1]
+      D [xlabel="nezbývá žádná barva"]
+
+      A -- B
+      A -- C
+      A -- D
+      B -- C
+      B -- D
+      C -- D
+    }
+  ```),
+  caption: [Instance problému 3-CG se zápornou odpovědí],
+)
+
+Pokud obarvíme vrcholy $A$, $B$ a $C$ každý jinou barvou, 
+nezbyde nám žádná barva pro vrchol $D$.
+Nemůžeme jej nabarvit žadnou ze 3 barev, 
+protože je incidentní ke všem ostatním vrcholům.
 
