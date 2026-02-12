@@ -154,10 +154,10 @@ Výraz $Phi$ je nesplnitelný.
     columns: 3,
     row-gutter: (2pt, auto),
     [$x$], [$y$], [$Phi$],
-    [0], [0], [0],
-    [0], [1], [0],
-    [1], [0], [0],
-    [1], [1], [0],
+    [F], [F], [F],
+    [F], [T], [F],
+    [T], [F], [F],
+    [T], [T], [F],
   ), 
   caption: [Všechny možné ohodnocení proměnných - vede ke kontradikci]
 ) <bool-assignment-contradiction>
@@ -244,7 +244,7 @@ $
       E -> F 
       F -> A 
     }
-  ```),
+  ```, height: 25%),
   caption: [Instance problému HCYCLE se kladnou odpovědí],
 )
 
@@ -279,7 +279,7 @@ Mějme graf stromu
       B -> E
       C -> F
     }
-  ```),
+  ```, width: 35%),
   caption: [Instance problému HCYCLE se zápornou odpovědí],
 )
 
@@ -368,7 +368,7 @@ V tu chvíli víme, že cena optimální cesty je $k + 1$ a žádná jiná cesta
 
 #opt-pr-instance
 
-Mějme graf $G = (V,E)$
+Mějme graf $G = (V,E)$.
 
 #figure(
   raw-render(```dot
@@ -399,7 +399,7 @@ Mějme graf $G = (V,E)$
       E -- F 
       F -- A 
     }
-  ```),
+  ```, width: 80%),
   caption: [Instance problému TSP - ohodnocený neorientovaný graf],
 )
 
@@ -432,7 +432,7 @@ a odpověď na rozhodovací otázku je kladná.
       E -- F [color=red penwidth=2 label="1"]
       F -- A [color=red penwidth=2 label="1"]
     }
-  ```),
+  ```, width: 80%),
   caption: [Řešení problému TSP pro $k = 8$],
 )
 
@@ -464,7 +464,7 @@ Pro $k = 6$ existuje také možné řešení. Odpověď na rozhodovací otázku 
       E -- F [color=red penwidth=2 label="1"]
       F -- A [color=red penwidth=2 label="1"]
     }
-  ```),
+  ```, width: 80%),
   caption: [Řešení problému TSP pro $k = 6$],
 ) <tsp-opt-reseni>
 

@@ -23,5 +23,3 @@
 - Emphasis on didactic clarity
 
 Diagrams are strongly recommended here.
-
-== Výběr technologií

@@ -1,3 +1,11 @@
+three-sat-to-hcycle-anim:
+    type: Web
+    title: Reduction of 3-SAT to Hamiltonian Cycle
+    date: 2025-10-15
+    author: OpenDSA Project
+    url: { value: https://opendsa-server.cs.vt.edu/OpenDSA/Books/Everything/html/threeSAT_to_hamiltonianCycle.html, date: 2026-02-11 }
+
+
 zygos:
     type: Article
     author:
