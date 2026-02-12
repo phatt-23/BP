@@ -8,7 +8,7 @@
   ),
   supervisor: "Ing. Martin Kot, Ph.D.",
   publish-location: "Ostrava",
-  publish-year: "2025",
+  publish-year: "2026",
   // Recognized thesis types: "bachelor", "master", "phd"
   type: "bachelor",
   // Was this topic assigned with a PDF?

@@ -27,8 +27,9 @@
 //
 // - Webová aplikace, která funguje podobně jako online kalkulačky (např. integrální kalkulačky, zobrazujicí postup, atd...).
 
+#lorem(300)
 
-
+/*
 Tato práce uvádí čtenáře do problematiky výpočetní složitosti algoritmů se
 zaměřením na třídu problémů NP-Complete. Teorie výpočetní složitosti se zabývá
 klasifikací algoritmických problémů podle náročnosti jejich řešení a hraje
@@ -64,3 +65,4 @@ matematické kalkulačky, například integrální kalkulačky, jež kromě výs
 zobrazují i postup řešení. Aplikace umožňuje interaktivní práci s instancemi
 problémů a jejich redukcemi a slouží jako výuková pomůcka pro lepší pochopení
 problematiky NP-úplnosti.
+*/

@@ -143,10 +143,11 @@ a vrcholu klauzule musí být alespoň jeden vrchol zůstat volným od spojení 
 a samotné koncové vrcholy konstrukčního prvku proměnné nesmí být propojeny s vrcholem klauzule.
 Tím je zajištěno, že v rámci hamiltonovského cyklu nemůže docházet k "přeskakování" mezi konstrukčními prvky proměnných, 
 což by narušilo jednoznačné přiřazení pravdivostní hodnoty proměnné.
-Příklad tohoto jevu je ilustrováno na @preskakovani[obrázku], 
-kde dochází k přeskakování od konstrukční prvku proměnné $x$ na prvek proměnné $y$.
-Mezitím dochází i ke změně směru průchodu přes prvek proměnné 
-a vrchol klauzule, který by měl být nedosažitelný, je navštíven.
+
+Příklad tohoto jevu je znázorněn na @preskakovani[obrázku], 
+kde dochází k přeskoku z konstrukčního prvku proměnné $x$ na konstrukční prvek proměnné $y$.
+Současně dochází ke změně směru průchodu konstrukčním prvkem proměnné, 
+a tím se stává dosažitelným i vrchol klauzule, který by za korektního průchodu dosažitelný být neměl.
 
 #figure(
   raw-render(
@@ -156,10 +157,14 @@ a vrchol klauzule, který by měl být nedosažitelný, je navštíven.
   caption: [Průchod nevalidním konstrukčním prvkem proměnné $x$ -- přeskakování],
 ) <preskakovani>
 
-Přidáním jediného volného vrcholu mezi páry vrcholů asociované s vrcholem klauzule 
-nebude přeskakování nikdy fungovat. 
-Přeskočením se odepře možnost navštívit tento volný vrchol. 
-Jakýkoli pokus navštívit tento vrchol povede k již navštívenému vrcholu.
+Tomuto jevu zabráníme vložením alespoň jednoho volného vrcholu 
+mezi každou dvojici vrcholů konstrukčního prvku proměnné, 
+která je asociována s vrcholem klauzule.
+Pokus o přeskok by totiž vedl k tomu, 
+že tento vložený vrchol zůstane nenavštíven, 
+což znemožní existenci hamiltonovského cyklu.
+Jakýkoli následný pokus o jeho dodatečné navštívení 
+by nutně vedl do již navštíveného vrcholu.
 
 #figure(
   raw-render(
@@ -178,12 +183,6 @@ což umožňuje navštívit vrchol klauzule obsahující neznegovaný literál a
 Při přiřazení hodnoty $F$ procházíme konstrukčním prvkem zprava doleva, 
 čímž lze navštívit vrcholy klauzulí odpovídající negovaným literálům.
 
-Tím je zachována ekvivalence mezi splnitelností původní formule 
-a existencí hamiltonovského cyklu ve výsledném grafu.
-
-Touto konstrukcí je zajištěno, 
-že vrchol klauzule je dosažitelný v rámci hamiltonovského cyklu právě tehdy, 
-je-li alespoň jeden z jejích literálů splněn. 
 Tím je zachována ekvivalence mezi splnitelností původní formule 
 a existencí hamiltonovského cyklu ve výsledném grafu.
 

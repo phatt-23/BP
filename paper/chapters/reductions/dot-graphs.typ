@@ -108,8 +108,8 @@ digraph {
   z_6   [pos="6.5,1!"]
   z_7   [pos="7.5,1!" label="z_7^F"]
 
-  kappa_1 [pos="1,4!"]
-  kappa_2 [pos="8,2!"]
+  kappa_1 [pos="1.5,4!"]
+  kappa_2 [pos="7.5,3!"]
 
   subgraph {
     "x_1" -> x_2 -> x_3 -> x_4 -> x_5 -> x_6 -> x_7 -> x_8 -> x_9 -> "x_10" [dir=both]
@@ -211,22 +211,25 @@ digraph {
   x_6   [pos="6,2!"]
   x_7   [pos="7,2!"]
 
-  x_1 -> x_2 -> x_3 -> x_4 -> x_5 -> x_6 -> x_7 [dir=both color=gray]
+  x_1 -> x_2 -> x_3 -> x_4 -> x_5 -> x_6 -> x_7 [
+    dir=both 
+    color=gray
+  ]
 
   kappa_1 [pos="2.5,1!"]
   elips   [pos="4,1!" label="..." style=invis]
   kappa_2 [pos="5.5,1!"]
 
-  edge [color="gray"]
+  // edge [color="gray"]
 
-  x_3 -> kappa_1 [color=green penwidth=2]
+  x_3 -> kappa_1 [color=blue penwidth=2]
   kappa_1 -> x_2
 
   x_5 -> kappa_2
-  kappa_2 -> x_6 [color=green penwidth=2]
+  kappa_2 -> x_6 [color=blue penwidth=2]
 
 
-  edge [color=green penwidth=2]
+  edge [color=blue penwidth=2]
   x_1 -> x_2 -> x_3
   kappa_1 -> elips -> kappa_2
   x_6 -> x_5 
