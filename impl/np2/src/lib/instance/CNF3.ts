@@ -135,12 +135,16 @@ export class CNF3 extends ProblemInstance {
                 const negated = word.startsWith("!");
                 if (negated) {
                     word = word.replace("!", "");  // replace the first occurence
+                    if (word === ''){
+                        return `No variable name provided after negation sign (!).`;
+                    }
                 }
 
                 // verify that is only has allowed characters
                 if (word.includes("!") || word.includes("||") || word.includes("&&")) {
                     return `Literal ${negated ? "!" : ""}${word} is invalid.`;
                 }
+
 
                 const varId = CNF3_ID.VAR_PREFIX + j;
 

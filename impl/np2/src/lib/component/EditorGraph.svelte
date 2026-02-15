@@ -1,11 +1,9 @@
 <!-- Created by phatt-23 on 21/10/2025 -->
 
 <script lang="ts">
-    import { resolveRoute } from "$app/paths";
     import type { ErrorMessage } from "$lib/core/assert";
     import { DemoProvider } from "$lib/demo/DemoProvider";
     import { Graph } from "$lib/instance/Graph";
-    import { error } from "@sveltejs/kit";
 
     const demos = DemoProvider.getTextInputs(Graph);
 
@@ -51,6 +49,13 @@
         }
     }
 
+    function handleKeydown(e: KeyboardEvent) {
+        if (e.key === "Escape") {
+            onTextChange();
+            (e.target as HTMLTextAreaElement).blur(); 
+        }
+    }
+
     function handleSelect() {
         text = demos[selectedDemo];
         onTextChange();
@@ -69,7 +74,13 @@
     <p class="comment">Removes duplicate entries automatically.</p>
 
     <div class="text-wrap">
-        <textarea bind:value={text} oninput={validateInput} onchange={onTextChange} spellcheck="false">
+        <textarea 
+            bind:value={text} 
+            oninput={validateInput} 
+            onchange={onTextChange} 
+            onkeydown={handleKeydown}
+            spellcheck="false"
+        >
         </textarea>
 
         <div class='input-actions'>

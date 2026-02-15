@@ -58,6 +58,13 @@
         onTextChange();
     }
 
+    function handleKeydown(e: KeyboardEvent) {
+        if (e.key === "Escape") {
+            onTextChange();
+            (e.target as HTMLTextAreaElement).blur(); 
+        }
+    }
+
     $effect(() => {
         if (cnf) {
             text = cnf.asString()
@@ -72,7 +79,12 @@
 
     <div class="text-wrap">
 
-        <textarea bind:value={text} oninput={onTextInput} onchange={onTextChange} spellcheck="false">
+        <textarea 
+            bind:value={text} 
+            oninput={onTextInput} 
+            onchange={onTextChange} 
+            onkeydown={handleKeydown}
+            spellcheck="false">
         </textarea>
 
         <div class='input-actions'>
