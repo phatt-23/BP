@@ -54,3 +54,8 @@ You can then pipe the output to whichever Typst file you want.
 
 The PHP script itself is taken from [heureka/inflection](https://github.com/heureka/inflection).
 
+# Add
+
+Add a class diagram of the project. 
+Make a documentation in english, preferably one that would be baked into the application itself.
+Then the documentation can be extracted and put into the paper as appendix.
