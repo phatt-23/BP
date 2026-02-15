@@ -14,6 +14,20 @@ When using type, it is proxied automatically.
 Classes are fucked like this. 
 Also the file must have .svelte.ts extension.
 
+
+## TODO (2026-02-15)
+
+- create better demo examples, bigger and smaller, with solution and without
+- try out the editor in edge browser 
+    - enter an invalid input, remove it and input a valid one, this caused some problem on edge browser, it didnt respond when a new valid input was entered, it didnt respond anymore
+- make the editor react onchange, right now it updates when a user escapes from the editor textfield
+- explain at the last step why a reduction works, how the answer to the input problem is derived from the output problem's certificate
+- make a guide on the website, integrate it, maybe toolboxes or toggle where the user can turn on guide mode
+    - this guide will detail what each button does, what the editor expects, that the step can be stepped with arrows
+- restrict the editor to alphanumeric with special symbols ', _
+
+
+
 ## TODO
 
 - [ ] - implement for each problem (3SAT, 3CG, HCYCLE, HCIRCUIT, TSP, SSP) its page where the user can enter an instance and solve it, show the result (certificate or say its onsolvable)

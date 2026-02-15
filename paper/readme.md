@@ -59,3 +59,6 @@ The PHP script itself is taken from [heureka/inflection](https://github.com/heur
 Add a class diagram of the project. 
 Make a documentation in english, preferably one that would be baked into the application itself.
 Then the documentation can be extracted and put into the paper as appendix.
+
+Each reduction should have a subsection exlaining how the certificate of the output problem leads to a certificate of the input problem.
+How the solution of the input problem can be derived from the output problem's certificate.
