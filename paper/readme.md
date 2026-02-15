@@ -62,3 +62,6 @@ Then the documentation can be extracted and put into the paper as appendix.
 
 Each reduction should have a subsection exlaining how the certificate of the output problem leads to a certificate of the input problem.
 How the solution of the input problem can be derived from the output problem's certificate.
+
+Create diagrams in the design and impl sections. 
+Only those that are necessary, not everything.
