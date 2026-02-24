@@ -312,8 +312,8 @@ export const cytoscapeStyles: Record<string, StylesheetStyle[]> = {
         {
             selector: 'edge.muted',
             style: {
-                'opacity': 0.4,
-                'line-opacity': 0.4,
+                'opacity': 0.75,
+                'line-opacity': 0.75,
             }
         },
         ...solvedEdgeRedUsed,

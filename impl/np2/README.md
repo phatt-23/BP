@@ -7,6 +7,19 @@ npm run build
 scp -r build/* tra0163@homel.vsb.cz:~/public_html/
 ```
 
+## TODO
+
+```
+FROM THIS:
+    label: `${v}_T`,
+
+TO THIS:
+    label: `{${v}}_T`,
+```
+
+If we have i_1 then we want it to be {i_1}_T, not i_1_T
+
+
 ## OBSERVABLE CLASSES
 
 When using classes, you must use $state on every member variable, otherwise it won't be proxied.
