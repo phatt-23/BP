@@ -54,15 +54,20 @@
             </dd>
             <dt>TSP</dt>
             <dd>
-                Given some positive integer <i>k</i>, does the undirected graph contain a Hamiltonian cycle with the cost less than or equal to <i>k</i>?
+                Given some positive integer <i>k</i>, 
+                does the undirected graph contain a Hamiltonian cycle 
+                with the cost less than or equal to <i>k</i>?
             </dd>
             <dt>3-CG</dt>
             <dd>
-                Can an undirected graph be colored by 3 colors, such that there are no neighbouring nodes with the same color?
+                Can an undirected graph be colored by 3 colors, 
+                such that there are no neighbouring nodes with the same color?
             </dd>
             <dt>SSP</dt>
             <dd>
-                Given a set of numbers <i>S</i> and a target value <i>t</i>, can we pick a subset of numbers from <i>S</i>, such that their sum is equal to <i>t</i>?
+                Given a set of numbers <i>S</i> and a target value <i>t</i>, 
+                can we pick a subset of numbers from <i>S</i>, 
+                such that their sum is equal to <i>t</i>?
             </dd>
         </dl>
 
