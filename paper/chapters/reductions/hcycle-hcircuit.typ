@@ -65,14 +65,14 @@ digraph {
   layout=circo
   node [shape=circle]
 
-  a -> b
-  b -> c
-  c -> d
-  d -> e
-  a -> d
-  a -> e
-  b -> d
-  e -> a
+  A -> B
+  B -> C
+  C -> D
+  D -> E
+  A -> D
+  A -> E
+  B -> D
+  E -> A
 }
 ```),
 caption: [Vstupní graf problému HCYCLE],
@@ -89,20 +89,20 @@ graph {
   layout=circo
   node [shape=circle]
 
-  a_i -- a_b -- a_o
-  b_i -- b_b -- b_o
-  c_i -- c_b -- c_o
-  d_i -- d_b -- d_o
-  e_i -- e_b -- e_o
+  A_i -- A_b -- A_o
+  B_i -- B_b -- B_o
+  C_i -- C_b -- C_o
+  D_i -- D_b -- D_o
+  E_i -- E_b -- E_o
 
-  a_o -- b_i
-  b_o -- c_i
-  c_o -- d_i
-  d_o -- e_i
-  a_o -- d_i
-  a_o -- e_i
-  b_o -- d_i
-  e_o -- a_i
+  A_o -- B_i
+  B_o -- C_i
+  C_o -- D_i
+  D_o -- E_i
+  A_o -- D_i
+  A_o -- E_i
+  B_o -- D_i
+  E_o -- A_i
 }
 ```, width: 80%),
 caption: [Výstupní graf problému HCIRCUIT],

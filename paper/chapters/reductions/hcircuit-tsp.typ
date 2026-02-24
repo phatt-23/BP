@@ -1,10 +1,163 @@
+#import "@preview/diagraph:0.3.6": *
+
 == Redukce HCIRCUIT na TSP
 
-Vrcholy ze vstupního grafu $G = (V_G,E_G)$ problému HCIRCUIT
-zkopírujeme do grafu $H = (V_H,E_H)$ a přidáme hranu mezi každým z nich.
-Tím vytvoříme kompletní graf. 
-Poté všechny hrany ohodnotíme. 
-Pokud pro hranu $e = {x,y} in E_H$ existuje odpovídajicí hrana ${x,y} in E_G$,
-bude hrana $e$ ohodnocena vahou 1, 
-jinak bude mít váhu větší než 1 (v našem případě 2).
+Všechny vrcholy z grafu $G$ vstupního problému HCIRCUIT 
+zkopírujeme do nového grafu $H$.
+Mezi každou dvojici vrcholů v $H$ přidáme hranu, 
+čímž vznikne kompletní graf.
+
+Každé hraně $e_H = {x, y} in E(H)$ přiřadíme váhu podle pravidla:
+
+- Pokud hrana $e_H$ odpovídá hraně $e_G = {x, y} in E(G)$ ve vstupním grafu, 
+  nastavíme její váhu na 1.
+
+- Pokud hrana $e_H$ ve vstupním grafu neexistuje, 
+  nastavíme její váhu na hodnotu větší než 1, v našem případě 2.
+
+Cílovou hodnotu $k$ pro problém TSP stanovíme rovnou počtu vrcholů grafu:
+
+$
+  k = |V(G)| = |V(H)|.
+$
+
+Tento postup zajišťuje, 
+že ve vstupním grafu $G$ existuje hamiltonovský cyklus právě tehdy,
+pokud v kompletním grafu $H$ existuje hamiltonovský cyklus s celkovou cenou $k$.
+
+Redukce je korektní, 
+protože jakákoli hamiltonovská cesta s celkovou cenou $k$ ve výsledném grafu $H$ 
+musí využívat pouze hrany s vahou 1, 
+tedy přesně ty, které existují ve vstupním grafu $G$.
+
+Jako příklad uvažujme graf $G$ na @hcircuit-g[obrázku].
+
+#figure(
+raw-render(```
+  graph {
+    layout=neato
+    node [
+      shape=circle
+    ]
+
+    A [pos="0,2!"]
+    B [pos="2,3!"]
+    C [pos="4,2!"]
+    D [pos="4,0!"]
+    E [pos="2,0!"]
+    F [pos="0,0!"]
+
+    A -- B 
+    B -- C
+    C -- D
+    D -- E
+    E -- F
+    F -- A
+    A -- C
+    B -- E
+    B -- F
+  }
+```),
+caption: [Vstupní graf problému HCIRCUIT]
+) <hcircuit-g>
+
+Graf $G$ převedeme podle popsané redukce na graf $H$, 
+který je znázorněn na @tsp-h[obrázku].  
+Graf $H$ je kompletní graf nad stejnou množinou vrcholů.  
+Hrany, které existovaly již v grafu $G$, mají váhu 1 (modře),  
+zatímco nově přidané hrany mají váhu 2 (červeně).
+
+#figure(
+raw-render(```
+  graph {
+    layout=neato
+      splines=true
+  overlap=false
+    node [
+      shape=circle
+    ]
+
+    A [pos="0,2!"]
+    B [pos="2,3!"]
+    C [pos="4,2!"]
+    D [pos="4,0!"]
+    E [pos="2,0!"]
+    F [pos="0,0!"]
+
+    edge [color=blue label=""]
+
+    A -- B
+    B -- C
+    C -- D
+    D -- E
+    E -- F
+    F -- A
+    A -- C
+    B -- E
+    B -- F
+
+    edge [color=red label="" splines=curved]
+
+    A -- E
+    A -- D
+    B -- D
+    C -- E
+    C -- F
+    D -- F
+
+  }
+```),
+caption: [Výsledný graf $H$ -- modře vyznačené hrany váhy 1, červeně váhy 2]
+) <tsp-h>
+
+Na @sol-h[obrázku] je vyznačen hamiltonovský cyklus nalezený v grafu $H$.  
+Zvýrazněné hrany tvoří cyklus délky $k = 6$, tedy rovné počtu vrcholů grafu.
+
+Protože cyklus používá pouze hrany s váhou 1,  
+odpovídá tento cyklus přímo hamiltonovskému cyklu ve vstupním grafu $G$.  
+// Tím je ukázána korektnost redukce na konkrétní instanci.
+// TODO: pridat instanci s neg odpovedi
+
+#figure(
+raw-render(```
+  graph {
+    layout=neato
+      splines=true
+  overlap=false
+    node [
+      shape=circle
+    ]
+
+    A [pos="0,2!"]
+    B [pos="2,3!"]
+    C [pos="4,2!"]
+    D [pos="4,0!"]
+    E [pos="2,0!"]
+    F [pos="0,0!"]
+
+    edge [color=blue label=""]
+
+    A -- B [penwidth=3]
+    B -- C
+    C -- D [penwidth=3]
+    D -- E [penwidth=3]
+    E -- F [penwidth=3]
+    F -- A
+    A -- C [penwidth=3]
+    B -- E 
+    B -- F [penwidth=3]
+
+    edge [color=red label="" splines=curved]
+
+    A -- E
+    A -- D
+    B -- D
+    C -- E
+    C -- F
+    D -- F
+
+  }
+```),
+caption: [Hamiltonovský cyklus v grafu $H$ s váhou $k = 6$]
+) <sol-h>
 

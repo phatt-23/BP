@@ -70,8 +70,6 @@
                 such that their sum is equal to <i>t</i>?
             </dd>
         </dl>
-
-
     </div>
 
 </main>
