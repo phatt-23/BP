@@ -34,6 +34,14 @@
 <Card>
     {#snippet header()}
         {@render title()}    
+
+        {#if $redStore.outInstance && !$redStore.outInstance.isEmpty()}
+            <button onclick={() => {
+                alert($redStore.outInstance.asString())
+            }}>
+                Copy
+            </button>
+        {/if}
     {/snippet}
 
     {#snippet body()}

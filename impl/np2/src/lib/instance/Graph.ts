@@ -147,8 +147,17 @@ export class Graph extends ProblemInstance {
     }
 
     public asString() : string {
-        const nodeLines = this.nodes.map(n => n.id.slice(NODE_ID_PREFIX.length)).join('\n');
-        const edgeLines = this.edges.map(e => e.from.slice(NODE_ID_PREFIX.length) + ' ' + e.to.slice(NODE_ID_PREFIX.length) + (e.weight != undefined ? ' ' + e.weight : '')).join('\n');
+        // const nodeLines = this.nodes.map(n => n.id.slice(NODE_ID_PREFIX.length)).join('\n');
+        const nodeLines = this.nodes.map(n => n.label!).join('\n');
+        // const edgeLines = this.edges.map(e => e.from.slice(NODE_ID_PREFIX.length) + ' ' + e.to.slice(NODE_ID_PREFIX.length) + (e.weight != undefined ? ' ' + e.weight : '')).join('\n');
+        const edgeLines = this.edges.map(e => 
+              this.nodes.find(n => n.id == e.from)!.label! 
+            + ' ' 
+            + this.nodes.find(n => n.id == e.to)!.label! 
+            + ' ' 
+            + (e.weight != undefined ? ' ' + e.weight : '')
+        ).join('\n');
+
         return nodeLines + '\n' + edgeLines + '\n';
     }
 
