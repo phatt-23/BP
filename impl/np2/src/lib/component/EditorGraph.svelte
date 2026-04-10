@@ -4,6 +4,7 @@
     import type { ErrorMessage } from "$lib/core/assert";
     import { DemoProvider } from "$lib/demo/DemoProvider";
     import { Graph } from "$lib/instance/Graph";
+    import Comments from "./Comments.svelte";
 
     const demos = DemoProvider.getTextInputs(Graph);
 
@@ -66,12 +67,23 @@
             text = graph.asString();
         }
     });
+
+    // allowed symbols a-zA-Z0–9,_^\(){}
+
+    const comments = [
+        "Write each entry on a new line. Each entry defines either a node, or an edge.",
+        "A node is a single word containing only letters (a–z, A–Z), digits (0–9), and the symbols _,\\^(){}.",
+        "The symbol \\ must be followed by letters (e.g. \\alpha, \\beta^{\\gamma_5}).",
+        "Node names must not include spaces.",
+        "To define an edge, write two node names separated by a space.",
+        "Any duplicate entries will be removed automatically.",
+    ];
 </script>
 
 <main class='editor'>
     <h2 class="dev">Graph Editor</h2>
 
-    <p class="comment">Removes duplicate entries automatically.</p>
+    <Comments {comments} />
 
     <div class="text-wrap">
         <textarea 
@@ -111,11 +123,6 @@
 .text-wrap
     position: relative
     width: 100%
-
-.comment
-    // display: none
-    padding: 0
-    margin: 0
 
 textarea
     box-sizing: border-box
