@@ -29,146 +29,148 @@
 == Účel aplikace
 
 Cílem navrhované webové aplikace je převést teoretické poznatky z oblasti
-výpočetní složitosti, konkrétně problematiku polynomiálních redukcí mezi
-rozhodovacími problémy, do interaktivního výukového nástroje.
+výpočetní složitosti, 
+konkrétně problematiku polynomiálních redukcí mezi rozhodovacími problémy, 
+do interaktivního výukového nástroje.
 
 Aplikace umožňuje studentům nejen pasivně studovat formální důkazy,
-ale aktivně pracovat s konkrétními instancemi problémů. Uživatel může
-zadávat vlastní vstupy, sledovat konstrukci redukce krok za krokem
-a vizuálně porovnávat vstupní a výslednou instanci. Tím dochází
-k propojení formální matematické teorie s názornou vizualizací,
+ale aktivně pracovat s konkrétními instancemi problémů. 
+Uživatel může zadávat vlastní vstupy, 
+sledovat konstrukci redukce krok za krokem
+a vizuálně porovnávat vstupní a výslednou instanci včetně jejích odpovědí. 
+
+Dochází tím k propojení formální matematické teorie s názornou vizualizací, 
 což podporuje hlubší porozumění probírané látce.
 
-#v(1em)
 
 == Analýza požadavků
 
-=== Funkční požadavky
+Aplikace musí splňovat následující funkční požadavky:
 
-Na základě zadání práce musí aplikace splňovat následující funkční požadavky:
-
-- umožnit výběr konkrétní redukce mezi rozhodovacími problémy
-  (například převod problému HCIRCUIT na problém obchodního cestujícího),
-- umožnit zadání instance vstupního problému,
-- automaticky provést konstrukci odpovídající instance cílového problému,
-- vizualizovat vstupní i výsledný graf,
-- zvýraznit strukturální odpovídající prvky (například hrany určité váhy),
-- umožnit zobrazení nalezeného řešení v cílovém problému.
-
-Dále je požadováno, aby aplikace podporovala krokové zobrazení procesu
-redukce, včetně textového vysvětlení jednotlivých transformačních kroků.
+- umožnit výběr konkrétní redukce mezi rozhodovacími problémy,
+- umožnit zadání libovolné instance vstupního problému,
+- provést redukci vstupní instance na instanci cílového problému,
+- vizualizovat vstupní a výslednou instanci,
+- umožnit výběr z ukázkových vstupních instancí
+- pokud je odpověď na rozhodovací otázku kladná, 
+  umožnit zobrazení nalezeného řešení ve vstupním i cílovém problému,
+- krokové zobrazení procesu redukce, 
+  včetně textového vysvětlení jednotlivých transformačních kroků.
 
 === Nefunkční požadavky
 
-Kromě funkčních požadavků musí aplikace splňovat také následující
-nefunkční požadavky:
+- zvýraznit konstrukční prvky v zobrazení cílových instancí,
+- umožnit uživateli interaktivně manipulovat se vstupním grafem
 
-*Přehlednost a srozumitelnost*
-
-- grafické rozhraní musí být jednoznačné a vizuálně konzistentní,
-- barevné rozlišení musí nést významovou informaci,
-- jednotlivé kroky redukce musí být jasně odděleny.
-
-*Použitelnost*
-
-- ovládání aplikace musí být intuitivní,
-- reakce systému musí být okamžitá,
-- rozhraní musí být použitelné bez nutnosti studia podrobné dokumentace.
-
-*Didaktická hodnota*
-
-- aplikace musí podporovat pochopení principu redukce,
-- uživatel musí být schopen sledovat vztah mezi vstupní a výstupní instancí,
-- jednotlivé kroky musí být doplněny vysvětlujícím komentářem.
-
-#v(1em)
 
 == Architektura systému
 
 === Architektonický model
 
-Aplikace je navržena jako klientská webová aplikace bez serverové části.
-Veškerá aplikační logika je vykonávána na straně klienta
-v prostředí webového prohlížeče.
-
-Tento přístup přináší následující výhody:
-
-- jednoduché nasazení,
-- absence potřeby backendové infrastruktury,
-- okamžitá odezva při interakci s uživatelem.
+Aplikace je navržena jako klientská webová aplikace bez jakékoli serverové části.
+Veškerá aplikační logika je vykonávána na straně klienta v prostředí webového prohlížeče.
+Jsou to jen statické stránky.
 
 === Použité technologie
 
-Implementace aplikace předpokládá využití standardních webových technologií:
+```
+"dependencies": {
+        "@types/cytoscape": "^3.21.9",
+        "cytoscape": "^3.33.1",
+        "cytoscape-canvas": "^3.0.1",
+        "katex": "^0.16.27",
+}
+```
 
-- HTML pro strukturu dokumentu,
-- CSS pro vizuální styl,
-- JavaScript nebo TypeScript pro implementaci aplikační logiky,
-- knihovnu pro vizualizaci grafů (například založenou na SVG nebo Canvas).
+Zvolil jsem webový framework Svelte. 
+Je to framework, ktery efektivne spojuje technologie HTML, CSS a JavaScript do jednoho.
+Ve frameworku svelte jsem pracoval v jazyce TypeScript. 
+Nepouzil jsem cisty JavaScript, protoze nema striktni typovani. 
+Pri praci nad vetsim projektem se vzdy hodi vedet typy a tak.
 
-Volba konkrétních nástrojů je motivována požadavkem na dynamickou
-manipulaci s grafovou strukturou a možnost vizuálního zvýrazňování
-jednotlivých prvků.
+Pro vizualizaci grafů jsem použil knihovnu Cytoscape.
+Je to jedna ze standardnich knihoven pro praci s grafy.
+
+Pro zobrazení notace v LaTeX stylu jsem použil knihovnu Katex.
+Tato knihovna umoznuje psat vyrazy v LaTeXu, ktere se potom konvertuji na HTML.
+
+
+// nevim jestli to co rikam je uplne pravda, takze to over.
+
 
 === Tok dat v systému
 
 Z hlediska toku dat lze proces zpracování rozdělit do následujících kroků:
 
 1. Uživatel zadá instanci vstupního problému.
-2. Instance je převedena do interní reprezentace grafu.
-3. Modul redukce vytvoří odpovídající instanci cílového problému.
-4. Vizualizační modul vykreslí obě instance.
-5. Výsledek je prezentován uživateli prostřednictvím grafického rozhraní.
++ Tato instance je převedena do interní reprezentace systému.
++ Redukční modul transformuje vstupní instanci na odpovídající instanci cílového problému.
++ Solver se pokusí najít řešení cílové instance.
++ V případě úspěchu dekodér převede řešení zpět na řešení původní vstupní instance.
 
-#v(1em)
+// 
 
 == Návrh uživatelského rozhraní
 
-Uživatelské rozhraní je navrženo s důrazem na didaktickou přehlednost
-a logickou strukturu.
-
-=== Výběr problému
+=== Výběr redukce 
 
 V horní části rozhraní se nachází modul pro výběr konkrétní redukce.
-Součástí této části může být i stručné teoretické shrnutí daného problému.
+// Součástí této části může být i stručné teoretické shrnutí daného problému.
 
 === Zadání instance
 
 Uživatel má možnost:
 
-- interaktivně vytvářet graf,
-- zadat seznam hran,
-- načíst předdefinovaný příklad.
+- zadat (seznam vrcholu a hran, seznam klauzuli),
+- načíst předdefinovaný příklad,
+- interaktivně vytvářet graf (pouze v případě grafu),
 
-Zadaná instance je okamžitě vizualizována, což umožňuje kontrolu správnosti vstupu.
+Zadaná instance je vizualizována, 
+což umožňuje kontrolu správnosti vstupu.
+
+=== Rozložení stránky
+
+Stránka se skládá z karet:
+- editor 
+- vstupní instance 
+- výstupní instace.
+
+V kartě editor se nachází samotný editor s textovým vstupem a kontrolní panel.
+
+Editor slouží pro zadavání vstupní instance.
+Na levém horním rohu se nachází dropdown s ukázkovými instancemi.
+Při chybe syntaxe vstupu se v levem dolnim rohu zobrazi cervene chybova hlaska.
+
+Kontronlní panel má tlačítka "Reduce" a "Solve" a přepínač "Show steps".
+
+Karty vstupní instance a výstupní instace mají stejné rozložení.
+V hlavicce maji nazev problemu,
+v tele je graficke zobrazeni instance
+a zapati je misto pro certifikat / nalezene reseni pripadne text rikajici ze reseni neexistuje.
+
 
 === Krokové zobrazení redukce
 
-Proces redukce je prezentován sekvenčně.
-Každý krok transformace je:
+Prepinac "Show steps" zobrazi kroky, 
+jinak zustavaji skryte.
 
-- graficky zvýrazněn,
-- doplněn textovým vysvětlením,
-- oddělen od ostatních kroků.
+Proces redukce je prezentován sekvenčně.
+Každý krok transformace je graficky zvýrazněn a doplněn textovým vysvětlením.
 
 Tím je zajištěno, že uživatel rozumí nejen výsledku,
 ale i samotnému konstrukčnímu postupu.
 
+
 === Zobrazení řešení
 
-Po provedení redukce může aplikace zobrazit řešení cílového problému
-a vyznačit odpovídající strukturu v grafu.
-V případě redukce na problém obchodního cestujícího je například
-zobrazen hamiltonovský cyklus a jeho celková cena.
+Zmacknuti tlacitka "Solve" se aplikace pokusi najit reseni pro vystupni problem.
+Pokud jej najde, zobrazi jej a dekoduje ho na reseni vstupniho problemu, ktery se taktez zobrazi, 
+a to v zapati karet vstupní instance a výstupní instace.
 
-#v(1em)
+Řešení problému jsou take vyznacene v grafickem zobrazeni instanci, 
+pokud je to vhodne - u grafu a problemu SSP, u problemu 3SAT se to nehodi.
+Například v případě nalezeni reseni na problém obchodního cestujícího jsou 
+zobrazeny hrany hamiltonovkeho cyklu cervene, 
+u problemu barveni grafu jsou vybarvene vrcholy.
 
-== Shrnutí návrhu
-
-Navržená aplikace propojuje formální teorii redukcí s interaktivní
-vizualizací. Důraz je kladen nejen na správnost implementace,
-ale především na didaktickou hodnotu nástroje.
-
-Cílem není pouze automatizovat konstrukci redukce,
-ale umožnit studentovi pochopit její princip a strukturu.
 
