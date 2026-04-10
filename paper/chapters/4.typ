@@ -1,176 +1,187 @@
-// = Návrh webové aplikace 
-//
-// *Purpose:* 
-// - Explain how theory is transformed into a teaching tool
-//
-// == Analýza požadavků
-//
-// - Functional requirements (based directly on assignment)
-// - Non-functional requirements (clarity, usability, educational value)
-//
-// == Architektura systému
-//
-// - Client only model 
-// - Technologies used (frameworks, languages)
-// - Data flow overview
-//
-// == Návrh uživatelského rozhraní
-//
-// - How users:
-//   - Select problems
-//   - Enter instances
-//   - View reductions step by step
-// - Emphasis on didactic clarity
-//
-// Diagrams are strongly recommended here.
-
 = Návrh webové aplikace
 
-== Účel aplikace
+== Úvod a účel aplikace
 
 Cílem navrhované webové aplikace je převést teoretické poznatky z oblasti
-výpočetní složitosti, 
-konkrétně problematiku polynomiálních redukcí mezi rozhodovacími problémy, 
-do interaktivního výukového nástroje.
+výpočetní složitosti, konkrétně problematiku polynomiálních redukcí mezi
+rozhodovacími problémy, do podoby interaktivního výukového nástroje.
 
-Aplikace umožňuje studentům nejen pasivně studovat formální důkazy,
-ale aktivně pracovat s konkrétními instancemi problémů. 
-Uživatel může zadávat vlastní vstupy, 
+Navržený systém umožňuje nejen pasivní studium formálních důkazů,
+ale především aktivní práci s konkrétními instancemi problémů.
+Uživatel může zadávat vlastní vstupy,
 sledovat konstrukci redukce krok za krokem
-a vizuálně porovnávat vstupní a výslednou instanci včetně jejích odpovědí. 
+a vizuálně porovnávat vstupní a výslednou instanci včetně jejich odpovědí.
 
-Dochází tím k propojení formální matematické teorie s názornou vizualizací, 
-což podporuje hlubší porozumění probírané látce.
+Tím dochází k propojení formální matematické teorie s názornou vizualizací,
+což přispívá k hlubšímu porozumění probírané problematice.
 
+// Aplikace je určena především pro výuku na vysokých školách
+// v předmětech zaměřených na teorii složitosti a návrh algoritmů.
 
-== Analýza požadavků
+== Požadavky na systém
 
-Aplikace musí splňovat následující funkční požadavky:
+Požadavky na systém lze rozdělit na funkční a nefunkční.
+Funkční požadavky definují, jaké operace musí aplikace umožňovat,
+zatímco nefunkční požadavky specifikují její kvalitativní vlastnosti.
 
-- umožnit výběr konkrétní redukce mezi rozhodovacími problémy,
-- umožnit zadání libovolné instance vstupního problému,
-- provést redukci vstupní instance na instanci cílového problému,
-- vizualizovat vstupní a výslednou instanci,
-- umožnit výběr z ukázkových vstupních instancí
-- pokud je odpověď na rozhodovací otázku kladná, 
-  umožnit zobrazení nalezeného řešení ve vstupním i cílovém problému,
-- krokové zobrazení procesu redukce, 
-  včetně textového vysvětlení jednotlivých transformačních kroků.
+=== Funkční požadavky
+
+Aplikace musí uživateli umožnit výběr konkrétní redukce mezi rozhodovacími problémy
+a zadání libovolné instance vstupního problému, a to jak formou vlastního vstupu,
+tak prostřednictvím předdefinovaných ukázkových instancí.
+
+Na základě zadané instance systém provede její transformaci
+na instanci cílového problému pomocí zvolené redukce.
+Vstupní i výsledná instance jsou následně vizualizovány,
+aby bylo možné jejich přímé porovnání.
+
+Součástí funkcionality je rovněž možnost zobrazit proces redukce krokově,
+včetně textového vysvětlení jednotlivých transformačních kroků.
+
+V případě, že je odpověď na rozhodovací otázku kladná,
+aplikace umožní zobrazit nalezené řešení jak pro vstupní,
+tak pro cílový problém.
+
+// Systém dále validuje vstupní data a upozorňuje uživatele
+// na případné syntaktické chyby.
+// Uživatel může upravovat již zadanou instanci bez nutnosti
+// opětovného načtení aplikace.
+
 
 === Nefunkční požadavky
 
-- zvýraznit konstrukční prvky v zobrazení cílových instancí,
-- umožnit uživateli interaktivně manipulovat se vstupním grafem
+Nefunkční požadavky se zaměřují na kvalitu uživatelského rozhraní,
+výkon aplikace a její rozšiřitelnost.
+
+Aplikace musí zajistit plynulou odezvu bez znatelného zpoždění,
+a to i při práci s rozsáhlejšími instancemi.
+Důraz je kladen také na přehlednost vizualizace,
+zejména na zvýraznění konstrukčních prvků v cílových instancích.
+
+Uživatel musí mít možnost interaktivně manipulovat se vstupním grafem,
+což podporuje lepší porozumění zpracovávaným strukturám.
+
+// Aplikace by měla být plně funkční i v offline režimu.
+// Návrh systému by měl být modulární s ohledem na budoucí rozšiřitelnost.
 
 
 == Architektura systému
 
 === Architektonický model
 
-Aplikace je navržena jako klientská webová aplikace bez jakékoli serverové části.
-Veškerá aplikační logika je vykonávána na straně klienta v prostředí webového prohlížeče.
-Jsou to jen statické stránky.
+Aplikace je navržena jako čistě klientská webová aplikace bez serverové části.
+Veškerá aplikační logika je vykonávána na straně klienta
+v prostředí webového prohlížeče.
+Aplikace je distribuována ve formě statických souborů.
+
+// Tento přístup umožňuje jednoduché nasazení a minimalizuje
+// požadavky na infrastrukturu.
+
 
 === Použité technologie
 
-```
-"dependencies": {
-        "@types/cytoscape": "^3.21.9",
-        "cytoscape": "^3.33.1",
-        "cytoscape-canvas": "^3.0.1",
-        "katex": "^0.16.27",
-}
-```
+Aplikace je implementována pomocí frameworku Svelte,
+který poskytuje komponentově orientovaný přístup
+k tvorbě uživatelského rozhraní.
 
-Zvolil jsem webový framework Svelte. 
-Je to framework, ktery efektivne spojuje technologie HTML, CSS a JavaScript do jednoho.
-Ve frameworku svelte jsem pracoval v jazyce TypeScript. 
-Nepouzil jsem cisty JavaScript, protoze nema striktni typovani. 
-Pri praci nad vetsim projektem se vzdy hodi vedet typy a tak.
+Vývoj probíhal v jazyce TypeScript,
+který rozšiřuje jazyk JavaScript o statické typování.
+To umožňuje lepší kontrolu nad strukturou dat,
+zvyšuje čitelnost kódu a snižuje pravděpodobnost vzniku chyb.
 
-Pro vizualizaci grafů jsem použil knihovnu Cytoscape.
-Je to jedna ze standardnich knihoven pro praci s grafy.
+Pro vizualizaci grafových struktur je využita knihovna Cytoscape,
+která představuje standardní nástroj pro práci s grafy
+ve webovém prostředí.
 
-Pro zobrazení notace v LaTeX stylu jsem použil knihovnu Katex.
-Tato knihovna umoznuje psat vyrazy v LaTeXu, ktere se potom konvertuji na HTML.
+Pro vykreslování matematických výrazů v LaTeX syntaxi
+je použita knihovna KaTeX,
+která převádí LaTeX zápis do HTML reprezentace vhodné pro zobrazení
+v prohlížeči.
 
-
-// nevim jestli to co rikam je uplne pravda, takze to over.
+// Knihovna cytoscape-canvas je využita pro efektivnější vykreslování
+// rozsáhlejších grafů pomocí canvas vrstvy.
 
 
-=== Tok dat v systému
+=== Zpracování dat
 
-Z hlediska toku dat lze proces zpracování rozdělit do následujících kroků:
+Zpracování dat v systému probíhá v následujících krocích:
 
 1. Uživatel zadá instanci vstupního problému.
-+ Tato instance je převedena do interní reprezentace systému.
-+ Redukční modul transformuje vstupní instanci na odpovídající instanci cílového problému.
-+ Solver se pokusí najít řešení cílové instance.
-+ V případě úspěchu dekodér převede řešení zpět na řešení původní vstupní instance.
+2. Instance je převedena do interní reprezentace systému.
+3. Redukční modul transformuje vstupní instanci na instanci cílového problému.
+4. Řešicí modul (solver) se pokusí nalézt řešení cílové instance.
+5. V případě úspěchu dekodér převede nalezené řešení zpět
+   na řešení původní instance.
 
-// 
+// 6. Výsledky jsou následně vizualizovány a případně doplněny
+//    o krokový průběh redukce
+
 
 == Návrh uživatelského rozhraní
 
-=== Výběr redukce 
+=== Struktura rozhraní
 
-V horní části rozhraní se nachází modul pro výběr konkrétní redukce.
-// Součástí této části může být i stručné teoretické shrnutí daného problému.
+Uživatelské rozhraní je rozděleno do tří hlavních karet:
 
-=== Zadání instance
+- editor,
+- vstupní instance,
+- výstupní instance.
 
-Uživatel má možnost:
+Toto rozdělení umožňuje jasné oddělení zadání problému,
+jeho reprezentace a výsledku zpracování.
 
-- zadat (seznam vrcholu a hran, seznam klauzuli),
-- načíst předdefinovaný příklad,
-- interaktivně vytvářet graf (pouze v případě grafu),
 
-Zadaná instance je vizualizována, 
-což umožňuje kontrolu správnosti vstupu.
+=== Editor vstupu
 
-=== Rozložení stránky
+Karta editor obsahuje textový vstup a kontrolní panel.
 
-Stránka se skládá z karet:
-- editor 
-- vstupní instance 
-- výstupní instace.
+Editor slouží k zadávání vstupní instance.
+V jeho horní části se nachází výběr ukázkových instancí.
+Při syntaktické chybě vstupu je uživatel informován chybovou hláškou.
 
-V kartě editor se nachází samotný editor s textovým vstupem a kontrolní panel.
+Kontrolní panel obsahuje tlačítka "Reduce" a "Solve"
+a přepínač "Show steps".
 
-Editor slouží pro zadavání vstupní instance.
-Na levém horním rohu se nachází dropdown s ukázkovými instancemi.
-Při chybe syntaxe vstupu se v levem dolnim rohu zobrazi cervene chybova hlaska.
 
-Kontronlní panel má tlačítka "Reduce" a "Solve" a přepínač "Show steps".
+=== Vizualizace instancí
 
-Karty vstupní instance a výstupní instace mají stejné rozložení.
-V hlavicce maji nazev problemu,
-v tele je graficke zobrazeni instance
-a zapati je misto pro certifikat / nalezene reseni pripadne text rikajici ze reseni neexistuje.
+Karty vstupní a výstupní instance mají shodné rozložení:
+
+- hlavička obsahuje název problému,
+- hlavní část obsahuje grafickou reprezentaci instance,
+- zápatí obsahuje nalezené řešení nebo informaci o jeho neexistenci.
+
+Zadaná instance je průběžně vizualizována,
+což umožňuje okamžitou kontrolu správnosti vstupu.
 
 
 === Krokové zobrazení redukce
 
-Prepinac "Show steps" zobrazi kroky, 
-jinak zustavaji skryte.
+Přepínač "Show steps" umožňuje zobrazit jednotlivé kroky redukce.
 
-Proces redukce je prezentován sekvenčně.
-Každý krok transformace je graficky zvýrazněn a doplněn textovým vysvětlením.
+Proces redukce je prezentován sekvenčně,
+přičemž každý krok transformace je graficky zvýrazněn
+a doplněn textovým vysvětlením.
 
-Tím je zajištěno, že uživatel rozumí nejen výsledku,
-ale i samotnému konstrukčnímu postupu.
+Tento přístup umožňuje uživateli pochopit nejen výslednou instanci,
+ale i samotný konstrukční postup.
 
 
 === Zobrazení řešení
 
-Zmacknuti tlacitka "Solve" se aplikace pokusi najit reseni pro vystupni problem.
-Pokud jej najde, zobrazi jej a dekoduje ho na reseni vstupniho problemu, ktery se taktez zobrazi, 
-a to v zapati karet vstupní instance a výstupní instace.
+Po aktivaci funkce "Solve" se aplikace pokusí nalézt řešení cílového problému.
 
-Řešení problému jsou take vyznacene v grafickem zobrazeni instanci, 
-pokud je to vhodne - u grafu a problemu SSP, u problemu 3SAT se to nehodi.
-Například v případě nalezeni reseni na problém obchodního cestujícího jsou 
-zobrazeny hrany hamiltonovkeho cyklu cervene, 
-u problemu barveni grafu jsou vybarvene vrcholy.
+V případě úspěchu je nalezené řešení zobrazeno
+a následně dekódováno na řešení vstupního problému,
+které je rovněž prezentováno uživateli.
 
+Obě řešení jsou zobrazena v zápatí příslušných karet
+a v případě vhodnosti jsou také graficky zvýrazněna.
 
+Například:
+- u problému obchodního cestujícího jsou zvýrazněny hrany Hamiltonovského cyklu,
+- u problému barvení grafu jsou vrcholy obarveny,
+- u problému 3SAT je řešení zpravidla prezentováno textově.
+
+// Způsob vizualizace je volen s ohledem na přehlednost
+// a srozumitelnost i pro složitější instance
