@@ -13,7 +13,7 @@
 //
 // - Příjít s řešením pro satisfakci vylistovaných motivací.
 // - Má za cíl, poskytnout interaktivní GUI pro zadavaní instancí. 
-// - #[ 
+// #[ 
 //   Vizualizace vstupních a výstupních instancí, ať už to jsou logické výrazy,
 //   orientované/neorientované grafy s nebo bez ohodnocení hran, tabulky pro čísla
 //   jako vstupní instance pro problém SSP. 
@@ -27,42 +27,52 @@
 //
 // - Webová aplikace, která funguje podobně jako online kalkulačky (např. integrální kalkulačky, zobrazujicí postup, atd...).
 
-#lorem(300)
+Tato práce se zabývá problematikou výpočetní složitosti algoritmů
+se zaměřením na třídu NP-úplných problémů.
+Výpočetní složitost představuje jednu ze základních disciplín informatiky,
+která studuje množství zdrojů potřebných k vyřešení algoritmického problému.
+Mezi tyto zdroje patří především čas potřebný k výpočtu
+a paměť nutná k uložení mezivýsledků.
 
-/*
-Tato práce uvádí čtenáře do problematiky výpočetní složitosti algoritmů se
-zaměřením na třídu problémů NP-Complete. Teorie výpočetní složitosti se zabývá
-klasifikací algoritmických problémů podle náročnosti jejich řešení a hraje
-klíčovou roli v informatice, zejména při zkoumání hranic efektivní
-vypočitatelnosti. Zvláštní pozornost je věnována právě NP-úplným problémům,
-které tvoří středobod mnoha teoretických i praktických úvah, a jejichž vzájemné
-vztahy jsou definovány pomocí polynomiálních redukcí.
+Zvláštní postavení v teorii složitosti zaujímají takzvané NP-úplné problémy.
+Jedná se o problémy, pro které není znám algoritmus řešící je v polynomiálním čase,
+avšak při nalezení takového algoritmu by bylo možné efektivně řešit všechny ostatní problémy
+z této třídy.
+Otázka, zda takový algoritmus existuje, zůstává jedním z největších nevyřešených problémů
+moderní matematiky a informatiky.
 
-Motivací této práce je potřeba lépe porozumět převodům mezi jednotlivými
-NP-úplnými problémy. Studenti i vyučující technické informatiky se při studiu
-této oblasti často setkávají s formálními a abstraktními popisy redukcí, které
-mohou být obtížně pochopitelné bez názorné podpory. Zkušenosti ukazují, že
-vizuální reprezentace redukcí umožňuje hlubší a intuitivnější pochopení jejich
-principu než samotné čtení matematických či formálních textů. Dalším problémem
-stávajících přístupů je jejich statičnost – existující animace a ilustrace
-redukcí jsou zpravidla omezeny na konkrétní vstupní instance a nelze je snadno
-zobecnit. Cílem je proto umožnit interaktivní zobrazení redukcí včetně jejich
-jednotlivých kroků, a to obecně pro libovolnou instanci daného problému.
+Klíčovým nástrojem pro studium vztahů mezi problémy jsou polynomiální redukce.
+Redukce umožňují převést instanci jednoho problému na instanci problému jiného
+takovým způsobem, že řešení druhého problému lze využít k získání řešení problému prvního.
+Tento koncept je fundamentální pro definici NP-úplnosti
+a umožňuje hlubší pochopení struktury třídy NP.
 
-Hlavním cílem této práce je navrhnout a realizovat řešení, které uvedené
-motivace naplňuje. Práce si klade za cíl poskytnout interaktivní grafické
-uživatelské rozhraní pro zadávání vstupních instancí různých problémů. Součástí
-řešení je vizualizace jak vstupních, tak výstupních instancí, a to v podobě
-logických výrazů, orientovaných i neorientovaných grafů s ohodnocenými i
-neohodnocenými hranami, případně tabulkových reprezentací číselných dat,
-například pro problém Subset Sum Problem. Dále je cílem zobrazovat certifikáty
-řešení pro jednotlivé problémy, pokud existují, a rovněž certifikát pro vstupní
-instanci v případech, kdy jej má výstupní instance. Nedílnou součástí je také
-vizuální znázornění samotného postupu redukce krok za krokem.
+Studium redukcí je však náročné.
+Formální popisy redukcí jsou často abstraktní a obtížně představitelné.
+Studenti i vyučující se při snaze pochopit principy převodů mezi problémy
+setkávají s bariérou mezi teoretickým popisem a jeho vizuální reprezentací.
+Existující výukové materiály a animace jsou navíc zpravidla statické
+a omezené na konkrétní vstupní instance.
+Neexistuje nástroj, který by umožnil interaktivní práci
+s libovolnou instancí libovolného podporovaného problému.
 
-Výsledkem této práce je webová aplikace, která svým principem připomíná online
-matematické kalkulačky, například integrální kalkulačky, jež kromě výsledku
-zobrazují i postup řešení. Aplikace umožňuje interaktivní práci s instancemi
-problémů a jejich redukcemi a slouží jako výuková pomůcka pro lepší pochopení
-problematiky NP-úplnosti.
-*/
+Cílem této práce je navrhnout a implementovat webovou aplikaci,
+která tuto mezeru vyplní.
+Aplikace bude fungovat jako interaktivní výuková pomůcka
+umožňující zadávání vlastních instancí problémů,
+provádění polynomiálních redukcí mezi nimi
+a vizualizaci celého procesu včetně jednotlivých kroků.
+
+Práce je strukturována následovně.
+První kapitola zavádí základní pojmy z teorie výpočetní složitosti
+nezbytné pro další části práce.
+Druhá kapitola představuje vybrané NP-úplné problémy,
+se kterými systém pracuje, včetně jejich formálních definic a příkladů instancí.
+Třetí kapitola tvoří teoretické jádro práce
+a obsahuje detailní popis polynomiálních redukcí mezi těmito problémy.
+Čtvrtá kapitola se věnuje návrhu webové aplikace
+z hlediska architektury a uživatelského rozhraní.
+Pátá kapitola popisuje implementaci systému
+včetně reprezentace dat a algoritmů.
+Šestá kapitola představuje ukázkové instance a demonstraci funkcionality.
+Závěrečná kapitola shrnuje dosažené výsledky a diskutuje možná rozšíření.

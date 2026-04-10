@@ -37,30 +37,69 @@
 // Abstracts. Are mandatory.
 #let abstract = (
   en: [
-    #lorem(20)
+    This thesis deals with the complexity theory of algorithms with focus on NP-complete problems.
+    A key tool for studying these problems are polynomial reductions,
+    which allow transforming instances of one problem to another.
+    Understanding reductions is often challenging due to their abstract nature
+    and the lack of interactive tools.
 
-    #lorem(40)
+    The goal of this thesis is to design and implement a web application
+    that enables interactive visualization of polynomial reductions
+    between selected NP-complete problems.
+    The application allows users to input their own problem instances,
+    perform reductions, view step-by-step explanations,
+    and visualize solutions.
+
+    The result is an interactive educational tool
+    that connects theoretical concepts with practical implementation.
   ],
   cs: [
-    #lorem(40)
+    Tato práce se zabývá teorií výpočetní složitosti algoritmů se zaměřením na NP-úplné problémy.
+    Klíčovým nástrojem pro studium těchto problémů jsou polynomiální redukce,
+    které umožňují převod instancí jednoho problému na problém jiný.
+    Pochopení redukcí je často náročné kvůli jejich abstraktní povaze
+    a nedostatku interaktivních nástrojů.
 
-    #lorem(60)
+    Cílem této práce je navrhnout a implementovat webovou aplikaci
+    umožňující interaktivní vizualizaci polynomiálních redukcí
+    mezi vybranými NP-úplnými problémy.
+    Aplikace umožňuje uživatelům zadávat vlastní instance problémů,
+    provádět redukce, zobrazovat kroky s vysvětlením
+    a vizualizovat řešení.
+
+    Výsledkem je interaktivní výuková pomůcka
+    spojující teoretické koncepty s praktickou implementací.
   ]
 )
 
 // Keywords are put in a list. If the list is empty the page won't be rendered.
 #let keywords = (
   en: (
-    ..lorem(20).split(" "),
+    "NP-complete problems",
+    "polynomial reductions",
+    "computational complexity",
+    "interactive visualization",
+    "educational tool",
+    "3-SAT",
+    "Hamiltonian cycle",
+    "graph coloring",
   ),
   cs: (
-    ..lorem(20).split(" "),
+    "NP-úplné problémy",
+    "polynomiální redukce",
+    "výpočetní složitost",
+    "interaktivní vizualizace",
+    "výuková pomůcka",
+    "3-SAT",
+    "hamiltonovský cyklus",
+    "barvení grafu",
   )
 )
 
 // Thanks. Is optional so I added `want-to-include` switch.
 #let thanks = (want-to-include: true, body: [
-  #lorem(30)
+  Rád bych poděkoval vedoucímu práce za cenné rady a připomínky během celého procesu tvorby.
+  Dále děkuji všem, kteří poskytli zpětnou vazbu k raným verzím aplikace.
 ])
 
 // List of symbols and abbreviations.
