@@ -1,10 +1,13 @@
+#set heading(numbering: "1.")
+
 = Návrh webové aplikace
 
 == Úvod a účel aplikace
 
-Cílem navrhované webové aplikace je převést teoretické poznatky z oblasti
-výpočetní složitosti, konkrétně problematiku polynomiálních redukcí mezi
-rozhodovacími problémy, do podoby interaktivního výukového nástroje.
+Cílem navrhované webové aplikace je převést teoretické poznatky z oblasti výpočetní složitosti, 
+konkrétně problematiku polynomiálních redukcí mezi
+rozhodovacími problémy, 
+do podoby interaktivního výukového nástroje.
 
 Navržený systém umožňuje nejen pasivní studium formálních důkazů,
 ale především aktivní práci s konkrétními instancemi problémů.
@@ -58,8 +61,8 @@ a to i při práci s rozsáhlejšími instancemi.
 Důraz je kladen také na přehlednost vizualizace,
 zejména na zvýraznění konstrukčních prvků v cílových instancích.
 
-Uživatel musí mít možnost interaktivně manipulovat se vstupním grafem,
-což podporuje lepší porozumění zpracovávaným strukturám.
+Uživatel musí mít možnost interaktivně manipulovat se vstupním grafem
+u problémů, kde je vstupní instancí graf.
 
 // Aplikace by měla být plně funkční i v offline režimu.
 // Návrh systému by měl být modulární s ohledem na budoucí rozšiřitelnost.
@@ -77,29 +80,34 @@ Aplikace je distribuována ve formě statických souborů.
 // Tento přístup umožňuje jednoduché nasazení a minimalizuje
 // požadavky na infrastrukturu.
 
+Aplikace je rozdělena na 
+- uživatelské rozhraní (dále jako UI)
+- bussiness logiku.
 
-=== Použité technologie
+Kód UI zahrnuje komponenty pro:
+- domovská strána,
+- jednotlivé stránky redukcí,
+- navigační lištu,
+- editory vstupních instancí,
+- kontrolní panely,
+- grafická reprezentace vstupních a výstupních instancí,
+- grafická reprezentace řešení vstupních a výstupních instancí,
+- karty pro jetdnotlivé kroky redukce apod.
+UI aplikace je dále rozebráno v @ui-chapter[kapitole].
 
-Aplikace je implementována pomocí frameworku Svelte,
-který poskytuje komponentově orientovaný přístup
-k tvorbě uživatelského rozhraní.
+Kód bussiness logiky se skládá z:
+- datových struktur reprezentující instance jednotlivých problému,
+- modulů, které společně převádí a transformují data nezávisle od sebe.
 
-Vývoj probíhal v jazyce TypeScript,
-který rozšiřuje jazyk JavaScript o statické typování.
-To umožňuje lepší kontrolu nad strukturou dat,
-zvyšuje čitelnost kódu a snižuje pravděpodobnost vzniku chyb.
+Konkrétně jsou v této aplikaci datovými strukturami reprezentovány:
+- grafy, 
+- booleovské výrazy v 3-KNF,
+- instance problému SSP - tedy multimnožina přirozených čísel a cílová hodnota.
 
-Pro vizualizaci grafových struktur je využita knihovna Cytoscape,
-která představuje standardní nástroj pro práci s grafy
-ve webovém prostředí.
-
-Pro vykreslování matematických výrazů v LaTeX syntaxi
-je použita knihovna KaTeX,
-která převádí LaTeX zápis do HTML reprezentace vhodné pro zobrazení
-v prohlížeči.
-
-// Knihovna cytoscape-canvas je využita pro efektivnější vykreslování
-// rozsáhlejších grafů pomocí canvas vrstvy.
+Moduly jsou:
+- redukční modul (reducer),
+- řešící modul (solver),
+- dékodovací modul (decoder).
 
 
 === Zpracování dat
@@ -112,14 +120,51 @@ Zpracování dat v systému probíhá v následujících krocích:
 4. Řešicí modul (solver) se pokusí nalézt řešení cílové instance.
 5. V případě úspěchu dekodér převede nalezené řešení zpět
    na řešení původní instance.
-
 // 6. Výsledky jsou následně vizualizovány a případně doplněny
 //    o krokový průběh redukce
 
 
-== Návrh uživatelského rozhraní
+=== Použité technologie
+
+Aplikace je implementována pomocí frameworku Svelte
+#footnote[
+  https://svelte.dev/
+],
+který poskytuje komponentově orientovaný přístup
+k tvorbě uživatelského rozhraní.
+
+Vývoj probíhal v jazyce TypeScript,
+který rozšiřuje jazyk JavaScript o statické typování.
+To umožňuje lepší kontrolu nad strukturou dat,
+zvyšuje čitelnost kódu a snižuje pravděpodobnost vzniku chyb.
+
+Pro vizualizaci grafových struktur je využita knihovna Cytoscape
+#footnote[
+  https://js.cytoscape.org/
+],
+která představuje jedním ze standardních nástrojů pro práci s grafy ve webovém prostředí.
+
+Pro vykreslování matematických výrazů v LaTeX syntaxi
+je použita knihovna KaTeX #footnote[https://katex.org/],
+která převádí LaTeX zápis do HTML reprezentace vhodné pro zobrazení v prohlížeči.
+
+// Knihovna cytoscape-canvas je využita pro efektivnější vykreslování
+// rozsáhlejších grafů pomocí canvas vrstvy.
+
+
+
+== Návrh uživatelského rozhraní <ui-chapter>
 
 === Struktura rozhraní
+
+Stránka má navigační lištu, 
+kde jsou odkazy na domovkou stránku 
+a stránky jednotlivých redukcí.
+
+Domovská stránka obsahuje obecné informace o aplikaci
+a krátké definice problémů vyskytujicíh se v převodech.
+
+=== Struktura stránek redukcí
 
 Uživatelské rozhraní je rozděleno do tří hlavních karet:
 

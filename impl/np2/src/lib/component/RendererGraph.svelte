@@ -227,7 +227,7 @@ Component that renders the graph.
         
             <label class="checkbox-wrapper">
                 <input type="checkbox" bind:checked={moveEnabled}>
-                Move Enabled
+                Move enabled
             </label>
         
         </div>
