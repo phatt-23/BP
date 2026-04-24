@@ -49,10 +49,12 @@ a umožňuje hlubší pochopení struktury třídy NP.
 
 Studium redukcí je však náročné.
 Formální popisy redukcí jsou často abstraktní a obtížně představitelné.
-Studenti i vyučující se při snaze pochopit principy převodů mezi problémy
+Studenti se při snaze pochopit principy převodů mezi problémy
 setkávají s bariérou mezi teoretickým popisem a jeho vizuální reprezentací.
 Existující výukové materiály a animace jsou navíc zpravidla statické
 a omezené na konkrétní vstupní instance.
+
+// toto neni dobre psat jako fakt, spis ze nastroju je malo
 Neexistuje nástroj, který by umožnil interaktivní práci
 s libovolnou instancí libovolného podporovaného problému.
 

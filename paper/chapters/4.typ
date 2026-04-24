@@ -102,7 +102,7 @@ Kód bussiness logiky se skládá z:
 Konkrétně jsou v této aplikaci datovými strukturami reprezentovány:
 - grafy, 
 - booleovské výrazy v 3-KNF,
-- instance problému SSP - tedy multimnožina přirozených čísel a cílová hodnota.
+- instance problému SSP - tedy seznam přirozených čísel a cílová hodnota.
 
 Moduly jsou:
 - redukční modul (reducer),
@@ -122,34 +122,6 @@ Zpracování dat v systému probíhá v následujících krocích:
    na řešení původní instance.
 // 6. Výsledky jsou následně vizualizovány a případně doplněny
 //    o krokový průběh redukce
-
-
-=== Použité technologie
-
-Aplikace je implementována pomocí frameworku Svelte
-#footnote[
-  https://svelte.dev/
-],
-který poskytuje komponentově orientovaný přístup
-k tvorbě uživatelského rozhraní.
-
-Vývoj probíhal v jazyce TypeScript,
-který rozšiřuje jazyk JavaScript o statické typování.
-To umožňuje lepší kontrolu nad strukturou dat,
-zvyšuje čitelnost kódu a snižuje pravděpodobnost vzniku chyb.
-
-Pro vizualizaci grafových struktur je využita knihovna Cytoscape
-#footnote[
-  https://js.cytoscape.org/
-],
-která představuje jedním ze standardních nástrojů pro práci s grafy ve webovém prostředí.
-
-Pro vykreslování matematických výrazů v LaTeX syntaxi
-je použita knihovna KaTeX #footnote[https://katex.org/],
-která převádí LaTeX zápis do HTML reprezentace vhodné pro zobrazení v prohlížeči.
-
-// Knihovna cytoscape-canvas je využita pro efektivnější vykreslování
-// rozsáhlejších grafů pomocí canvas vrstvy.
 
 
 
