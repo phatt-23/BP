@@ -1,5 +1,7 @@
 == Redukce 3-SAT na SSP
 
+Tato redukce vychází z myšlenek prezentovaných v @three-sat-to-ssp-yt.
+
 V této redukci převádíme booleovskou formuli $Phi$ ve 3-KNF na instanci problému součtu množiny, 
 tedy na množinu čísel $S$ a cílovou hodnotu $tau$.
 

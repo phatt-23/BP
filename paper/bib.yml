@@ -3,9 +3,49 @@ three-sat-to-hcycle-anim:
     title: Reduction of 3-SAT to Hamiltonian Cycle
     date: 2025-10-15
     author: OpenDSA Project
-    url: { value: https://opendsa-server.cs.vt.edu/OpenDSA/Books/Everything/html/threeSAT_to_hamiltonianCycle.html, date: 2026-02-11 }
+    url: { 
+        value: https://opendsa-server.cs.vt.edu/OpenDSA/Books/Everything/html/threeSAT_to_hamiltonianCycle.html, 
+        date: 2026-04-24
+    }
+
+three-sat-to-ssp-yt:
+    type: Web
+    title: Proving the Subset Sum Problem is NP-Complete | 3-SAT to Subset Sum Reduction
+    date: 2025-08-23
+    author: Christina Zhang 
+    url: {
+        value: https://www.youtube.com/watch?v=mXunNPW1erU,
+        date: 2026-04-24
+    }
+   
+three-sat-to-3cg-yt:
+    type: Web
+    title: 3-Colorability
+    date: 2021-02-27
+    author: Computer Science Theory Explained
+    url: {
+        value: https://www.youtube.com/watch?v=fMh42fsIf0Q,
+        date: 2026-04-24
+    }
+
+# HCYCLE na problém HCIRCUIT
+sawa-ti-slides-06: 
+    type: Web
+    title: Příklady důkazů NP-úplnosti
+    date: 2025-10-27 
+    author: Zdeněk Sawa
+    url: {
+        value: https://www.cs.vsb.cz/sawa/ti/slides/ti-slides-06.pdf,
+        date: 2026-04-24
+    }
+
+# HCIRCUIT na TSP
+# sam, jsem si vymyslel, je to jednoduche
 
 
+
+# these onwards were just for testing typst
+# they're not relevant
 
 # zygos:
 #     type: Article

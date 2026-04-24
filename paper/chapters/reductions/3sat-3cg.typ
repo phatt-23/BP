@@ -2,7 +2,7 @@
 
 == Redukce 3-SAT na 3-CG
 
-// https://www.youtube.com/watch?v=fMh42fsIf0Q
+Tato redukce vychází z myšlenek prezentovaných v @three-sat-to-3cg-yt.
 
 Redukce vstupní instance problému 3-SAT na instanci problému 3-CG, tedy na neorientovaný graf,
 je založena na konstrukci několika typů speciálních konstrukčních prvků:

@@ -3,6 +3,8 @@
 
 == Redukce 3-SAT na HCYCLE
 
+Tato redukce vychází z myšlenek prezentovaných v @three-sat-to-hcycle-anim.
+
 Algoritmus pro převod instance problému 3-SAT na instanci problému HCYCLE 
 spočívá v konstrukci speciálních konstrukčních prvků pro proměnné a klauzule vstupní formule. 
 Tyto konstrukční prvky mají podobu vhodně navržených podgrafů, 

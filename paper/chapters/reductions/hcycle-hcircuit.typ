@@ -2,6 +2,8 @@
 
 == Redukce HCYCLE na HCIRCUIT
 
+Tato redukce vychází z @sawa-ti-slides-06.
+
 Pro každý vrchol $v in V(G)$ vstupního orientovaného grafu $G$ 
 vytvoříme konstrukční prvek skládajícím se ze tří vrcholů:
 
