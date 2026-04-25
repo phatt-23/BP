@@ -46,7 +46,10 @@ Příklad vstupního formátu:
 
 Toto je příklad instance
 $
-  (a or not b or c) and (not x or y or z) and (x or not b or not c) and (a or y or z)
+  (a or not b or c) and 
+  (not x or y or z) and 
+  (x or not b or not c) and 
+  (a or y or z)
 $
 
 Lze taky zadavat literaly jako LaTeX
@@ -91,6 +94,7 @@ Příklad vstpuního formátu (bez ohodnocení hran):
   3 4 
   4 0 
 ```]
+// TODO: pridat odpovidajici graf
 
 Příklad vstpuního formátu (s ohodnocením hran):
 #sourcecode[```txt
@@ -110,6 +114,7 @@ Příklad vstpuního formátu (s ohodnocením hran):
   2 4  2
   3 4  1
 ```]
+// TODO: pridat odpovidajici graf
 
 Lze zadavat (tak jako u 3-SAT) LaTeX jmena.
 #sourcecode[```txt
@@ -121,6 +126,8 @@ Lze zadavat (tak jako u 3-SAT) LaTeX jmena.
   \gamma \gamma_2
   \gamma \gamma_3
 ```]
+
+// TODO: pridat odpovidajici graf
 
 
 Třída `Graph` poskytuje metodu `copy` pro vytvoření hluboké kopie grafu
@@ -134,6 +141,11 @@ Tato třída obsahuje seznam čísel a cílovou hodnotu.
 Každé číslo je reprezentováno jako pole cifer, 
 což umožňuje práci s velkými čísly,
 která by přesáhla maximální hodnotu standardního celočíselného typu.
+
+Parsování vstupu
+- Každý řádek vstupu reprezentuje jedno číslo.
+- nejprve se cílová hodnota (je na prvnim radku) 
+- poté se parsuje ostatni jednotlivá čísla
 
 Příklad vstupu:
 #sourcecode[```txt
@@ -157,10 +169,16 @@ Příklad vstupu:
 1
 ```]
 
-// Parsování vstupu probíhá ve dvou krocích:
-// nejprve se parsuje text obsahující jednotlivá čísla,
-// poté se parsuje cílová hodnota.
-// Každý řádek vstupu reprezentuje jedno číslo.
+Toto je
+$
+tau = 11111133 \
+
+S = 
+{ 10000010 , 10000000 , 1000010 , 1000000 , 100010 , 100000 , \ 
+  10001 , 10000 , 1001 , 1000 , 101 , 100 , 10 , 10 , 1 , 1 }
+$
+
+
 
 === Validace vstupu
 
