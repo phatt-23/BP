@@ -1,0 +1,83 @@
+@startuml component-diagram
+/'skinparam packageStyle rectangle'/
+left to right direction
+skinparam noteBackgroundColor #FFFFFF
+
+package "Aplikace" {
+
+  together {
+    package "Business logika" {
+      [Datové struktury]
+      note top of [Datové struktury]: Graf, 3-KNF, SSP
+
+      [Redukční modul]
+      [Řešící modul]
+      [Dekódovací modul]
+    }
+  }
+  
+  together {
+    package "Uživatelské rozhraní (UI)" {
+      [Navigační lišta]
+      [Domovská stránka]
+      
+      [Stránky redukcí]
+      [Editory vstupů]
+      [Kontrolní panel]
+      [Vizualizace instancí]
+      [Vizualizace řešení]
+      [Kroky redukce]
+    }
+  }
+
+}
+
+' --- UI navigation ---
+[Navigační lišta] --> [Domovská stránka]
+[Navigační lišta] --> [Stránky redukcí] 
+
+[Stránky redukcí] --> [Editory vstupů]
+[Stránky redukcí] --> [Kontrolní panel]
+[Stránky redukcí] --> [Vizualizace instancí]
+[Stránky redukcí] --> [Vizualizace řešení]
+[Stránky redukcí] --> [Kroky redukce]
+
+' --- Business logic ---
+[Editory vstupů] --> [Datové struktury]
+note on link
+  zadání vstupní instance
+end note
+
+[Datové struktury] --> [Redukční modul]
+
+[Redukční modul] --> [Datové struktury]
+note on link
+  redukce vstupní instanci
+  na výstupní instanci
+end note
+
+[Datové struktury] --> [Řešící modul]
+
+[Řešící modul] --> [Dekódovací modul]
+note on link
+    pokud řešení pro výstupní instanci existuje, 
+    dekóduje se na řešení vstupní instance
+end note
+
+' --- Output back to UI ---
+[Redukční modul] --> [Kroky redukce]
+note on link
+  zobrazení redukčních kroků
+end note
+
+[Řešící modul] --> [Vizualizace řešení]
+note on link
+  zobrazení řešení výstupní instance
+end note
+
+[Dekódovací modul] --> [Vizualizace řešení]
+note on link
+  zobrazení řešení vstupní instance
+end note
+
+@enduml
