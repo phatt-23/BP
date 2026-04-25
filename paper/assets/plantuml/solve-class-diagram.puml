@@ -1,0 +1,34 @@
+@startuml
+skinparam linetype ortho
+hide circle
+
+package solve {
+
+    interface Solver<I,C> {
+        +instance: I
+        +solve(): C | Unsolvable
+    }
+
+    interface Certificate {
+        +instance: ProblemInstance
+        +isValid: boolean
+    }
+
+    class Certificate3SAT implements Certificate
+    class CertificateHCYCLE implements Certificate
+    class CertificateHCIRCUIT implements Certificate
+    class Certificate3CG implements Certificate
+    class CertificateSSP implements Certificate
+    class CertificateTSP implements Certificate
+    class CertificateGraphPath implements Certificate
+
+    class Solver3SAT implements Solver
+    class SolverHCYCLE implements Solver
+    class SolverHCIRCUIT implements Solver
+    class Solver3CG implements Solver
+    class SolverSSP implements Solver
+    class SolverTSP implements Solver
+
+}
+
+@enduml

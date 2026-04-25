@@ -1,0 +1,66 @@
+@startuml
+skinparam linetype ortho
+hide circle
+
+package instance {
+    abstract class ProblemInstance {
+        +isEmpty(): boolean
+        +toSerializedString(): string
+        +asString(): string
+    }
+
+    class CNF3 extends ProblemInstance {
+        +variables: VarName[]
+        +clauses: Clause[]
+        +fromString(input: string): CNF3
+    }
+
+    class Graph extends ProblemInstance {
+        +nodes: GraphNode[]
+        +edges: GraphEdge[]
+        +directed: boolean
+        +fromString(input: string): Graph
+    }
+
+    class SSP extends ProblemInstance {
+        +numbers: SSPNumber[]
+        +target: number
+        +fromString(input: string): SSP
+    }
+
+    class Literal {
+        +id: Id
+        +varName: VarName
+        +negated: boolean
+    }
+
+    class Clause {
+        +literals: Literal[3]
+    }
+
+    class GraphNode {
+        +id: Id
+        +label: string
+        +position: Position
+    }
+
+    class GraphEdge {
+        +id: Id
+        +source: string
+        +target: string
+        +weight: number
+    }
+
+    class SSPNumber {
+        +value: number
+        +id: Id
+    }
+
+    CNF3 --> "*" Clause
+    Clause --> "*" Literal
+    Graph --> "*" GraphNode
+    Graph --> "*" GraphEdge
+    SSP --> "*" SSPNumber
+}
+
+@enduml

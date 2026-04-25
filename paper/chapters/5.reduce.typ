@@ -34,6 +34,11 @@ která obsahuje:
 Tato struktura umožňuje zpětnou rekonstrukci procesu redukce
 a vizualizaci jednotlivých kroků.
 
+#figure(
+  image("../assets/reduction-class-diagram.svg"),
+  caption: [Třídní hierarchie redukcí]
+)
+
 
 === Redukce 3-SAT na HCYCLE
 

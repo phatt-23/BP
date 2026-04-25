@@ -1,0 +1,40 @@
+@startuml
+skinparam linetype ortho
+hide circle
+
+package reduction {
+
+    abstract class Reducer<I,O> {
+        +inInstance: I
+        +reduce(): ReductionResult
+        #doReduce(): ReductionResult
+    }
+
+    class ReductionResult<I,O> {
+        +outInstance: O
+        +steps: ReductionStep[]
+    }
+
+    interface ReductionStep<I,O> {
+        +description: string
+        +instance: I | O
+    }
+
+    class Reducer3SATtoHCYCLE extends Reducer {
+    }
+
+    class Reducer3SATtoSSP extends Reducer {
+    }
+
+    class Reducer3SATto3CG extends Reducer {
+    }
+
+    class ReducerHCYCLEtoHCIRCUIT extends Reducer {
+    }
+
+    class ReducerHCIRCUITtoTSP extends Reducer {
+    }
+
+}
+
+@enduml

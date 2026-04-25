@@ -14,9 +14,9 @@ Cílem bylo vytvořit přehledný a srozumitelný kód,
 který co nejpřesněji reflektuje teoretický popis redukcí.
 Optimalizace výkonu byly prováděny pouze v nezbytných případech.
 
-#include "./5.1.typ"
-#include "./5.2.typ"
-#include "./5.3.typ"
-#include "./5.4.typ"
-#include "./5.5.typ"
+#include "./5.instance.typ"
+#include "./5.reduce.typ"
+#include "./5.solve.typ"
+#include "./5.decode.typ"
+#include "./5.tech.typ"
 

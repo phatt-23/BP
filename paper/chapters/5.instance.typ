@@ -1,3 +1,5 @@
+#import "/lib/global.typ": *
+
 == Reprezentace instancí problémů
 
 Interní reprezentace instancí je založena na abstraktní třídě `ProblemInstance`,
@@ -9,6 +11,14 @@ Toto řešení umožňuje jednotné zpracování různých typů problémů
 v rámci systému redukcí,
 přičemž každá instance si zachovává specifické vlastnosti svého typu.
 
+=== Třídní hierarchie
+
+Následující diagram znázorňuje třídní hierarchii použitou pro reprezentaci instancí problémů.
+
+#figure(
+  image("../assets/instance-class-diagram.svg"),
+  caption: [Třídní hierarchie datových struktur]
+)
 
 === Reprezentace formule 3-SAT
 
@@ -21,14 +31,36 @@ Literál je reprezentován třídou `Literal`, jež obsahuje název proměnné a
 Třída `CNF3` poskytuje statickou metodu `fromString` pro parsování textového vstupu.
 Tato metoda očekává vstup ve formě víceřádkového textu,
 kde každý řádek reprezentuje jednu klauzuli.
-Literály jsou odděleny mezerou a negace je označena prefixem `!`.
+Literály jsou odděleny mezerou a negace je označena prefixem `!` (vykřičník).
 
+// AGENT: toto uprav tyto vety at navazuji
+// AGENT: i should put the #sourcecode blocks and the corresponding math blocks into a #figure somehow, please do it the best way
 Příklad vstupního formátu:
 
-```c
-a b c
-!x y z
-```
+#sourcecode[```txt
+  a !b c
+  !x y z
+  x !b !c
+  a y z
+```]
+
+Toto je příklad instance
+$
+  (a or not b or c) and (not x or y or z) and (x or not b or not c) and (a or y or z)
+$
+
+Lze taky zadavat literaly jako LaTeX
+#sourcecode[```txt
+  \alpha \beta \gamma  
+  \alpha_1 \alpha_2 \beta_3
+```]
+
+Toto je
+$
+  (alpha or beta or gamma  ) and
+  (alpha_1 or alpha_2 or beta_3)
+$
+
 
 === Reprezentace grafů
 
@@ -47,37 +79,48 @@ Jednotlivé řádky mohou obsahovat:
 - dva názvy vrcholů a celé číslo pro definici hrany s váhou.
 
 Příklad vstpuního formátu (bez ohodnocení hran):
-```c
-0
-1
-2
-3
-4
-0 1 
-1 2 
-2 3 
-3 4 
-4 0 
-```
+#sourcecode[```txt
+  0
+  1
+  2
+  3
+  4
+  0 1 
+  1 2 
+  2 3 
+  3 4 
+  4 0 
+```]
 
 Příklad vstpuního formátu (s ohodnocením hran):
-```c
-0
-1
-2
-3
-4
-0 1  1
-0 2  2
-0 3  2
-0 4  1
-1 2  1
-1 3  2
-1 4  2
-2 3  1
-2 4  2
-3 4  1
-```
+#sourcecode[```txt
+  0
+  1
+  2
+  3
+  4
+  0 1  1
+  0 2  2
+  0 3  2
+  0 4  1
+  1 2  1
+  1 3  2
+  1 4  2
+  2 3  1
+  2 4  2
+  3 4  1
+```]
+
+Lze zadavat (tak jako u 3-SAT) LaTeX jmena.
+#sourcecode[```txt
+  \alpha \beta
+  \alpha \gamma
+  \beta \beta_1
+  \beta \beta_2
+  \gamma \gamma_1
+  \gamma \gamma_2
+  \gamma \gamma_3
+```]
 
 
 Třída `Graph` poskytuje metodu `copy` pro vytvoření hluboké kopie grafu
@@ -93,7 +136,7 @@ což umožňuje práci s velkými čísly,
 která by přesáhla maximální hodnotu standardního celočíselného typu.
 
 Příklad vstupu:
-```c
+#sourcecode[```txt
 11111133
 
 10000010
@@ -112,7 +155,7 @@ Příklad vstupu:
 10
 1
 1
-```
+```]
 
 // Parsování vstupu probíhá ve dvou krocích:
 // nejprve se parsuje text obsahující jednotlivá čísla,

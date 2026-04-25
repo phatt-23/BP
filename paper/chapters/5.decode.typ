@@ -14,6 +14,11 @@ export interface Decoder<
 }
 ```
 
+#figure(
+  image("../assets/decode-class-diagram.svg"),
+  caption: [Třídní hierarchie dekoderů]
+)
+
 === Dekódování řešení HCYCLE na 3-SAT
 
 Dekoder `DecoderHCYCLEto3SAT` analyzuje nalezený hamiltonovský cyklus

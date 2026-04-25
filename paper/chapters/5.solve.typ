@@ -16,6 +16,11 @@ export interface Solver<
 }
 ```
 
+#figure(
+  image("../assets/solve-class-diagram.svg"),
+  caption: [Třídní hierarchie solverů a certifikátů]
+)
+
 === Řešení problému 3-SAT
 
 Solver `Solver3SAT` využívá algoritmus DPLL #footnote[https://en.wikipedia.org/wiki/DPLL_algorithm].
