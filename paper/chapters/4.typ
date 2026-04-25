@@ -45,10 +45,19 @@ V případě, že je odpověď na rozhodovací otázku kladná,
 aplikace umožní zobrazit nalezené řešení jak pro vstupní,
 tak pro cílový problém.
 
-// Systém dále validuje vstupní data a upozorňuje uživatele
-// na případné syntaktické chyby.
-// Uživatel může upravovat již zadanou instanci bez nutnosti
-// opětovného načtení aplikace.
+Systém dále validuje vstupní data a upozorňuje uživatele
+na případné syntaktické chyby.
+Uživatel může upravovat již zadanou instanci bez nutnosti
+opětovného načtení aplikace.
+
+#figure(
+  image("../assets/plantuml/use-case.svg"),
+  caption: [
+    Diagram případů užití (Use Case Diagram) 
+    zobrazujicí funkční požadavky systému z pohledu uživatele 
+  ]
+)
+
 
 
 === Nefunkční požadavky

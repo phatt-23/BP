@@ -107,13 +107,13 @@
   ([EXP, EXPTIME], [Exponentional Time]),
   ([P, PTIME], [Polynomial Time]),
   ([NP, NPTIME], [Non-deterministic Polynomial Time]),
-  ([DPLL], [Davis-Putnam-Logemann-Loveland]),
   ([3-SAT], [3-Satisfiability]),
   ([TSP], [Traveling Salesman Problem]),
   ([HCYCLE], [Hamiltonian Cycle Problem]),
   ([HCIRCUIT], [Hamiltonian Circuit Problem]),
   ([SSP], [Subset Sum Problem]),
   ([3-CG], [3-Coloring Problem]),
+  ([DPLL], [Davis-Putnam-Logemann-Loveland]),
 )
 
 // Intro. Is mandatory.
