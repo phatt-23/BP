@@ -1,5 +1,3 @@
-// TODO: přidat wireframe diagramy
-
 == Návrh uživatelského rozhraní <ui-chapter>
 
 Tato kapitola se věnuje návrhu uživatelského rozhraní aplikace. 
@@ -13,9 +11,7 @@ Každá stránka redukce se skládá ze tří hlavních částí: editační obl
 
 #figure(
   image("../assets/drawio/struktura_ui.svg"), 
-  caption: [
-    Wireframe model obecné struktury rozhraní aplikace // sounds complicated
-  ]
+  caption: [Wireframe model struktury rozhraní]
 )
 
 === Komponenty stránky redukce
@@ -24,22 +20,15 @@ Následující podkapitoly podrobněji popisují jednotlivé komponenty stránky
 
 ==== Editační oblast
 
-Editační oblast slouží k zadávání vstupní instance. Obsahuje textové vstupní pole a kontrolní panel. V horní části se nachází výběr ukázkových instancí. Při syntaktické chybě vstupu je uživatel informován chybovou hláškou. Kontrolní panel obsahuje tlačítka "Reduce" a "Solve" a přepínač "Show Steps".
+Editační oblast slouží k zadávání vstupní instance. Obsahuje textové vstupní pole a kontrolní panel. V horní části se nachází výběr ukázkových instancí. Při syntaktické chybě vstupu je uživatel informován chybovou hláškou.
 
-// toto uprav do vet
-// nevim jestli je to uplne potreba to zase psat
-// takze se rozhodni na tom jestli je vubec nutne
-// inkludovat tyto nasledne veci
-tlacitko "Reduce" - zacne prevadet/redukovat vstupni instanci na vystpni
-tlacitko "Solve" - zacne nalezat vystupni instanci, v pripade nalezu dekoduje
-tlacitko "Show Steps" - ukaze kroky
+Kontrolní panel obsahuje tři hlavní prvky. Tlačítko "Reduce" zahajuje převod vstupní instance na výstupní instanci. Tlačítko "Solve" spouští hledání řešení výstupní instance a v případě úspěchu provádí dekódování řešení zpět na řešení vstupního problému. Přepínač "Show Steps" zobrazuje jednotlivé kroky redukce.
 
+Editor dále obsahuje instrukce a nápovědu k formátu vstupních dat, aby uživatel věděl, jak správně zadat instanci problému.
 
 #figure(
   image("../assets/drawio/editor.svg"), 
-  caption: [
-    Wireframe model editační oblasti
-  ]
+  caption: [Wireframe model editační oblasti]
 )
 
 ==== Vizualizace instance
@@ -48,21 +37,16 @@ Vizualizační oblast zobrazuje grafickou reprezentaci instance. Obě vizualizac
 
 #figure(
   image("../assets/drawio/vizualizace_instance.svg"), 
-  caption: [
-    Wireframe model vizualizace instance
-  ]
+  caption: [Wireframe model vizualizace instance]
 )
 
 ==== Krokové zobrazení redukce
 
-Přepínač "Show steps" umožňuje zobrazit jednotlivé kroky redukce. 
-Proces redukce je prezentován sekvenčně, přičemž každý krok transformace je graficky znázorněn a doplněn textovým vysvětlením. Tento přístup umožňuje uživateli pochopit nejen výslednou instanci, ale i samotný konstrukční postup.
+Přepínač "Show Steps" umožňuje zobrazit jednotlivé kroky redukce. Proces redukce je prezentován sekvenčně, přičemž každý krok transformace je graficky znázorněn a doplněn textovým vysvětlením. Uživatel může mezi jednotlivými kroky přecházet pomocí tlačítek "Next" a "Previous". Tento přístup umožňuje uživateli pochopit nejen výslednou instanci, ale i samotný konstrukční postup.
 
 #figure(
   image("../assets/drawio/kroky_redukce.svg"), 
-  caption: [
-    Wireframe model editační oblasti
-  ]
+  caption: [Wireframe model krokového zobrazení redukce]
 )
 
 ==== Zobrazení řešení
