@@ -8,7 +8,7 @@ package "Aplikace" {
   together {
     package "Business logika" {
       [Datové struktury]
-      note top of [Datové struktury]: Graf, 3-KNF, SSP
+      note top of [Datové struktury]: Graf, 3-KNF, SSP, kroky redukce
 
       [Redukční modul]
       [Řešící modul]
@@ -43,41 +43,40 @@ package "Aplikace" {
 [Stránky redukcí] --> [Kroky redukce]
 
 ' --- Business logic ---
-[Editory vstupů] --> [Datové struktury]
+[Editory vstupů] -[dashed]-> [Datové struktury]
 note on link
-  zadání vstupní instance
+  Zadání vstupní instance
 end note
 
 [Datové struktury] --> [Redukční modul]
 
 [Redukční modul] --> [Datové struktury]
 note on link
-  redukce vstupní instanci
-  na výstupní instanci
+  Redukce vstupní instanci na výstupní instanci
 end note
 
 [Datové struktury] --> [Řešící modul]
 
 [Řešící modul] --> [Dekódovací modul]
 note on link
-    pokud řešení pro výstupní instanci existuje, 
-    dekóduje se na řešení vstupní instance
+    Pokud řešení pro výstupní instanci existuje, 
+    dekóduje se na řešení vstupní instance.
 end note
 
 ' --- Output back to UI ---
-[Redukční modul] --> [Kroky redukce]
+[Redukční modul] -[dashed]-> [Kroky redukce]
 note on link
-  zobrazení redukčních kroků
+  Zobrazení redukčních kroků
 end note
 
-[Řešící modul] --> [Vizualizace řešení]
+[Řešící modul] -[dashed]-> [Vizualizace řešení]
 note on link
-  zobrazení řešení výstupní instance
+  Zobrazení řešení výstupní instance
 end note
 
-[Dekódovací modul] --> [Vizualizace řešení]
+[Dekódovací modul] -[dashed]-> [Vizualizace řešení]
 note on link
-  zobrazení řešení vstupní instance
+  Zobrazení řešení vstupní instance
 end note
 
 @enduml
