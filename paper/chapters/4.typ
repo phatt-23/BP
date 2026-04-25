@@ -89,7 +89,13 @@ Aplikace je distribuována ve formě statických souborů.
 // Tento přístup umožňuje jednoduché nasazení a minimalizuje
 // požadavky na infrastrukturu.
 
-Aplikace je rozdělena na 
+
+// TODO: toto dát do vět
+
+// TODO: přidat diagramy ukazující rozdelění kódu na UI a byznys logiku, 
+// TODO: a rozdělění byznys na moduly, které pracují s data
+
+Aplikace je rozdělena na:
 - uživatelské rozhraní (dále jako UI)
 - bussiness logiku.
 
@@ -106,7 +112,8 @@ UI aplikace je dále rozebráno v @ui-chapter[kapitole].
 
 Kód bussiness logiky se skládá z:
 - datových struktur reprezentující instance jednotlivých problému,
-- modulů, které společně převádí a transformují data nezávisle od sebe.
+- modulů, které společně převádí a transformují data (vstupní a výstupní instance)  
+  nezávisle od sebe, každý modul má svůj "cíl"
 
 Konkrétně jsou v této aplikaci datovými strukturami reprezentovány:
 - grafy, 
@@ -114,27 +121,34 @@ Konkrétně jsou v této aplikaci datovými strukturami reprezentovány:
 - instance problému SSP - tedy seznam přirozených čísel a cílová hodnota.
 
 Moduly jsou:
-- redukční modul (reducer),
-- řešící modul (solver),
-- dékodovací modul (decoder).
+- redukční modul (reducer) 
+  - převádí instance jednoho problému na instance jiného problému,
+- řešící modul (solver) 
+  - "řeší" instance problému, nalézají řešení,
+- dékodovací modul (decoder) 
+  - pokud je řešení nalezeno, tak tento modul převede řešení jednoho problému na řešení jiného problému, 
+  - přičemž tento decoder funguje jen pokud je původní řešení ve správném formátu. 
+    Jinými slovy není možné pro libovolné řešení jednoho problému převést na řešení jiného problému, ale tohle je jasné.
 
 
 === Zpracování dat
 
+// TODO: přidat diagram (nějaký vhodný), který zobrazuje tyto kroky
 Zpracování dat v systému probíhá v následujících krocích:
 
 1. Uživatel zadá instanci vstupního problému.
 2. Instance je převedena do interní reprezentace systému.
 3. Redukční modul transformuje vstupní instanci na instanci cílového problému.
+   Zároveň také vytváří krokový průběh redukce.
 4. Řešicí modul (solver) se pokusí nalézt řešení cílové instance.
 5. V případě úspěchu dekodér převede nalezené řešení zpět
    na řešení původní instance.
-// 6. Výsledky jsou následně vizualizovány a případně doplněny
-//    o krokový průběh redukce
 
 
 
 == Návrh uživatelského rozhraní <ui-chapter>
+
+// TODO: přidat wireframe diagramy
 
 === Struktura rozhraní
 
