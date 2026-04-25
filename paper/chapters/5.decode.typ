@@ -19,8 +19,10 @@ Každý dekoder implementuje rozhraní `Decoder` definované jako:
   caption: [Rozhraní `Decoder`]
 )
 
+Následující diagram znázorňuje třídní hierarchii dekoderů.
+
 #figure(
-  image("../assets/decode-class-diagram.svg"),
+  image("../assets/plantuml/decode-class-diagram.svg"),
   caption: [Třídní hierarchie dekoderů]
 )
 

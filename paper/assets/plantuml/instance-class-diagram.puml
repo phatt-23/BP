@@ -2,7 +2,7 @@
 skinparam linetype ortho
 hide circle
 
-package instance {
+package Instance {
     abstract class ProblemInstance {
         +isEmpty(): boolean
         +toSerializedString(): string

@@ -12,12 +12,10 @@ Toto řešení umožňuje jednotné zpracování různých typů problémů
 v rámci systému redukcí,
 přičemž každá instance si zachovává specifické vlastnosti svého typu.
 
-=== Třídní hierarchie
-
 Následující diagram znázorňuje třídní hierarchii použitou pro reprezentaci instancí problémů.
 
 #figure(
-  image("/assets/instance-class-diagram.svg"),
+  image("../assets/plantuml/instance-class-diagram.svg"),
   caption: [Třídní hierarchie datových struktur]
 )
 
@@ -87,31 +85,26 @@ Jednotlivé řádky mohou obsahovat:
 
 Následující příklad ukazuje vstupní formát bez ohodnocení hran:
 #figure(sourcecode[```txt
-  0
-  1
-  2
-  3
-  4
-  0 1 
-  1 2 
-  2 3 
-  3 4 
-  4 0 
+  B
+  C
+  N
+  R
+  B C
+  C N
+  N R
+  B R
 ```], caption: [ Příklad vstupu grafu bez ohodnocení hran ])
 
 #figure(
   raw-render(```dot
     digraph {
-      0
-      1
-      2
-      3
-      4
-      0 -> 1
-      1 -> 2
-      2 -> 3
-      3 -> 4
-      4 -> 0
+      layout=fdp
+      node [shape=circle fixedsize=true]
+
+      B -> C
+      C -> N
+      N -> R
+      B -> R
     }
   ```),
   caption: [Vizualizace grafu bez ohodnocení hran]
@@ -141,6 +134,8 @@ Následující příklad ukazuje vstupní formát s ohodnocením hran:
 #figure(
   raw-render(```dot
     digraph {
+      node [shape=circle fixedsize=true]
+
       0
       1
       2
@@ -180,6 +175,8 @@ Je také možné zadávat názvy vrcholů v syntaxi LaTeX:
 #figure(
   raw-render(```dot
     digraph {
+      node [shape=circle fixedsize=true]
+
       "alpha" -> "beta"
       "alpha" -> "gamma"
       "beta" -> "beta_1"

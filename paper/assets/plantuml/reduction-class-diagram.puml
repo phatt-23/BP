@@ -2,7 +2,7 @@
 skinparam linetype ortho
 hide circle
 
-package reduction {
+package "Reducer Module" {
 
     abstract class Reducer<I,O> {
         +inInstance: I
@@ -34,7 +34,6 @@ package reduction {
 
     class ReducerHCIRCUITtoTSP extends Reducer {
     }
-
 }
 
 @enduml

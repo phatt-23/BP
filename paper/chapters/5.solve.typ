@@ -21,23 +21,23 @@ Každý solver je navržen jako samostatná třída implementující toto rozhra
   caption: [Rozhraní `Solver`]
 )
 
+Následující diagram znázorňuje třídní hierarchii solverů a certifikátů.
+
 #figure(
-  image("../assets/solve-class-diagram.svg"),
+  image("../assets/plantuml/solve-class-diagram.svg"),
   caption: [Třídní hierarchie solverů a certifikátů]
 )
 
 === Řešení problému 3-SAT
 
-Solver `Solver3SAT` využívá algoritmus DPLL #footnote[https://en.wikipedia.org/wiki/DPLL_algorithm].
-// AGENT: kratce popis co to DPLL je, jaky typ algoritmu, velmi kratce ale
-
+Solver `Solver3SAT` využívá algoritmus zpětného vyhledávání DPLL #footnote[https://en.wikipedia.org/wiki/DPLL_algorithm].
 
 === Řešení problému HCYCLE
 
 Solver `SolverHCYCLE` využívá backtrackingový algoritmus
 procházející možné orientované cesty v grafu.
 
-Algoritmus nejprve sestaví seznam sousednosti /*linked list*/ pro rychlé vyhledávání.
+Algoritmus nejprve sestaví seznam sousednosti pro rychlé vyhledávání.
 Počáteční vrchol je libovolně zvolen jako první vrchol grafu.
 Algoritmus se rekurzivně pokouší rozšířit aktuální cestu o nepoužité sousední vrcholy.
 

@@ -37,8 +37,10 @@ která obsahuje:
 Tato struktura umožňuje zpětnou rekonstrukci procesu redukce
 a vizualizaci jednotlivých kroků.
 
+Následující diagram znázorňuje třídní hierarchii redukcí.
+
 #figure(
-  image("../assets/reduction-class-diagram.svg"),
+  image("../assets/plantuml/reduction-class-diagram.svg"),
   caption: [Třídní hierarchie redukcí]
 )
 

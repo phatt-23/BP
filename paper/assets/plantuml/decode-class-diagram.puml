@@ -2,7 +2,7 @@
 skinparam linetype ortho
 hide circle
 
-package decode {
+package "Decoder Module" {
 
     interface Decoder<O,OC,IC> {
         +decode(certificate: OC): IC
