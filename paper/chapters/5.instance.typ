@@ -1,4 +1,5 @@
-#import "/lib/global.typ": *
+#import "../lib/global.typ": *
+#import "@preview/diagraph:0.3.6": *
 
 == Reprezentace instancí problémů
 
@@ -16,7 +17,7 @@ přičemž každá instance si zachovává specifické vlastnosti svého typu.
 Následující diagram znázorňuje třídní hierarchii použitou pro reprezentaci instancí problémů.
 
 #figure(
-  image("../assets/instance-class-diagram.svg"),
+  image("/assets/instance-class-diagram.svg"),
   caption: [Třídní hierarchie datových struktur]
 )
 
@@ -33,18 +34,19 @@ Tato metoda očekává vstup ve formě víceřádkového textu,
 kde každý řádek reprezentuje jednu klauzuli.
 Literály jsou odděleny mezerou a negace je označena prefixem `!` (vykřičník).
 
-// AGENT: toto uprav tyto vety at navazuji
-// AGENT: i should put the #sourcecode blocks and the corresponding math blocks into a #figure somehow, please do it the best way
-Příklad vstupního formátu:
+Následující příklad ukazuje vstupní formát a odpovídající matematickou reprezentaci:
 
-#sourcecode[```txt
-  a !b c
-  !x y z
-  x !b !c
-  a y z
-```]
+#figure(
+  sourcecode(```txt
+    a !b c
+    !x y z
+    x !b !c
+    a y z
+  ```),
+  caption: [Příklad vstupního formátu]
+)
 
-Toto je příklad instance
+Matematická reprezentace:
 $
   (a or not b or c) and 
   (not x or y or z) and 
@@ -52,18 +54,21 @@ $
   (a or y or z)
 $
 
-Lze taky zadavat literaly jako LaTeX
-#sourcecode[```txt
-  \alpha \beta \gamma  
-  \alpha_1 \alpha_2 \beta_3
-```]
+Je také možné zadávat literály v syntaxi LaTeX: 
 
-Toto je
+#figure(
+  sourcecode(```txt
+    \alpha \beta \gamma  
+    \alpha_1 \alpha_2 \beta_3
+  ```),
+  caption: [Příklad vstupu s LaTeX názvy]
+)
+
+Matematická reprezentace:
 $
-  (alpha or beta or gamma  ) and
+  (alpha or beta or gamma) and
   (alpha_1 or alpha_2 or beta_3)
 $
-
 
 === Reprezentace grafů
 
@@ -76,13 +81,12 @@ Hrana obsahuje identifikátor, počáteční vrchol, cílový vrchol a volitelno
 Pro parsování vstupu poskytuje třída `Graph` statickou metodu `fromString`.
 Vstupní formát umožňuje specifikovat vrcholy a hrany.
 Jednotlivé řádky mohou obsahovat:
-
 - pouze název vrcholu pro definici izolovaného vrcholu,
 - dva názvy vrcholů oddělené mezerou pro definici hrany,
 - dva názvy vrcholů a celé číslo pro definici hrany s váhou.
 
-Příklad vstpuního formátu (bez ohodnocení hran):
-#sourcecode[```txt
+Následující příklad ukazuje vstupní formát bez ohodnocení hran:
+#figure(sourcecode[```txt
   0
   1
   2
@@ -93,11 +97,30 @@ Příklad vstpuního formátu (bez ohodnocení hran):
   2 3 
   3 4 
   4 0 
-```]
-// TODO: pridat odpovidajici graf
+```], caption: [ Příklad vstupu grafu bez ohodnocení hran ])
 
-Příklad vstpuního formátu (s ohodnocením hran):
-#sourcecode[```txt
+#figure(
+  raw-render(```dot
+    digraph {
+      0
+      1
+      2
+      3
+      4
+      0 -> 1
+      1 -> 2
+      2 -> 3
+      3 -> 4
+      4 -> 0
+    }
+  ```),
+  caption: [Vizualizace grafu bez ohodnocení hran]
+)
+
+
+Následující příklad ukazuje vstupní formát s ohodnocením hran:
+
+#figure(sourcecode[```txt
   0
   1
   2
@@ -113,26 +136,64 @@ Příklad vstpuního formátu (s ohodnocením hran):
   2 3  1
   2 4  2
   3 4  1
-```]
-// TODO: pridat odpovidajici graf
+```], caption: [ Příklad vstupu grafu s ohodnocením hran ])
 
-Lze zadavat (tak jako u 3-SAT) LaTeX jmena.
-#sourcecode[```txt
-  \alpha \beta
-  \alpha \gamma
-  \beta \beta_1
-  \beta \beta_2
-  \gamma \gamma_1
-  \gamma \gamma_2
-  \gamma \gamma_3
-```]
+#figure(
+  raw-render(```dot
+    digraph {
+      0
+      1
+      2
+      3
+      4
+      0 -> 1 [label=1]
+      0 -> 2 [label=2]
+      0 -> 3 [label=2]
+      0 -> 4 [label=1]
+      1 -> 2 [label=1]
+      1 -> 3 [label=2]
+      1 -> 4 [label=2]
+      2 -> 3 [label=1]
+      2 -> 4 [label=2]
+      3 -> 4 [label=1]
+    }
+  ```),
+  caption: [Vizualizace grafu s ohodnocením hran]
+)
 
-// TODO: pridat odpovidajici graf
 
+Je také možné zadávat názvy vrcholů v syntaxi LaTeX:
+
+#figure(
+  sourcecode[```txt
+    \alpha \beta
+    \alpha \gamma
+    \beta \beta_1
+    \beta \beta_2
+    \gamma \gamma_1
+    \gamma \gamma_2
+    \gamma \gamma_3
+  ```],
+  caption: [ Příklad vstupu grafu s LaTeX názvy ]
+)
+
+#figure(
+  raw-render(```dot
+    digraph {
+      "alpha" -> "beta"
+      "alpha" -> "gamma"
+      "beta" -> "beta_1"
+      "beta" -> "beta_2"
+      "gamma" -> "gamma_1"
+      "gamma" -> "gamma_2"
+      "gamma" -> "gamma_3"
+    }
+  ```),
+  caption: [Vizualizace grafu s LaTeX názvy]
+)
 
 Třída `Graph` poskytuje metodu `copy` pro vytvoření hluboké kopie grafu
 a metodu `labelSolved` pro označení hran náležících k nalezenému řešení.
-
 
 === Reprezentace problému SSP
 
@@ -142,43 +203,45 @@ Každé číslo je reprezentováno jako pole cifer,
 což umožňuje práci s velkými čísly,
 která by přesáhla maximální hodnotu standardního celočíselného typu.
 
-Parsování vstupu
+Parsování vstupu funguje následovně:
 - Každý řádek vstupu reprezentuje jedno číslo.
-- nejprve se cílová hodnota (je na prvnim radku) 
-- poté se parsuje ostatni jednotlivá čísla
+- První řádek obsahuje cílovou hodnotu.
+- Následující řádky obsahují jednotlivá čísla množiny.
 
-Příklad vstupu:
-#sourcecode[```txt
-11111133
+Následující příklad ukazuje vstupní formát a odpovídající matematickou reprezentaci:
 
-10000010
-10000000
-1000010
-1000000
-100010
-100000
-10001
-10000
-1001
-1000
-101
-100
-10
-10
-1
-1
-```]
+#figure(
+  sourcecode(```txt
+    11111133
 
-Toto je
+    10000010
+    10000000
+    1000010
+    1000000
+    100010
+    100000
+    10001
+    10000
+    1001
+    1000
+    101
+    100
+    10
+    10
+    1
+    1
+  ```),
+  caption: [Příklad vstupu SSP]
+)
+
+Matematická reprezentace:
 $
-tau = 11111133 \
+  tau = 11111133 \
 
-S = 
-{ 10000010 , 10000000 , 1000010 , 1000000 , 100010 , 100000 , \ 
-  10001 , 10000 , 1001 , 1000 , 101 , 100 , 10 , 10 , 1 , 1 }
+  S = 
+  { 10000010 , 10000000 , 1000010 , 1000000 , 100010 , 100000 , \ 
+    10001 , 10000 , 1001 , 1000 , 101 , 100 , 10 , 10 , 1 , 1 }
 $
-
-
 
 === Validace vstupu
 
@@ -193,4 +256,3 @@ Například pro problém 3-SAT kontroluje, zda formule obsahuje alespoň jednu p
 Chybové zprávy jsou vraceny jako typ `ErrorMessage`,
 který v případě chyby obsahuje textový popis problému
 a v případě úspěchu je hodnota `null`.
-

@@ -1,1 +1,3 @@
 impl/archive/
+**/node_modules/
+paper/package*.json

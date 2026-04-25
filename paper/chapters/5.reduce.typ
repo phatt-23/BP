@@ -1,19 +1,22 @@
+#import "../lib/global.typ": *
 
 == Implementace redukcí
 
 Každá redukce je implementována jako samostatná třída rozšiřující abstraktní třídu `Reducer`.
 Třída `Reducer` definuje společné rozhraní pro všechny redukce:
 
-```
-export abstract class Reducer<
-  I extends ProblemInstance, 
-  O extends ProblemInstance
-> {
-    constructor(public inInstance: I) {}
-    
-    public reduce(): ReductionResult<I, O>
-}
-```
+#figure(sourcecode[```ts
+
+  abstract class Reducer<
+    I extends ProblemInstance, 
+    O extends ProblemInstance
+  > {
+      constructor(public inInstance: I) {}
+      
+      public reduce(): ReductionResult<I, O>
+  }
+
+```], caption: [Abstraktní třída `Reducer`])
 
 Metoda `reduce` kontroluje, zda vstupní instance není prázdná,
 a následně volá abstraktní metodu `doReduce`,

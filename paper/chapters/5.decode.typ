@@ -1,18 +1,23 @@
+#import "../lib/global.typ": *
+
 == Dekódování řešení
 
 Dekódování řešení slouží k převodu certifikátu výstupní instance
 zpět na certifikát vstupní instance.
 Každý dekoder implementuje rozhraní `Decoder` definované jako:
 
-```
-export interface Decoder<
-  O extends ProblemInstance, 
-  OC extends Certificate, 
-  IC extends Certificate
-> {
-    decode(outInstance: O, outCert: OC): IC;
-}
-```
+#figure(
+  sourcecode(```ts
+    interface Decoder<
+      O extends ProblemInstance, 
+      OC extends Certificate, 
+      IC extends Certificate
+    > {
+        decode(outInstance: O, outCert: OC): IC;
+    }
+  ```), 
+  caption: [Rozhraní `Decoder`]
+)
 
 #figure(
   image("../assets/decode-class-diagram.svg"),

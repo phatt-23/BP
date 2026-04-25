@@ -1,3 +1,5 @@
+#import "../lib/global.typ": *
+
 == Řešení problémů
 
 Pro nalezení odpovědi na rozhodovací otázku je využito rozhraní `Solver`,
@@ -6,15 +8,18 @@ nebo konstantu `Unsolvable`.
 
 Každý solver je navržen jako samostatná třída implementující toto rozhraní:
 
-```
-export interface Solver<
-  I extends ProblemInstance, 
-  C extends Certificate
-> {
-    instance: I;
-    solve(): C | Unsolvable;
-}
-```
+#figure(
+  sourcecode[```ts
+    interface Solver<
+      I extends ProblemInstance, 
+      C extends Certificate
+    > {
+        instance: I;
+        solve(): C | Unsolvable;
+    }
+  ```], 
+  caption: [Rozhraní `Solver`]
+)
 
 #figure(
   image("../assets/solve-class-diagram.svg"),
@@ -24,6 +29,7 @@ export interface Solver<
 === Řešení problému 3-SAT
 
 Solver `Solver3SAT` využívá algoritmus DPLL #footnote[https://en.wikipedia.org/wiki/DPLL_algorithm].
+// AGENT: kratce popis co to DPLL je, jaky typ algoritmu, velmi kratce ale
 
 
 === Řešení problému HCYCLE
