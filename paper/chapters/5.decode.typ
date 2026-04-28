@@ -6,14 +6,12 @@ Dekódování řešení slouží k převodu certifikátu výstupní instance
 zpět na certifikát vstupní instance.
 Každý dekoder implementuje rozhraní `Decoder` definované jako:
 
-#figure(
-  sourcecode(```ts
+#figure(sourcecode(```ts
     interface Decoder<
-      O extends ProblemInstance, 
-      OC extends Certificate, 
-      IC extends Certificate
+        OC extends Certificate, 
+        IC extends Certificate
     > {
-        decode(outInstance: O, outCert: OC): IC;
+        decode(outCert: OC): IC;
     }
   ```), 
   caption: [Rozhraní `Decoder`]
@@ -32,10 +30,10 @@ Dekoder `DecoderHCYCLEto3SAT` analyzuje nalezený hamiltonovský cyklus
 a rekonstruuje ohodnocení booleovských proměnných.
 
 Algoritmus prochází vrcholy v nalezené cestě.
-Pokud vrchol začíná prefixem `NODE_ID_PREFIX_TRUE`,
+Pokud identifikátor vrchol začíná prefixem `NODE_ID_PREFIX_TRUE`,
 je příslušná proměnná nastavena na hodnotu pravda.
-Pokud vrchol začíná prefixem `NODE_ID_PREFIX_FALSE`,
-je příslušná proměnná nastavena na hodnotu nepravda.
+Naopak pokud identifikátor vrchol začíná prefixem `NODE_ID_PREFIX_FALSE`,
+je příslušná proměnná nastavena na hodnotu nepravda. // AGENT: ma byt carka za Naopak?
 
 Název proměnné je extrahován odstraněním příslušného prefixu
 a následné části identifikátoru obsahující pořadové číslo vrcholu.

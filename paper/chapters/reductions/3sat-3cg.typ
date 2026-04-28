@@ -1,6 +1,9 @@
 #import "@preview/diagraph:0.3.6": *
 
-== Redukce 3-SAT na 3-CG
+#import "../../lib/global.typ": * 
+#load-bib(main: false)
+
+== Redukce 3-SAT na 3-CG <sec-redukce-3sat-3cg>
 
 Tato redukce vychází z myšlenek prezentovaných v @three-sat-to-3cg-yt.
 

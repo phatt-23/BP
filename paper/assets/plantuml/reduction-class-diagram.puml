@@ -1,8 +1,20 @@
 @startuml
 skinparam linetype ortho
-hide circle
 
 package "Reducer Module" {
+
+    class ReductionResult<I,O> {
+        +outInstance: O
+        +steps: ReductionStep[]
+    }
+
+    class ReductionStep<I,O> {
+        +id: Id
+        +title: string
+        +description: string
+        +outputSnapshot: O
+    }
+
 
     abstract class Reducer<I,O> {
         +inInstance: I
@@ -10,30 +22,45 @@ package "Reducer Module" {
         #doReduce(): ReductionResult
     }
 
-    class ReductionResult<I,O> {
-        +outInstance: O
-        +steps: ReductionStep[]
+
+    class Reducer3SATtoHCYCLE {
+        -createVarGadgets(): PartialResult
+        -createClauseGadgets(): PartialResult
     }
 
-    interface ReductionStep<I,O> {
-        +description: string
-        +instance: I | O
+    class Reducer3SATtoSSP {
+        -createTargetSum(): PartialResult
+        -createVarNumbers(): PartialResult
+        -updateVarNumbers(): PartialResult
+        -createBufferNumbers(): PartialResult
     }
 
-    class Reducer3SATtoHCYCLE extends Reducer {
+    class Reducer3SATto3CG {
+        -createCoreGadget(): PartialResult
+        -createVariableGadgets(): PartialResult
+        -createClauseGadgets(): PartialResult
     }
 
-    class Reducer3SATtoSSP extends Reducer {
+    class ReducerHCYCLEtoHCIRCUIT {
+        -createNodeTriplets(): PartialResult
+        -connectEdges(): PartialResult
     }
 
-    class Reducer3SATto3CG extends Reducer {
+    class ReducerHCIRCUITtoTSP {
+        -copyVertices(): PartialResult
+        -createEdges(): PartialResult
+        -assignWeights(): PartialResult
     }
 
-    class ReducerHCYCLEtoHCIRCUIT extends Reducer {
-    }
+    Reducer .up.> ReductionResult
+    ReductionResult *-right- ReductionStep
 
-    class ReducerHCIRCUITtoTSP extends Reducer {
-    }
+    Reducer3SATtoHCYCLE -up-|> Reducer
+    Reducer3SATtoSSP -up-|> Reducer
+    Reducer3SATto3CG -up-|> Reducer
+    ReducerHCYCLEtoHCIRCUIT -up-|> Reducer
+    ReducerHCIRCUITtoTSP -up-|> Reducer
+
 }
-
 @enduml
+

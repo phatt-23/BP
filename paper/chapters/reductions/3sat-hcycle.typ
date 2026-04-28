@@ -1,7 +1,10 @@
 #import "@preview/diagraph:0.3.6": *
 #import "./dot-graphs.typ": *
 
-== Redukce 3-SAT na HCYCLE
+#import "../../lib/global.typ": *
+#load-bib(main: false)
+
+== Redukce 3-SAT na HCYCLE <sec-redukce-3sat-hcycle>
 
 Tato redukce vychází z myšlenek prezentovaných v @three-sat-to-hcycle-anim.
 
@@ -57,12 +60,12 @@ jsou jednotlivé hrany nahrazeny dvojicemi protisměrných orientovaných hran.
   ```, 
     width: 100%, 
     labels: (
-      "T": $x_1^T$,
-      "F": $x_n^F$,
-      "0": $x_2$,
-      "1": $x_3$,
-      "a": $x_(n - 1)$,
-      "b": $x_(n - 1)$,
+      "T": $x^((1))$,
+      "F": $x^((n))$,
+      "0": $x^((2))$,
+      "1": $x^((3))$,
+      "a": $x^((n - 2))$,
+      "b": $x^((n - 1))$,
     )),
   caption: [Konstrukční prvek proměnné $x$],
 )
@@ -114,7 +117,7 @@ a to vždy mezi dvěma sousedními vrcholy jejich cesty.
 Konkrétní způsob propojení závisí na literálech, 
 které se v dané klauzuli vyskytují.
 
-Jako příklad uvažujme booleovskou formuli
+Jako příklad uvažujme booleovskou formuli:
 $
   (x or not y or z) and (not x or x or y).
 $

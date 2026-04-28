@@ -8,6 +8,29 @@ která definuje společné rozhraní pro všechny typy problémů.
 Každá konkrétní reprezentace rozšiřuje tuto abstraktní třídu
 a implementuje specifické metody pro práci s daným typem problému.
 
+#figure(sourcecode[```ts
+abstract class ProblemInstance {
+    /*
+    * Problem specific. Each problem has an empty state.
+    */
+    public abstract isEmpty(): boolean;
+
+    /*
+    * Serializes the problem instance.
+    *
+    * Each child class has a corresponding:
+    * public static fromSerializedString(serialized: string): T;
+    */
+    public abstract toSerializedString(): string;
+
+    /*
+    * Formats the instance into a format that 
+    * the editor component accepts.
+    */
+    public abstract asString(): string;
+}
+```], caption: [Abstraktní třída `ProblemInstance`])
+
 Toto řešení umožňuje jednotné zpracování různých typů problémů
 v rámci systému redukcí,
 přičemž každá instance si zachovává specifické vlastnosti svého typu.
@@ -52,7 +75,15 @@ $
   (a or y or z)
 $
 
-Je také možné zadávat literály v syntaxi LaTeX: 
+Je také možné zadávat literály ve zjednodušené
+#footnote[
+  Validator pouze kontroluje, že vstup obsahuje povolené znaky.
+  Nejedná se o plnohodnotnou podporu LaTeX -- systém pouze kontroluje,
+  že text obsahuje pouze alfanumerické 
+  a povolené speciální znaky jako `\`, `_`, `{`, `}`, `(`, `)`.
+  Jelikož mezi povolenými znaky není znak `^`, superskripty nejsou podporovány.
+]
+syntaxi LaTeX:
 
 #figure(
   sourcecode(```txt
@@ -157,7 +188,8 @@ Následující příklad ukazuje vstupní formát s ohodnocením hran:
 )
 
 
-Je také možné zadávat názvy vrcholů v syntaxi LaTeX:
+Je také možné zadávat názvy vrcholů ve zjednodušené 
+syntaxi LaTeX:
 
 #figure(
   sourcecode[```txt
@@ -189,8 +221,8 @@ Je také možné zadávat názvy vrcholů v syntaxi LaTeX:
   caption: [Vizualizace grafu s LaTeX názvy]
 )
 
-Třída `Graph` poskytuje metodu `copy` pro vytvoření hluboké kopie grafu
-a metodu `labelSolved` pro označení hran náležících k nalezenému řešení.
+// Třída `Graph` poskytuje metodu `copy` pro vytvoření hluboké kopie grafu
+// a metodu `labelSolved` pro označení hran náležících k nalezenému řešení.
 
 === Reprezentace problému SSP
 
@@ -249,7 +281,7 @@ V této fázi jsou odmítnuty vstupy obsahující neplatné znaky nebo porušuj�
 Druhá fáze validace probíhá po úspěšném parsování vstupu prostřednictvím metody `isEmpty`.
 Tato metoda kontroluje, zda instance obsahuje všechny potřebné prvky.
 Například pro problém 3-SAT kontroluje, zda formule obsahuje alespoň jednu proměnnou a jednu klauzuli.
+Tato fáze je důležitá zejména v redukčním modulu, kde zajišťuje validitu instancí před dalším zpracováním.
 
 Chybové zprávy jsou vraceny jako typ `ErrorMessage`,
-který v případě chyby obsahuje textový popis problému
-a v případě úspěchu je hodnota `null`.
+který v případě chyby obsahuje textový popis problému.

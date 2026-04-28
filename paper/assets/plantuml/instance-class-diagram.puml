@@ -1,6 +1,6 @@
 @startuml
 skinparam linetype ortho
-hide circle
+'hide circle
 
 package Instance {
     abstract class ProblemInstance {
@@ -35,6 +35,7 @@ package Instance {
     }
 
     class Clause {
+        +id: Id
         +literals: Literal[3]
     }
 
@@ -42,25 +43,28 @@ package Instance {
         +id: Id
         +label: string
         +position: Position
+        +color: number?
     }
 
     class GraphEdge {
         +id: Id
-        +source: string
-        +target: string
-        +weight: number
+        +from: Id
+        +to: Id
+        +weight: number?
     }
 
     class SSPNumber {
-        +value: number
         +id: Id
+        +label: string
+        +value: number[]
+        +used: boolean
     }
 
-    CNF3 --> "*" Clause
-    Clause --> "*" Literal
-    Graph --> "*" GraphNode
-    Graph --> "*" GraphEdge
-    SSP --> "*" SSPNumber
+    CNF3 *-- Clause
+    Clause *-- Literal
+    Graph *-- GraphNode
+    Graph *-- GraphEdge
+    SSP *-- SSPNumber
 }
 
 @enduml

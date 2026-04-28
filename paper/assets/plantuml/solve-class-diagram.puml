@@ -1,34 +1,104 @@
 @startuml
 skinparam linetype ortho
-hide circle
+/'top to bottom direction'/
 
 package "Solver Module" {
 
-    interface Solver<I,C> {
+    interface Solver<I is ProblemInstance, C is Certificate> {
         +instance: I
         +solve(): C | Unsolvable
     }
 
-    interface Certificate {
-        +instance: ProblemInstance
-        +isValid: boolean
+    class Solver3SAT {
+        +instance: CNF3
     }
 
-    class Certificate3SAT implements Certificate
-    class CertificateHCYCLE implements Certificate
-    class CertificateHCIRCUIT implements Certificate
-    class Certificate3CG implements Certificate
-    class CertificateSSP implements Certificate
-    class CertificateTSP implements Certificate
-    class CertificateGraphPath implements Certificate
+    class SolverHCYCLE {
+        +instance: Graph 
+    }
 
-    class Solver3SAT implements Solver
-    class SolverHCYCLE implements Solver
-    class SolverHCIRCUIT implements Solver
-    class Solver3CG implements Solver
-    class SolverSSP implements Solver
-    class SolverTSP implements Solver
+    class SolverHCIRCUIT {
+        +instance: Graph 
+    }
 
+    class Solver3CG {
+        +instance: Graph 
+    }
+
+    class SolverSSP {
+        +instance: SSP
+    }
+
+    class SolverTSP {
+        +instance: Graph 
+    }
+
+    Solver3SAT .up.|> Solver
+    SolverHCYCLE .up.|> Solver
+    SolverHCIRCUIT .up.|> Solver
+    Solver3CG .up.|> Solver
+    SolverSSP .up.|> Solver
+    SolverTSP .up.|> Solver
+
+
+    interface Certificate
+
+    class Certificate3SAT {
+        +assignments: Map<VarName, TriBool>
+    }
+
+    enum TriBool {
+        true
+        false
+        either
+    }
+
+    Certificate3SAT ..> TriBool
+
+    class CertificateHCYCLE {
+        +path: GraphNode[]
+    }
+
+    class CertificateHCIRCUIT {
+        +path: GraphNode[]
+    }
+
+    class Certificate3CG {
+        +coloring: Map<Id, Color>
+    }
+
+    enum Color {
+        red
+        blue
+        green
+    }
+
+    Certificate3CG ..> Color
+
+    class CertificateSSP {
+        +numbers: SSPNumber[]
+    }
+
+    class CertificateTSP {
+        +path: GraphNode[]
+    }
+    
+    Certificate3SAT ..|> Certificate
+    CertificateHCYCLE ..|> Certificate
+    CertificateHCIRCUIT ..|> Certificate
+    Certificate3CG ..|> Certificate
+    CertificateSSP ..|> Certificate
+    CertificateTSP ..|> Certificate
+    
+
+    Solver3SAT .down.> Certificate3SAT
+    SolverHCYCLE .down.> CertificateHCYCLE
+    SolverHCIRCUIT .down.> CertificateHCIRCUIT
+    Solver3CG .down.> Certificate3CG
+    SolverSSP .down.> CertificateSSP
+    SolverTSP .down.> CertificateTSP
 }
 
 @enduml
+
+

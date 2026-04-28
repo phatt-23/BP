@@ -1,23 +1,10 @@
 @startuml component-diagram
-/'skinparam packageStyle rectangle'/
-left to right direction
 skinparam noteBackgroundColor #FFFFFF
 
 package "Aplikace" {
 
-  together {
-    package "Business logika" {
-      [Datové struktury]
-      note top of [Datové struktury]: Graf, 3-KNF, SSP, kroky redukce
-
-      [Redukční modul]
-      [Řešící modul]
-      [Dekódovací modul]
-    }
-  }
   
-  together {
-    package "Uživatelské rozhraní (UI)" {
+    package "Uživatelské rozhraní (UI)" as UI {
       [Navigační lišta]
       [Domovská stránka]
       
@@ -28,29 +15,41 @@ package "Aplikace" {
       [Vizualizace řešení]
       [Kroky redukce]
     }
-  }
 
+    package "Business logika" as logic {
+      [Datové struktury]
+      note right of [Datové struktury]: Graf, 3-KNF, SSP,\nkroky redukce, ...
+
+      [Redukční modul]
+      [Řešící modul]
+      [Dekódovací modul]
+    }
 }
 
-' --- UI navigation ---
-[Navigační lišta] --> [Domovská stránka]
-[Navigační lišta] --> [Stránky redukcí] 
+[Vizualizace řešení] -down[hidden]-> logic
+      
+/'UI -right[hidden]-> logic'/
 
-[Stránky redukcí] --> [Editory vstupů]
-[Stránky redukcí] --> [Kontrolní panel]
-[Stránky redukcí] --> [Vizualizace instancí]
-[Stránky redukcí] --> [Vizualizace řešení]
-[Stránky redukcí] --> [Kroky redukce]
+
+' --- UI navigation ---
+[Navigační lišta] -right-> [Domovská stránka]
+[Navigační lišta] -down-> [Stránky redukcí] 
+
+[Stránky redukcí] -down-> [Editory vstupů]
+[Stránky redukcí] -down-> [Kontrolní panel]
+[Stránky redukcí] -down-> [Vizualizace instancí]
+[Stránky redukcí] -down-> [Vizualizace řešení]
+[Stránky redukcí] -down-> [Kroky redukce]
 
 ' --- Business logic ---
-[Editory vstupů] -[dashed]-> [Datové struktury]
+[Editory vstupů] .down.> [Datové struktury]
 note on link
   Zadání vstupní instance
 end note
 
-[Datové struktury] --> [Redukční modul]
+[Datové struktury] -down-> [Redukční modul]
 
-[Redukční modul] --> [Datové struktury]
+[Redukční modul] -left-> [Datové struktury]
 note on link
   Redukce vstupní instanci na výstupní instanci
 end note
@@ -64,17 +63,17 @@ note on link
 end note
 
 ' --- Output back to UI ---
-[Redukční modul] -[dashed]-> [Kroky redukce]
+[Redukční modul] -up[dashed]-> [Kroky redukce]
 note on link
   Zobrazení redukčních kroků
 end note
 
-[Řešící modul] -[dashed]-> [Vizualizace řešení]
+[Řešící modul] -up[dashed]-> [Vizualizace řešení]
 note on link
   Zobrazení řešení výstupní instance
 end note
 
-[Dekódovací modul] -[dashed]-> [Vizualizace řešení]
+[Dekódovací modul] -right[dashed]-> [Vizualizace řešení]
 note on link
   Zobrazení řešení vstupní instance
 end note

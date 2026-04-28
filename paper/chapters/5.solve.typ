@@ -8,18 +8,15 @@ nebo konstantu `Unsolvable`.
 
 Každý solver je navržen jako samostatná třída implementující toto rozhraní:
 
-#figure(
-  sourcecode[```ts
+#figure(sourcecode[```ts
     interface Solver<
-      I extends ProblemInstance, 
-      C extends Certificate
+        I extends ProblemInstance, 
+        C extends Certificate
     > {
         instance: I;
         solve(): C | Unsolvable;
     }
-  ```], 
-  caption: [Rozhraní `Solver`]
-)
+```], caption: [Rozhraní `Solver`])
 
 Následující diagram znázorňuje třídní hierarchii solverů a certifikátů.
 

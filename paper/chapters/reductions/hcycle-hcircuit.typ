@@ -1,6 +1,9 @@
 #import "@preview/diagraph:0.3.6": *
 
-== Redukce HCYCLE na HCIRCUIT
+#import "../../lib/global.typ": *
+#load-bib(main: false)
+
+== Redukce HCYCLE na HCIRCUIT <sec-redukce-hcycle-hcircuit>
 
 Tato redukce vychází z @sawa-ti-slides-06.
 

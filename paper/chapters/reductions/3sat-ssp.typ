@@ -1,37 +1,36 @@
-== Redukce 3-SAT na SSP
+#import "../../lib/global.typ": * 
+#load-bib(main: false)
+
+== Redukce 3-SAT na SSP <sec-redukce-3sat-ssp>
 
 Tato redukce vychází z myšlenek prezentovaných v @three-sat-to-ssp-yt.
 
 V této redukci převádíme booleovskou formuli $Phi$ ve 3-KNF na instanci problému součtu množiny, 
 tedy na množinu čísel $S$ a cílovou hodnotu $tau$.
 
-Nechť $v$ značí počet proměnných a $c$ počet klauzulí formule $Phi$.
-Počet číslic výsledných čísel i jejich celkový počet závisí právě na těchto dvou parametrech.
+Nechť $lr(|cal(V)|)$ značí počet proměnných a $lr(|cal(K)|)$ počet klauzulí formule $Phi = (cal(V), cal(K))$.
+Maximální počet číslic výsledných čísel i jejich celkový počet závisí právě na těchto dvou parametrech.
 
+Maximální počet číslic každého čísla označme jako $k$, přičemž:
 $
-  v &= cal(V)(Phi) \
-  c &= cal(K)(Phi)
+  k = lr(|cal(V)|) + lr(|cal(K)|),
 $
-
-Celkový počet číslic každého čísla označme $k$, přičemž
+a velikost množiny $S$ je:
 $
-  k = v + c,
-$
-a velikost množiny $S$ je
-$
-  |S| = 2v + 2c.
+  lr(|S|) = 2lr(|cal(V)|) + 2lr(|cal(K)|).
 $
 
 Cílovou hodnotu $tau$ zvolíme jako číslo, jehož:
-- prvních $v$ číslic (odpovídajících proměnným) je rovno jedné,
-- následujících $c$ číslic (odpovídajících klauzulím) je rovno třem.
+- prvních $|cal(V)|$ číslic (odpovídajících proměnným) je rovno jedné,
+- následujících $|cal(K)|$ číslic (odpovídajících klauzulím) je rovno třem.
 
 Formálně tedy:
 $
- tau = sum_(i=0)^(v-1) 1 dot 10^i + sum_(j=0)^(c-1) 3 dot 10^(v+j).
+ tau = sum_(i = 0)^(lr(|cal(V)|) - 1) 1 dot 10^i + 
+       sum_(j = 0)^(lr(|cal(K)|) - 1) 3 dot 10^(lr(|cal(V)|) + j).
 $
 
-Například pro $v = 5$ a $c = 3$ dostáváme
+Například pro $lr(|cal(V)|) = 5$ a $lr(|cal(K)|) = 3$ dostáváme:
 $
   tau = 11111333.
 $

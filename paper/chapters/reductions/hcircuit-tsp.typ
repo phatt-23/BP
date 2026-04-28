@@ -1,6 +1,9 @@
 #import "@preview/diagraph:0.3.6": *
 
-== Redukce HCIRCUIT na TSP
+#import "../../lib/global.typ": *
+#load-bib(main: false)
+
+== Redukce HCIRCUIT na TSP <sec-redukce-hcircuit-tsp>
 
 Všechny vrcholy z grafu $G$ vstupního problému HCIRCUIT 
 zkopírujeme do nového grafu $H$.

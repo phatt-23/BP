@@ -6,17 +6,28 @@ Každá redukce je implementována jako samostatná třída rozšiřující abst
 Třída `Reducer` definuje společné rozhraní pro všechny redukce:
 
 #figure(sourcecode[```ts
+    abstract class Reducer<
+        I extends ProblemInstance, 
+        O extends ProblemInstance,
+    > {
+        constructor(public inInstance: I) {}
 
-  abstract class Reducer<
-    I extends ProblemInstance, 
-    O extends ProblemInstance
-  > {
-      constructor(public inInstance: I) {}
-      
-      public reduce(): ReductionResult<I, O>
-  }
+        public reduce(): ReductionResult<I, O> {
+            if (this.inInstance.isEmpty()) {
+                throw "Call to reduce failed. Input instance is empty.";
+            }
+            const result = this.doReduce();
+            return result;
+        }
 
-```], caption: [Abstraktní třída `Reducer`])
+        /*
+        * Implemented by derived classes.
+        */
+        protected abstract doReduce(): ReductionResult<I, O>;
+    }
+```], caption: [
+  Abstraktní třída `Reducer` 
+])
 
 Metoda `reduce` kontroluje, zda vstupní instance není prázdná,
 a následně volá abstraktní metodu `doReduce`,
@@ -29,12 +40,10 @@ která obsahuje:
 
 - jedinečný identifikátor kroku,
 - nadpis popisující prováděnou operaci,
-- podrobný popis v HTML formátu,
-- volitelný snímek vstupní instance před krokem,
-- volitelný snímek výstupní instance po kroku,
-- mapování mezi prvky vstupní a výstupní instance.
+- podrobný popis v HTML formátu a
+- snímek (snapshot) výstupní instance v aktuálním kroku.
 
-Tato struktura umožňuje zpětnou rekonstrukci procesu redukce
+Tato struktura umožňuje zpětnou rekonstrukci procesu redukce 
 a vizualizaci jednotlivých kroků.
 
 Následující diagram znázorňuje třídní hierarchii redukcí.
@@ -48,15 +57,13 @@ Následující diagram znázorňuje třídní hierarchii redukcí.
 === Redukce 3-SAT na HCYCLE
 
 Implementace redukce `Reducer3SATtoHCYCLE` se skládá ze dvou hlavních fází:
-vytvoření konstrukčních prvků proměnných a vytvoření konstrukčních prvků klauzulí.
+
++ vytvoření konstrukčních prvků proměnných a 
++ vytvoření konstrukčních prvků klauzulí.
+
 
 V první fázi metoda `createVarGadgets` vytváří pro každou proměnnou formule
 řadu vrcholů reprezentující konstrukční prvek proměnné.
-Počet vrcholů v řadě je vypočítán jako $3k + 3$,
-kde $k$ je počet klauzulí.
-Tento vzorec zajišťuje dostatečný počet vrcholů pro propojení s konstrukčními prvky klauzulí
-a zároveň zabraňuje nežádoucímu přeskakování mezi konstrukčními prvky.
-
 Součástí této fáze je vytvoření zdrojového vrcholu $alpha$,
 cílového vrcholu $beta$ a mezi-vrcholů spojujících jednotlivé řady proměnných.
 Tyto vrcholy jsou propojeny s krajními vrcholy příslušných řad.
@@ -69,36 +76,43 @@ Směr připojení hran závisí na tom, zda je literál negován či nikoli.
 Redukce využívá konstanty definované v modulu `Id` pro jednotné označování
 různých typů vrcholů a hran v grafu.
 
+Podrobnosti tohoto převodu jsou popsány v @sec-redukce-3sat-hcycle[kapitole].
+
 
 === Redukce 3-SAT na SSP
 
 Implementace redukce `Reducer3SATtoSSP` využívá maticovou reprezentaci čísel SSP.
 Hlavní metoda `doReduce` volá postupně čtyři pomocné metody:
 
-1. `createTargetSum` nastaví cílovou hodnotu $tau$,
++ `createTargetSum` nastaví cílovou hodnotu $tau$,
    která se skládá z $v$ jedniček a $c$ trojek,
    kde $v$ je počet proměnných a $c$ počet klauzulí.
 
-2. `createVarNumbers` vytváří dvojici čísel $nu_T$ a $nu_F$ pro každou proměnnou $nu$.
++ `createVarNumbers` vytváří dvojici čísel $nu_T$ a $nu_F$ pro každou proměnnou $nu$.
    Diagonála matice je nastavena na hodnotu 1,
    což zajišťuje, že v konečné podmnožině může být zvolena
    buď $nu_T$ nebo $nu_F$, nikoli obě.
 
-3. `updateVarNumbers` aktualizuje čísla proměnných na základě struktury klauzulí.
++ `updateVarNumbers` aktualizuje čísla proměnných na základě struktury klauzulí.
    Pro každý výskyt proměnné v klauzuli je příslušná pozice v matici nastavena na 1.
 
-4. `createBufferNumbers` přidává dvojici vyrovnávacích čísel pro každou klauzuli.
++ `createBufferNumbers` přidává dvojici vyrovnávacích čísel pro každou klauzuli.
    Tato čísla umožňují dosáhnout cílové hodnoty 3 v příslušné pozici,
    pokud je klauzule splněna.
 
-Implementace využívá datovou strukturu `Map` pro rychlé vyhledávání
-hodnot čísel podle jejich identifikátorů.
+Podrobnosti tohoto převodu jsou popsány v @sec-redukce-3sat-ssp[kapitole].
 
 
 === Redukce 3-SAT na 3-CG
 
+
 Implementace redukce `Reducer3SATto3CG` se skládá ze tří fází:
-vytvoření jádra, vytvoření konstrukčních prvků proměnných a vytvoření konstrukčních prvků klauzulí.
+
++ vytvoření jádra, 
++ vytvoření konstrukčních prvků proměnných a 
++ vytvoření konstrukčních prvků klauzulí.
+
+
 
 Metoda `createCoreGadget` vytváří základní trojici vrcholů $T$, $F$ a $B$,
 které jsou vzájemně propojeny.
@@ -116,6 +130,8 @@ Klauzule je připojena k vrcholům odpovídajícím jejím literálům.
 Barvy jsou reprezentovány číselně:
 červená pro nepravdu, zelená pro pravdu a modrá pro vyrovnávací barvu.
 
+Podrobnosti tohoto převodu jsou popsány v @sec-redukce-3sat-3cg[kapitole].
+
 
 === Redukce HCYCLE na HCIRCUIT
 
@@ -131,11 +147,17 @@ se vstupními vrcholy cílových uzlů podle hran původního grafu.
 
 Redukce využívá kruhové uspořádání vrcholů pro přehlednou vizualizaci.
 
+Podrobnosti tohoto převodu jsou popsány v @sec-redukce-hcycle-hcircuit[kapitole].
+
 
 === Redukce HCIRCUIT na TSP
 
+
 Implementace redukce `ReducerHCIRCUITtoTSP` se skládá ze tří fází:
-zkopírování vrcholů, vytvoření úplného grafu a přiřazení vah hran.
+
++ zkopírování vrcholů, 
++ vytvoření úplného grafu a 
++ přiřazení vah hran.
 
 Metoda `copyVertices` přenáší všechny vrcholy z výstupní instance HCIRCUIT
 do nového grafu.
@@ -147,11 +169,14 @@ Metoda `assignWeights` přiřazuje váhu 1 hranám, které odpovídají hranám
 původního grafu HCIRCUIT, a váhu 2 ostatním hranám.
 Cílová hodnota $k$ je nastavena na počet vrcholů grafu.
 
+Podrobnosti tohoto převodu jsou popsány v kapitole @sec-redukce-hcircuit-tsp.
+
 
 === Ukládání kroků redukce
 
 Každá implementace redukce ukládá mezikroky do seznamu `ReductionStep[]`.
-Každý krok obsahuje LaTeXový popis prováděné operace,
+
+Každý krok obsahuje popis prováděné operace v kombinaci HTML a LaTeX,
 který je následně vykreslen pomocí knihovny KaTeX.
 
 Pro vizualizaci změn mezi kroky jsou pořizovány snímky instancí
