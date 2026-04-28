@@ -1,18 +1,19 @@
 = Ukázkové instance a demonstrace
 
+// AGENT: Say that the user can enter the instances themselves, but the system enables them to choose from a predefined set of examples, as so they don't have to do it all by themselves and can learn how the editor expects the syntax of format for instances to be.
+
 Tato kapitola představuje vybrané ukázkové instance
 pro všechny implementované redukce.
 Na konkrétních příkladech je demonstrováno,
 jak aplikace vizualizuje proces redukce krok za krokem.
 
 Zvolené instance pokrývají:
-- různé velikosti vstupních dat (3-5 proměnných, 4-6 vrcholů),
-- případy s kladnou i zápornou odpovědí (celkem 2-3 kladných a 2-3 záporných na redukci),
+- různé velikosti vstupních dat,
+- případy s kladnou i zápornou odpovědí,
 - různorodé struktury vstupních instancí (formule s různými kombinacemi literálů, grafy s různou hustotou hran).
 
 Celkem kapitola obsahuje 20 ukázkových instancí (4 na každou redukci),
-což přesahuje požadavek zadání (5 instancí na problém)
-a poskytuje vyvážený pohled na funkčnost systému.
+což poskytuje vyvážený pohled na funkčnost systému.
 
 Pro každou redukci jsou vybrány příklady s kladnou i zápornou odpovědí
 v poměru 2:2 (dvě kladné, dvě záporné).
