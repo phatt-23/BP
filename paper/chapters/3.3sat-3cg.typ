@@ -1,6 +1,6 @@
 #import "@preview/diagraph:0.3.6": *
 
-#import "../../lib/global.typ": * 
+#import "/lib/global.typ": * 
 #load-bib(main: false)
 
 == Redukce 3-SAT na 3-CG <sec-redukce-3sat-3cg>

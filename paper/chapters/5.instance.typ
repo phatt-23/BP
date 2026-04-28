@@ -78,19 +78,19 @@ $
 Je také možné zadávat literály ve zjednodušené
 #footnote[
   Validator pouze kontroluje, že vstup obsahuje povolené znaky.
-  Nejedná se o plnohodnotnou podporu LaTeX -- systém pouze kontroluje,
+  Nejedná se o plnohodnotnou podporu TeX -- systém pouze kontroluje,
   že text obsahuje pouze alfanumerické 
   a povolené speciální znaky jako `\`, `_`, `{`, `}`, `(`, `)`.
   Jelikož mezi povolenými znaky není znak `^`, superskripty nejsou podporovány.
 ]
-syntaxi LaTeX:
+syntaxi TeX:
 
 #figure(
   sourcecode(```txt
     \alpha \beta \gamma  
     \alpha_1 \alpha_2 \beta_3
   ```),
-  caption: [Příklad vstupu s LaTeX názvy]
+  caption: [Příklad vstupu s TeX názvy]
 )
 
 Matematická reprezentace:
@@ -189,7 +189,7 @@ Následující příklad ukazuje vstupní formát s ohodnocením hran:
 
 
 Je také možné zadávat názvy vrcholů ve zjednodušené 
-syntaxi LaTeX:
+syntaxi TeX:
 
 #figure(
   sourcecode[```txt
@@ -201,7 +201,7 @@ syntaxi LaTeX:
     \gamma \gamma_2
     \gamma \gamma_3
   ```],
-  caption: [ Příklad vstupu grafu s LaTeX názvy ]
+  caption: [ Příklad vstupu grafu s TeX názvy ]
 )
 
 #figure(
@@ -218,7 +218,7 @@ syntaxi LaTeX:
       "gamma" -> "gamma_3"
     }
   ```),
-  caption: [Vizualizace grafu s LaTeX názvy]
+  caption: [Vizualizace grafu s TeX názvy]
 )
 
 // Třída `Graph` poskytuje metodu `copy` pro vytvoření hluboké kopie grafu

@@ -1,4 +1,4 @@
-#import "../../lib/global.typ": * 
+#import "/lib/global.typ": * 
 #load-bib(main: false)
 
 == Redukce 3-SAT na SSP <sec-redukce-3sat-ssp>

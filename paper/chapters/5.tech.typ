@@ -27,11 +27,11 @@ která představuje jedním ze standardních nástrojů pro práci s grafy ve we
 // Pro vizualizaci grafových struktur je využita knihovna Cytoscape.js,
 // která nabízí rozsáhlé možnosti konfigurace vykreslování grafů.
 
-Pro vykreslování matematických výrazů v LaTeX syntaxi
+Pro vykreslování matematických výrazů v TeX syntaxi
 je použita knihovna KaTeX #footnote[https://katex.org/],
-která převádí LaTeX zápis do HTML reprezentace vhodné pro zobrazení v prohlížeči.
+která převádí TeX zápis do HTML reprezentace vhodné pro zobrazení v prohlížeči.
 // Matematické výrazy jsou vykreslovány pomocí knihovny KaTeX,
-// která převádí LaTeX syntaxi na HTML reprezentaci.
+// která převádí TeX syntaxi na HTML reprezentaci.
 // Toto umožňuje prezentovat formální popisy redukcí
 // včetně matematických vzorců přímo ve webovém prohlížeči.
 

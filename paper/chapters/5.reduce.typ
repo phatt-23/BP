@@ -176,7 +176,7 @@ Podrobnosti tohoto převodu jsou popsány v kapitole @sec-redukce-hcircuit-tsp.
 
 Každá implementace redukce ukládá mezikroky do seznamu `ReductionStep[]`.
 
-Každý krok obsahuje popis prováděné operace v kombinaci HTML a LaTeX,
+Každý krok obsahuje popis prováděné operace v kombinaci HTML a TeX,
 který je následně vykreslen pomocí knihovny KaTeX.
 
 Pro vizualizaci změn mezi kroky jsou pořizovány snímky instancí

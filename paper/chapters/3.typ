@@ -59,8 +59,8 @@ Při redukcích na problém SSP jsou konstrukčními prvky jednotlivá čísla v
 a cílová hodnota, apod.
 
 
-#include "./reductions/3sat-hcycle.typ"
-#include "./reductions/3sat-ssp.typ"
-#include "./reductions/3sat-3cg.typ"
-#include "./reductions/hcycle-hcircuit.typ"
-#include "./reductions/hcircuit-tsp.typ"
+#include "3.3sat-hcycle.typ"
+#include "3.3sat-ssp.typ"
+#include "3.3sat-3cg.typ"
+#include "3.hcycle-hcircuit.typ"
+#include "3.hcircuit-tsp.typ"

@@ -1,7 +1,7 @@
 #import "@preview/diagraph:0.3.6": *
 #import "./dot-graphs.typ": *
 
-#import "../../lib/global.typ": *
+#import "/lib/global.typ": *
 #load-bib(main: false)
 
 == Redukce 3-SAT na HCYCLE <sec-redukce-3sat-hcycle>

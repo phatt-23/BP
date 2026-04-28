@@ -1,6 +1,6 @@
 #import "@preview/diagraph:0.3.6": *
 
-#import "../../lib/global.typ": *
+#import "/lib/global.typ": *
 #load-bib(main: false)
 
 == Redukce HCIRCUIT na TSP <sec-redukce-hcircuit-tsp>

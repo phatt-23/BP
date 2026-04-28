@@ -32,8 +32,8 @@ a rekonstruuje ohodnocení booleovských proměnných.
 Algoritmus prochází vrcholy v nalezené cestě.
 Pokud identifikátor vrchol začíná prefixem `NODE_ID_PREFIX_TRUE`,
 je příslušná proměnná nastavena na hodnotu pravda.
-Naopak pokud identifikátor vrchol začíná prefixem `NODE_ID_PREFIX_FALSE`,
-je příslušná proměnná nastavena na hodnotu nepravda. // AGENT: ma byt carka za Naopak?
+Naopak, pokud identifikátor vrchol začíná prefixem `NODE_ID_PREFIX_FALSE`,
+je příslušná proměnná nastavena na hodnotu nepravda.
 
 Název proměnné je extrahován odstraněním příslušného prefixu
 a následné části identifikátoru obsahující pořadové číslo vrcholu.
