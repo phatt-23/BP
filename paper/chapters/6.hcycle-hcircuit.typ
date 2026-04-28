@@ -4,17 +4,24 @@
 
 Orientovaný graf $G$ s hamiltonovským cyklem:
 $
-  V = \{A, B, C, D\}, 
-  E = \{(A,B), (B,C), (C,D), (D,A), (A,C)\}
+  V = {C_1, C_2, C_3, C_4} \\
+
+  E = {
+    (C_1, C_3),
+    (C_3, C_2),
+    (C_2, C_1),
+    (C_1, C_2),
+    (C_2, C_3),
+    (C_3, C_4),
+    (C_4, C_1)
+  }
 $
 
-Instance ilustruje transformaci orientovaného grafu na neorientovaný
-pomocí trojic vrcholů $v_i, v_b, v_o$.
-
 // #figure(image("../assets/screenshots/hcycle-hcircuit-yes-input.png"), caption: [Zadání instance HCYCLE (kladná odpověď)])
+// #figure(image("../assets/screenshots/hcycle-hcircuit-yes-output.png"), caption: [Výsledný graf po redukci (kladná odpověď)])
 #figure(image("../assets/screenshots/hcycle-hcircuit-yes-input-output-fullpage.png"), 
   caption: [Zadání instance HCYCLE a výsledný graf po redukcia (kladná odpověď)])
-// #figure(image("../assets/screenshots/hcycle-hcircuit-yes-output.png"), caption: [Výsledný graf po redukci (kladná odpověď)])
+
 #figure(
   grid(
     columns: 2, 
@@ -28,8 +35,15 @@ pomocí trojic vrcholů $v_i, v_b, v_o$.
 
 Orientovaný strom (acyklický graf):
 $
-  V = \{A, B, C, D, E\}, 
-  E = \{(A,B), (A,C), (B,D), (B,E)\}
+  V = {C_1, C_2, C_3, C_4} \\
+  E = {
+    (C_1,C_3)
+    (C_2,C_3)
+    (C_2,C_1)
+    (C_2,C_3)
+    (C_3,C_4)
+    (C_4,C_1)
+  }
 $
 
 Demonstruje neexistenci hamiltonovského cyklu v acyklickém grafu

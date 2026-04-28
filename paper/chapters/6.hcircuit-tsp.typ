@@ -4,38 +4,65 @@
 
 Neorientovaný graf obsahující hamiltonovskou kružnici:
 $
-  V = \{A, B, C, D, E, F\}, 
-  E = \{\{A,B\}, \{B,C\}, \{C,D\}, \{D,E\}, \{E,F\}, \{F,A\}, \{A,C\}, \{B,E\}, \{B,F\}\}
+  V = {
+    x_0,
+    x_1,
+    x_2,
+    x_3,
+    x_4,
+    x_5
+  }
+  E = {
+    {x_0, x_1},
+    {x_4, x_2},
+    {x_5, x_3},
+    {x_3, x_2},
+    {x_5, x_0},
+    {x_2, x_1},
+    {x_4, x_5},
+    {x_0, x_2},
+    {x_4, x_0}
+  }
 $
 
 Instance ukazuje přidání hran s vyšší vahou
 a nastavení cílové hodnoty $k = |V|$.
 
 #figure(
-  image("../assets/screenshots/hcircuit-tsp-ex1-graph.png"),
-  caption: [Výsledný graf po redukci (kladná odpověď)]
+  image("../assets/screenshots/hcircuit-tsp-yes-input-output-fullpage.png"),
+  caption: [Zadaná instance HCIRCUIT a výsledná instance TSP po redukci (kladná odpověď)]
+)
+
+#figure(
+  grid(
+    columns: 3,
+    image("../assets/screenshots/hcircuit-tsp-yes-step-1-fullpage.png"),
+    image("../assets/screenshots/hcircuit-tsp-yes-step-2-fullpage.png"),
+    image("../assets/screenshots/hcircuit-tsp-yes-step-3-fullpage.png"),
+  ),
+  caption: [Krokové zobrazení redukce HCIRCUIT na TSP (kladná odpověď)]
 )
 
 === Instance se zápornou odpovědí
 
 Graf neobsahující hamiltonovskou kružnici:
 $
-  V = \{A, B, C, D\}, 
-  E = \{\{A,B\}, \{B,C\}, \{C,A\}, \{C,D\}\}
+  V = {0,1,2,3,4}  \\
+  E = {
+    {0, 1}
+    {1, 2}
+    {2, 3}
+    {3, 4}
+    {0, 2}
+    {0, 3}
+  }
 $
 
 Demonstruje případ, kdy neexistuje cesta s cenou $k = |V|$,
 protože graf neobsahuje hamiltonovskou kružnici.
 
 #figure(
-  image("../assets/screenshots/hcircuit-tsp-no-input.png"),
-  caption: [Vstupní neorientovaný graf (záporná odpověď)]
+  image("../assets/screenshots/hcircuit-tsp-no-input-output-fullpage.png"),
+  caption: [Zadaná instance HCIRCUIT a výsledná instance TSP po redukci (záporná odpověď)]
 )
 
-#figure(
-  image("../assets/screenshots/hcircuit-tsp-no-output.png"),
-  caption: [Kompletní graf s ohodnocením hran (záporná odpověď)]
-)
-
-*Poznámka:* V aplikaci jsou pro tuto redukci k dispozici další 2 ukázkové instance
-(jednodušší graf s hamiltonovskou kružnicí a graf s vyšším počtem vrcholů bez cyklu).
