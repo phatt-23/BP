@@ -14,7 +14,7 @@
   // Was this topic assigned with a PDF?
   assigned: true,
   // Do want to use the standard title page according to VSB-FEI guidelines?
-  vsb-fei-comliant-title-page: false,
+  vsb-fei-comliant-title-page: true,
 )
 
 // Paths to various assets.
@@ -36,6 +36,7 @@
     // Normal Latin Modern. Too thin and hard to read.
     lm: (font: "Latin Modern Roman", size: 11pt),     
     mcr: (font: "New Computer Modern", size: 11pt),
+    mcr-sans: (font: "New Computer Modern Sans", size: 11pt),
     liber: (font: "Libertinus Sans", size: 11pt),
   ),
   // Math fonts.

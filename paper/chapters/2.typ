@@ -1,13 +1,19 @@
 #import "/lib/global.typ": *
-#import "/czech-declension/out.typ": inflected as inf
 #import "@preview/diagraph:0.3.6": *
 
 #set math.equation(numbering: "1.")
 
-#let rozhod-forma = heading(level: 3, outlined: false, numbering: none)[Vyjádření problému jako rozhodovacího]
-#let kladna-odpo = heading(level: 3, outlined: false, numbering: none)[Instance s kladnou odpovědí]
-#let zaporna-odpo = heading(level: 3, outlined: false, numbering: none)[Instance se zápornou odpovědí]
-#let opt-pr-instance = heading(level: 3, outlined: false, numbering: none)[Příklady instancí problému]
+#let heading-options = (
+  level: 3, 
+  // outlined: false, 
+  // numbering: none
+)
+
+
+#let rozhod-forma = heading(..heading-options)[Vyjádření problému jako rozhodovacího]
+#let kladna-odpo = heading(..heading-options)[Instance s kladnou odpovědí]
+#let zaporna-odpo = heading(..heading-options)[Instance se zápornou odpovědí]
+#let opt-pr-instance = heading(..heading-options)[Příklady instancí problému]
 
 = Vybrané NP-úplné problémy
 

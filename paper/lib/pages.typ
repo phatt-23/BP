@@ -2,7 +2,7 @@
 
 #import "global.typ": *
 #import "/lib/lib.typ": apply-non-chapter-show-rule, match, page-heading
-#import "/config.typ": document, assets
+#import "/config.typ": document, assets, fonts
 
 #let title-page(
   // Title of the work in Czech and English.

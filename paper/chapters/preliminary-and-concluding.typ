@@ -98,8 +98,9 @@
 
 // Thanks. Is optional so I added `want-to-include` switch.
 #let thanks = (want-to-include: true, body: [
-  Rád bych poděkoval vedoucímu práce za cenné rady a připomínky během celého procesu tvorby.
-  Dále děkuji všem, kteří poskytli zpětnou vazbu k raným verzím aplikace.
+  Rád bych poděkoval vedoucímu práce za cenné rady a odborné vedení během procesu jejího zpracování.
+  Dále děkuji své rodině za podporu, zejména svému bratrovi, 
+  který mi po celou dobu poskytoval užitečnou zpětnou vazbu při vývoji aplikace.
 ])
 
 // List of symbols and abbreviations.
@@ -114,6 +115,7 @@
   ([SSP], [Subset Sum Problem]),
   ([3-CG], [3-Coloring Problem]),
   ([DPLL], [Davis-Putnam-Logemann-Loveland]),
+  ([UI], [User Interface])
 )
 
 // Intro. Is mandatory.
