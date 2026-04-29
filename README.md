@@ -5,6 +5,11 @@ impl/  - implementace aplikace
 paper/ - text BP
 ```
 
+Clone the repo:
+```
+git clone https://github.com/phatt-23/bp.git --recurse-submodules
+```
+
 ## Assignment
 
 V rámci diplomových a bakalářských prací vzniká výukový server pro předměty
