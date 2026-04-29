@@ -33,7 +33,7 @@ a ověřovat si své pochopení na konkrétních příkladech.
 
 Za druhé, krokové zobrazení redukce umožňuje sledovat,
 jakým způsobem je instance transformována.
-Každý krok je doplněn o textové vysvětlení využívající matematické zápisy.
+Každý krok je doplněn o textové vysvětlení. // využívající matematické zápisy.
 
 Za třetí, možnost dekódování řešení demonstruje,
 jakým způsobem lze z řešení výstupní instance odvodit řešení instance vstupní.
@@ -46,6 +46,8 @@ u problému 3-SAT je zobrazen nalezeném ohodnocení proměnných.
 
 == Omezení
 
+// AGENT: rewrite for better reading flow
+
 Navržené řešení má několik omezení.
 
 Podporované problémy a redukce jsou omezeny na množinu definovanou v rámci práce.
@@ -56,29 +58,33 @@ a může vyžadovat úpravu stávající architektury.
 Pro velmi rozsáhlé instance může být výpočet časově náročný
 a může vést ke snížení odezvy aplikace.
 
+// AGENT: I added this, incorporate it better into the text
 Vizuální reprezentace grafů je založena na automatickém rozložení,
 které nemusí být vždy optimální.
-U složitějších instancí může být výsledný graf obtížně čitelný.
+// AGENT: I added this, incorporate it better into the text
+I když byly manuálně napsany 
+algoritmy pro umísťování vrcholů 
+pro některé převody
+za účelem zlepšení čitelnosti výsledných grafů,
+i přesto u složitějších instancí může být výsledný graf stále obtížně čitelný.
+// AGENT: I added this, incorporate it better into the text
+Stejne tak plati i u vizualizacich v TeX.
+Ne vzdy je text rozlozen nejcitelneji.
 
-Aplikace neposkytuje offline režim.
-Pro její použití je nutné připojení k internetu.
+// AGENT: I added this, incorporate it better into the text
+UI je navrzeno pro desktop, pri vyvoji se nemyslelo na prenosne zarizeni s mensim displejem.
 
 == Možnosti rozšíření
 
 Navržené řešení lze rozšířit v několika směrech.
 
-Podpora dalších NP-úplných problémů, jako jsou problém batohu (Knapsack),
-problém barvení grafu (Graph Coloring) nebo problém SAT obecně,
-by rozšířila možnosti výuky.
-
-Implementace dalších redukcí, například redukce 3-SAT na problém maximálního řezu (Max-Cut)
+Podpora dalších NP-úplných problémů a redukcí, 
+například redukce 3-SAT na problém maximálního řezu (Max-Cut)
 nebo redukce na problém nezávislé množiny (Independent Set),
 by umožnila demonstraci širší škály převodů.
 
-Vylepšení vizualizace grafů pomocí manuálního umísťování vrcholů
-a lepších algoritmů pro automatické rozložení
-by zlepšilo čitelnost výsledných grafů.
+// AGENT: I added this, incorporate it better into the text
+Možnost exportovat grafové instance jako obrázky, export do TeX textu.
+Možnost ukládat si své vlastní instance přímo na stránce s využitím např. localStorage.
 
-Integrace do Learning Management Systemu (LMS), jako je Moodle nebo IS MU,
-by umožnila využití aplikace v rámci strukturovaných kurzů
-s možností sledování pokroku studentů.
+
