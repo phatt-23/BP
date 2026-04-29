@@ -1,14 +1,8 @@
-# NP2
+# NP2 - Paper
 
-```
-impl/  - implementace aplikace
-paper/ - text BP
-```
+Text.
 
-Clone the repo:
-```
-git clone https://github.com/phatt-23/bp.git --recurse-submodules
-```
+Implementation at [https://github.com/phatt-23/np2.git]
 
 ## Assignment
 
