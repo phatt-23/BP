@@ -130,12 +130,9 @@
 
 // Appnedices. Is optional, if you leave an empty list it won't render anything.
 #let appendices = (
-  // ([Demo appendix], 
-  // [
-  //   Bla Bla popis.
-  //
-  //   #sourcecode(```txt
-  //     bla bla
-  //   ```)
-  // ]),
+  ([Obsah přílohy], 
+  [
+    #sourcecode(```txt
+    ```)
+  ]),
 )
