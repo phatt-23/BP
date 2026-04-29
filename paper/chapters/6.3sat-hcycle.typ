@@ -15,13 +15,13 @@ Tato instance byla vybrána z následujících důvodů:
 - je snadno ověřitelná ručním výpočtem.
 
 #figure(
-  image("../assets/screenshots/3sat-hcycle-yes-page.png"),
-  caption: [Zadání vstupní instance 3-SAT a výsledná instance HCYCLE (kladná odpověď)]
+  image("../assets/screenshots/3sat-hcycle-yes-page.png", height: 97%),
+  caption: [Vstupní instance 3-SAT a výsledná instance HCYCLE (kladná odpověď)]
 )
 
 #figure(
   grid(
-    columns: 3,
+    columns: 2,
     image("../assets/screenshots/3sat-hcycle-yes-step-1.png"),
     image("../assets/screenshots/3sat-hcycle-yes-step-2.png"),
     image("../assets/screenshots/3sat-hcycle-yes-step-3.png"),
@@ -31,6 +31,8 @@ Tato instance byla vybrána z následujících důvodů:
   ),
   caption: [Krokové zobrazení redukce 3-SAT na HCYCLE (kladná odpověď)]
 )
+
+#pagebreak()
 
 === Instance se zápornou odpovědí
 
@@ -46,7 +48,7 @@ Tato instance je nesplnitelná, což demonstruje,
 Instance je užitečná pro ilustraci toho, jak aplikace zpracovává instance se zápornou odpovědi.
 
 #figure(
-  image("../assets/screenshots/3sat-hcycle-no-page.png"),
-  caption: [Zadání vstupní instance 3-SAT a výsledná instance HCYCLE (záporná odpověď odpověď)]
+  image("../assets/screenshots/3sat-hcycle-no-page.png", height: 97%),
+  caption: [Vstupní instance 3-SAT a výsledná instance HCYCLE (záporná odpověď)]
 )
 

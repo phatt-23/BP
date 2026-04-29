@@ -100,7 +100,8 @@
 #let thanks = (want-to-include: true, body: [
   Rád bych poděkoval vedoucímu práce za cenné rady a odborné vedení během procesu jejího zpracování.
   Dále děkuji své rodině za podporu, zejména svému bratrovi, 
-  který mi po celou dobu poskytoval užitečnou zpětnou vazbu při vývoji aplikace.
+  který mi poskytoval užitečnou zpětnou vazbu při vývoji aplikace.
+  \#TYBG
 ])
 
 // List of symbols and abbreviations.
@@ -132,7 +133,7 @@
 #let appendices = (
   ([Obsah přílohy], 
   [
-    #sourcecode(```txt
-    ```)
+    #show raw: set text(size: 7pt)
+    #sourcecode(raw(read("/assets/codes/tree.txt"), lang: "txt"))
   ]),
 )

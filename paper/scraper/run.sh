@@ -11,5 +11,4 @@ $CMD    "3sat-hcycle"         "Yes(2)"          "No(2)"
 
 
 DEST="../assets/screenshots/"
-rm $DEST/*
 mv *.png $DEST

@@ -2,6 +2,42 @@
 
 ```
 .
+|-- fotky
+|-- impl
+|   |-- src
+|   |   |-- lib
+|   |   |   |-- component
+|   |   |   |   `-- red-page
+|   |   |   |-- core
+|   |   |   |   `-- styles
+|   |   |   |-- decode
+|   |   |   |-- demo
+|   |   |   |-- images
+|   |   |   |-- instance
+|   |   |   |-- page
+|   |   |   |-- reduction
+|   |   |   |-- solve
+|   |   |   |-- state
+|   |   |   `-- workers
+|   |   |-- routes
+|   |   |   |-- 3sat-3cg
+|   |   |   |-- 3sat-hcycle
+|   |   |   |-- 3sat-ssp
+|   |   |   |-- hcircuit-tsp
+|   |   |   `-- hcycle-hcircuit
+|   |   `-- styles
+|   `-- static
+`-- paper
+    |-- assets
+    |   |-- drawio
+    |   |-- plantuml
+    |   |   `-- output
+    |   `-- screenshots
+    |-- chapters
+    |-- lib
+    `-- scraper
+
+.
 ├── fotky
 ├── impl
 │   ├── src

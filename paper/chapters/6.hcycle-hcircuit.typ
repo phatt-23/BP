@@ -17,8 +17,8 @@ $
   }
 $
 
-#figure(image("../assets/screenshots/hcycle-hcircuit-yes-page.png"), 
-  caption: [Zadání instance HCYCLE a výsledný graf po redukcia (kladná odpověď)])
+#figure(image("../assets/screenshots/hcycle-hcircuit-yes-page.png", height: 97%), 
+  caption: [Vstupní instance HCYCLE a výsledný graf HCIRCUIT (kladná odpověď)])
 
 #figure(
   grid(
@@ -28,6 +28,7 @@ $
   ),
   caption: [Krokové zobrazení redukce HCYCLE na HCIRCUIT (kladná odpověď)]
 )
+
 
 === Instance se zápornou odpovědí
 
@@ -47,6 +48,6 @@ $
 Demonstruje neexistenci hamiltonovského cyklu v acyklickém grafu
 a jak aplikace zpracovává negativní odpověď.
 
-#figure(image("../assets/screenshots/hcycle-hcircuit-no-page.png"), 
-  caption: [Zadání instance HCYCLE a výsledný graf po redukcia (záporná odpověď)])
+#figure(image("../assets/screenshots/hcycle-hcircuit-no-page.png", height: 97%), 
+  caption: [Vstupní instance HCYCLE a výsledný graf HCIRCUIT (záporná odpověď)])
 

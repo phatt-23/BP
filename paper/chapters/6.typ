@@ -21,7 +21,12 @@ a jsou zde uvedeny i snímky obrazovky aplikace.
 
 
 #include "./6.3sat-hcycle.typ"
+#pagebreak()
 #include "./6.3sat-ssp.typ"
+#pagebreak()
 #include "./6.3sat-3cg.typ"
+#pagebreak()
 #include "./6.hcycle-hcircuit.typ"
+#pagebreak()
 #include "./6.hcircuit-tsp.typ"
+#pagebreak()

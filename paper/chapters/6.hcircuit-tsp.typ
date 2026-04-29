@@ -22,19 +22,21 @@ Instance ukazuje přidání hran s vyšší vahou
 a nastavení cílové hodnoty $k = |V|$.
 
 #figure(
-  image("../assets/screenshots/hcircuit-tsp-yes-page.png"),
-  caption: [Zadaná instance HCIRCUIT a výsledná instance TSP (kladná odpověď)]
+  image("../assets/screenshots/hcircuit-tsp-yes-page.png", height: 97%),
+  caption: [Vstupní instance HCIRCUIT a výsledná instance TSP (kladná odpověď)]
 )
 
 #figure(
   grid(
-    columns: 3,
+    columns: 2,
     image("../assets/screenshots/hcircuit-tsp-yes-step-1.png"),
     image("../assets/screenshots/hcircuit-tsp-yes-step-2.png"),
     image("../assets/screenshots/hcircuit-tsp-yes-step-3.png"),
   ),
   caption: [Krokové zobrazení redukce HCIRCUIT na TSP (kladná odpověď)]
 )
+
+#pagebreak()
 
 === Instance se zápornou odpovědí
 
@@ -55,7 +57,7 @@ Demonstruje případ, kdy neexistuje cesta s cenou $k = |V|$,
 protože graf neobsahuje hamiltonovskou kružnici.
 
 #figure(
-  image("../assets/screenshots/hcircuit-tsp-no-page.png"),
-  caption: [Zadaná instance HCIRCUIT a výsledná instance TSP (záporná odpověď)]
+  image("../assets/screenshots/hcircuit-tsp-no-page.png", height: 97%),
+  caption: [Vstupní instance HCIRCUIT a výsledná instance TSP (záporná odpověď)]
 )
 

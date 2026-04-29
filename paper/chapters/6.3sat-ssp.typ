@@ -15,7 +15,7 @@ Instance demonstruje:
 - funkci vyrovnávacích čísel.
 
 #figure(
-  image("../assets/screenshots/3sat-ssp-yes-page.png"), 
+  image("../assets/screenshots/3sat-ssp-yes-page.png", height: 97%),
   caption: [Zadání instance 3-SAT a výsledná množina čísel SSP (kladná odpověď)]
 )
 
@@ -34,6 +34,8 @@ Instance demonstruje:
   caption: [Krokové zobrazení redukce 3-SAT na SSP (kladná odpověď)]
 )
 
+#pagebreak()
+
 === Instance se zápornou odpovědí
 
 Formule:
@@ -45,7 +47,7 @@ Demonstruje případ, kdy nelze dosáhnout cílové hodnoty $tau$,
 protože žádná podmnožina neumožňuje splnění všech klauzulí.
 
 #figure(
-  image("../assets/screenshots/3sat-ssp-no-page.png"), 
+  image("../assets/screenshots/3sat-ssp-no-page.png", height: 97%), 
   caption: [Zadání instance 3-SAT a výsledná množina čísel SSP (záporná odpověď)]
 )
 

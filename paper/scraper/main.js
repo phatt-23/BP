@@ -18,7 +18,8 @@ if (!route || !yes || !no) {
     });
 
     const TIMEOUT = 200;
-    const ADDRESS = 'http://localhost:5173/~tra0163/';
+    const ADDRESS = 'http://localhost:5173/';
+    // const ADDRESS = 'http://localhost:5173/~tra0163/';
 
     const page = await context.newPage();
 

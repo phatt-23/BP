@@ -13,13 +13,13 @@ Instance ukazuje:
 - propojení s konstrukčními prvky klauzulí.
 
 #figure(
-  image("../assets/screenshots/3sat-3cg-yes-page.png"), 
-  caption: [Zadání vstupní instance 3-SAT a výsledná grafová instance 3-CG (kladná odpověď)]
+  image("../assets/screenshots/3sat-3cg-yes-page.png", height: 97%), 
+  caption: [Vstupní instance 3-SAT a výsledná grafová instance 3-CG (kladná odpověď)]
 )
 
 #figure(
   grid(
-    columns: 3, 
+    columns: 2, 
     image("../assets/screenshots/3sat-3cg-yes-step-1.png"), 
     image("../assets/screenshots/3sat-3cg-yes-step-2.png"), 
     image("../assets/screenshots/3sat-3cg-yes-step-3.png"), 
@@ -39,6 +39,6 @@ Demonstruje případ, kdy graf není 3-obarvitelný,
 protože konflikt v klauzulích vynutí protichůdné podmínky pro obarvení.
 
 #figure(
-  image("../assets/screenshots/3sat-3cg-no-page.png"), 
-  caption: [Zadání vstupní instance 3-SAT a výsledná grafová instance 3-CG (záporná odpověď)]
+  image("../assets/screenshots/3sat-3cg-no-page.png", height: 97%), 
+  caption: [Vstupní instance 3-SAT a výsledná grafová instance 3-CG (záporná odpověď)]
 )
