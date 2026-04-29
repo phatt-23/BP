@@ -1,0 +1,42 @@
+@startuml
+skinparam partitionStyle rectangle
+' skinparam conditionStyle diamond
+skinparam partitionColor #FF0000
+
+
+start
+
+:Uživatel zadá instanci vstupního problému;
+:Validace vstupu;
+
+if (Instance je validní?) then (ano)
+    partition "Redukce" {
+        :Redukční modul transformuje instanci;
+        :Vytváří kroky redukce;
+    }
+  
+    partition "Řešení" {
+        :Řešící modul hledá řešení;
+    }
+  
+    if (Řešení nalezeno?) then (ne)
+        :Zobrazení zprávy o neúspěchu;
+        stop
+    
+    else (ano)
+        partition "Dekódování" {
+            :Dekódovací modul převádí řešení;
+        }
+        :Zobrazení řešení vstupního a výstupního problému;
+        stop
+    
+    endif
+    
+else (ne)
+    :Zobrazení chybové zprávy;
+    stop
+
+endif
+
+@enduml
+

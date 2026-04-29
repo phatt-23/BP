@@ -1,0 +1,66 @@
+@startuml
+skinparam linetype ortho
+
+package "Reducer Module" {
+
+    class ReductionResult<I,O> {
+        +outInstance: O
+        +steps: ReductionStep[]
+    }
+
+    class ReductionStep<I,O> {
+        +id: Id
+        +title: string
+        +description: string
+        +outputSnapshot: O
+    }
+
+
+    abstract class Reducer<I,O> {
+        +inInstance: I
+        +reduce(): ReductionResult
+        #doReduce(): ReductionResult
+    }
+
+
+    class Reducer3SATtoHCYCLE {
+        -createVarGadgets(): PartialResult
+        -createClauseGadgets(): PartialResult
+    }
+
+    class Reducer3SATtoSSP {
+        -createTargetSum(): PartialResult
+        -createVarNumbers(): PartialResult
+        -updateVarNumbers(): PartialResult
+        -createBufferNumbers(): PartialResult
+    }
+
+    class Reducer3SATto3CG {
+        -createCoreGadget(): PartialResult
+        -createVariableGadgets(): PartialResult
+        -createClauseGadgets(): PartialResult
+    }
+
+    class ReducerHCYCLEtoHCIRCUIT {
+        -createNodeTriplets(): PartialResult
+        -connectEdges(): PartialResult
+    }
+
+    class ReducerHCIRCUITtoTSP {
+        -copyVertices(): PartialResult
+        -createEdges(): PartialResult
+        -assignWeights(): PartialResult
+    }
+
+    Reducer .up.> ReductionResult
+    ReductionResult *-right- ReductionStep
+
+    Reducer3SATtoHCYCLE -up-|> Reducer
+    Reducer3SATtoSSP -up-|> Reducer
+    Reducer3SATto3CG -up-|> Reducer
+    ReducerHCYCLEtoHCIRCUIT -up-|> Reducer
+    ReducerHCIRCUITtoTSP -up-|> Reducer
+
+}
+@enduml
+
