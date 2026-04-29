@@ -118,7 +118,7 @@
     first-line-indent: (
       amount: 1.5em,
       all: false,
-    )
+    ),
   ),
 
   heading: (
@@ -162,6 +162,11 @@
       [•],
       [--], 
     ),
+    indent: 0.5em,
+  ),
+
+  enum: (
+    indent: 0.5em,
   ),
 
   // Raw blocks and inlines
