@@ -1,36 +1,58 @@
 # NP2 - Paper
 
-Text.
+```bash
+typst compile main.typ
+# or
+typst watch main.typ
+```
 
-Implementation at [https://github.com/phatt-23/np2.git]
+View the compiled `main.pdf` in any PDF viewer. 
 
-## Assignment
+```bash
+zathura main.pdf
+```
 
-V rámci diplomových a bakalářských prací vzniká výukový server pro předměty
-teoretické informatiky. Jedná se o sadu dynamických webových stránek
-umožňujících studentům pochopení různých typů úloh a problémů tím, že si mohou
-zadat na stránce libovolné zadání a zobrazí se jim řešení včetně postupu. Cílem
-této práce je vytvořit komponentu (tedy sadu webových stránek) pro výuku
-vybraných NP-úplných problémů a převodů mezi nimi.
 
-1. Nastudujte si problematiku tříd složitosti problémů a s tím souvisejícím
-   převodem mezi problémy.
-2. Vytvořte dynamické webové stránky umožňující uživateli následující: 
-    a) Nechat si zobrazit postupně po krocích postup algoritmu s polynomiální
-       časovou složitostí převádějícího zadanou instanci jednoho problému na instanci
-       jiného problému (budou implementovány alespoň 3 různé převody mezi problémy).
-    b) Zadat libovolnou instanci každého z problémů vyskytujících se v těchto
-       převodech. 
-    c) Zobrazit odpověď na otázku daného problému pro zadanou instanci,
-       v případě kladné odpovědi i se zdůvodněním.
-3. Není cílem mít co nejefektivněji implementován samotný převod, ale mít jej
-   implementován tak, aby uživateli byla myšlenka tohoto převodu co
-   nejsrozumitelněji ukázána.
-4. Vytvořte i ukázkové vstupní instance pro implementované problémy tak, aby
-   uživatel mohl vše vyzkoušet i bez zadávání vlastních vstupů (alespoň 5
-   instancí pro každý problém).
 
-Studenti řešící toto zadání s rozdílným číslem v názvu mohou (ale nemusí)
-spolupracovat tak, že výsledek může mít společné uživatelské rozhraní apod. Ale
-každý bude implementovat jiné 3 převody mezi problémy.
-
+<!-- # VSB-FEI Thesis Template -->
+<!---->
+<!-- The template is written in [Typst](https://github.com/typst/typst). -->
+<!---->
+<!-- It supports these types of theses: -->
+<!-- - `bachelor` -->
+<!-- - `master` -->
+<!-- - `phd`  -->
+<!---->
+<!-- # File Structure -->
+<!---->
+<!-- - `main.typ` - main entrypoint (compile this file), includes all pages and chapters -->
+<!-- - `config.typ` - personal configuration and styling -->
+<!-- - `bib.yml` - bibliography in YAML -->
+<!-- - `lib/` - here lives the code that does stuff -->
+<!--     - `global.typ` - import this in every chapter, provides libraries and load-bib -->
+<!--     - `utils.typ` - helper functions and variables -->
+<!--     - `pages.typ` - basic pages that appear in theses -->
+<!-- - `assets/` - put all the assets like images, diagrams, source code in here  -->
+<!--     - `lang-database.toml` - provides translations of string appearing in the document -->
+<!--     - `iso690-numeric-brackets-cs.csl` - citation standard in CSL language -->
+<!--     - `logo_fei_cs.svg` - czech version of VSB FEI logo -->
+<!--     - `logo_fei_en.svg` - english version of VSB FEI logo -->
+<!-- - `chapters/` - segment your chapters here -->
+<!--     - `preliminary-and-concluding.typ` - content for preliminary (abstract, thanks, intro...) and concluding pages (conclusion, appendices, ...) -->
+<!--     - `chapter-1.typ` -->
+<!--     - `chapter-2.typ` -->
+<!--     - ... -->
+<!--     - `chapter-n.typ` -->
+<!---->
+<!-- # Run -->
+<!---->
+<!-- In the directory with `main.typ` file run: -->
+<!-- ```bash -->
+<!-- typst watch main.typ -->
+<!-- ``` -->
+<!---->
+<!-- View the compiled `main.pdf` in any PDF viewer.  -->
+<!-- For example in [zathura](https://github.com/pwmt/zathura). -->
+<!-- ```bash -->
+<!-- zathura main.pdf -->
+<!-- ``` -->
