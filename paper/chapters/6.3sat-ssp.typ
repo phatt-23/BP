@@ -14,19 +14,25 @@ Instance demonstruje:
 - vliv klauzulí na jednotlivé číslice,
 - funkci vyrovnávacích čísel.
 
-#figure(image("../assets/screenshots/3sat-ssp-yes-input.png"), caption: [Zadání instance 3-SAT (kladná odpověď)])
-#figure(image("../assets/screenshots/3sat-ssp-yes-output.png"), caption: [Výsledná množina čísel SSP (kladná odpověď)])
+#figure(
+  image("../assets/screenshots/3sat-ssp-yes-page.png"), 
+  caption: [Zadání instance 3-SAT a výsledná množina čísel SSP (kladná odpověď)]
+)
+
+#figure(
+  image("../assets/screenshots/3sat-ssp-yes-output-3sat-format.png"),
+  caption: [Výsledná množina čísel SSP zobrazená s 3-SAT formátováním])
+
 #figure(
   grid(
     columns: 2, 
     image("../assets/screenshots/3sat-ssp-yes-step-1.png"), 
-    image("../assets/screenshots/3sat-ssp-yes-step-2-fullpage.png"), 
-    image("../assets/screenshots/3sat-ssp-yes-step-3-fullpage.png"), 
-    image("../assets/screenshots/3sat-ssp-yes-step-4-fullpage.png"), 
+    image("../assets/screenshots/3sat-ssp-yes-step-2.png"), 
+    image("../assets/screenshots/3sat-ssp-yes-step-3.png"), 
+    image("../assets/screenshots/3sat-ssp-yes-step-4.png"), 
   ),
   caption: [Krokové zobrazení redukce 3-SAT na SSP (kladná odpověď)]
 )
-
 
 === Instance se zápornou odpovědí
 
@@ -38,16 +44,8 @@ $
 Demonstruje případ, kdy nelze dosáhnout cílové hodnoty $tau$,
 protože žádná podmnožina neumožňuje splnění všech klauzulí.
 
-#figure(image("../assets/screenshots/3sat-ssp-no-input.png"), caption: [Zadání instance 3-SAT (záporná odpověď)])
-#figure(image("../assets/screenshots/3sat-ssp-no-output.png"), caption: [Výsledná množina čísel SSP (záporná odpověď)])
 #figure(
-  grid(
-    columns: 2, 
-    image("../assets/screenshots/3sat-ssp-no-step-1.png"), 
-    image("../assets/screenshots/3sat-ssp-no-step-2-fullpage.png"), 
-    image("../assets/screenshots/3sat-ssp-no-step-3-fullpage.png"), 
-    image("../assets/screenshots/3sat-ssp-no-step-4-fullpage.png"), 
-  ),
-  caption: [Krokové zobrazení redukce 3-SAT na SSP (záporná odpověď)]
+  image("../assets/screenshots/3sat-ssp-no-page.png"), 
+  caption: [Zadání instance 3-SAT a výsledná množina čísel SSP (záporná odpověď)]
 )
 
