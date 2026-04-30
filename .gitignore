@@ -1,3 +1,4 @@
 impl/archive/
 **/node_modules/
 paper/package*.json
+fat_files.sh
