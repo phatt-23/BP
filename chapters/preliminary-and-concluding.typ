@@ -80,9 +80,6 @@
     "computational complexity",
     "interactive visualization",
     "educational tool",
-    "3-SAT",
-    "Hamiltonian cycle",
-    "graph coloring",
   ),
   cs: (
     "NP-úplné problémy",
@@ -90,18 +87,13 @@
     "výpočetní složitost",
     "interaktivní vizualizace",
     "výuková pomůcka",
-    "3-SAT",
-    "hamiltonovský cyklus",
-    "barvení grafu",
   )
 )
 
 // Thanks. Is optional so I added `want-to-include` switch.
 #let thanks = (want-to-include: true, body: [
-  Rád bych poděkoval vedoucímu práce za cenné rady a odborné vedení během procesu jejího zpracování.
-  Dále děkuji své rodině za podporu, zejména svému bratrovi, 
-  který mi poskytoval užitečnou zpětnou vazbu při vývoji aplikace.
-  \#TYBG
+  Rád bych poděkoval vedoucímu práce, Ing. Martinu Kotovi, Ph.D., 
+  za cenné rady a odborné vedení během procesu jejího zpracování.
 ])
 
 // List of symbols and abbreviations.
@@ -116,7 +108,7 @@
   ([SSP], [Subset Sum Problem]),
   ([3-CG], [3-Coloring Problem]),
   ([DPLL], [Davis-Putnam-Logemann-Loveland]),
-  ([UI], [User Interface])
+  ([UI], [User Interface]),
 )
 
 // Intro. Is mandatory.

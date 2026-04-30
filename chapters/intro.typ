@@ -1,32 +1,3 @@
-// Uvést čtenáře do kontextu.
-//
-// - Vysvětlit stručně teorii složitosti algoritmů a v průběhu se zaměřit na termín NP-Complete.
-//   
-// Jaká je motivace téhle práce? Co je problémem, který se snaží vyřešit?
-//
-// - Studenti a vyučující TI, chtějí vizualizovat převody mezi problémy. 
-// - Z vizualizací lze mnohem pochopit redukce, než ze čtení formálních textů.
-// - Umožnit interaktivní zobrazení redukcí a jejich postup.
-// - Zobecnění pro, každou instanci problému. Konec statických animací redukcí pro specifické vstupní instance.
-//
-// Jaké cíle má tahle práce? Co chce přínést, unsnadnit, v čem má pomoct?
-//
-// - Příjít s řešením pro satisfakci vylistovaných motivací.
-// - Má za cíl, poskytnout interaktivní GUI pro zadavaní instancí. 
-// #[ 
-//   Vizualizace vstupních a výstupních instancí, ať už to jsou logické výrazy,
-//   orientované/neorientované grafy s nebo bez ohodnocení hran, tabulky pro čísla
-//   jako vstupní instance pro problém SSP. 
-// ]
-//
-// - Zobrazit certifikáty k daným problémum, pokud existují. 
-// - Zobrazit i certifikát pro vstupní instanci, pokud má certifikát výstupní instance.
-// - Zobrazit postup pro jednotlivé redukce.
-//
-// Co bylo vytvořeno.
-//
-// - Webová aplikace, která funguje podobně jako online kalkulačky (např. integrální kalkulačky, zobrazujicí postup, atd...).
-
 Tato práce se zabývá problematikou výpočetní složitosti algoritmů
 se zaměřením na třídu NP-úplných problémů.
 Výpočetní složitost představuje jednu ze základních disciplín informatiky,
@@ -58,21 +29,29 @@ který by jim pomohl tyto principy lépe pochopit.
 
 Cílem této práce je navrhnout a implementovat webovou aplikaci,
 která tuto mezeru vyplní.
-Aplikace bude fungovat jako interaktivní výuková pomůcka
-umožňující zadávání vlastních instancí problémů,
-provádění polynomiálních redukcí mezi nimi
+// AGENT: the app doesn't allow to input instances for individual problem, it only allow inputing of an instance for a input problem in a reduction, for example there's a reduction 3sat -> ssp, i can input 3sat instace but cannot input ssp instance
+// AGENT: don't mention this tho, but make it not a lie
+Aplikace funguje jako interaktivní výuková pomůcka
+umožňující zadávání vlastních instancí vstupních problémů redukcí,
+provádění pěti polynomiálních převodů mezi nimi
 a vizualizaci celého procesu včetně jednotlivých kroků.
+Součástí aplikace jsou také algoritmy pro řešení jednotlivých problémů
+a dekódování řešení výstupní instance zpět na řešení instance vstupní.
 
 Práce je strukturována následovně.
 První kapitola zavádí základní pojmy z teorie výpočetní složitosti
 nezbytné pro další části práce.
-Druhá kapitola představuje vybrané NP-úplné problémy,
-se kterými systém pracuje, včetně jejich formálních definic a příkladů instancí.
+Druhá kapitola představuje šest vybraných NP-úplných problémů,
+se kterými systém pracuje: 3-SAT, HCYCLE, HCIRCUIT, TSP, SSP a 3-CG,
+včetně jejich formálních definic a příkladů instancí.
 Třetí kapitola tvoří teoretické jádro práce
-a obsahuje detailní popis polynomiálních redukcí mezi těmito problémy.
+a obsahuje detailní popis pěti polynomiálních redukcí mezi těmito problémy.
 Čtvrtá kapitola se věnuje návrhu webové aplikace
-z hlediska architektury a uživatelského rozhraní.
+z hlediska architektury, požadavků a uživatelského rozhraní.
 Pátá kapitola popisuje implementaci systému
-včetně reprezentace dat a algoritmů.
-Šestá kapitola představuje ukázkové instance a demonstraci funkcionality.
-Závěrečná kapitola shrnuje dosažené výsledky a diskutuje možná rozšíření.
+včetně reprezentace instancí, redukčních, řešících a dekódovacích modulů
+a použitých technologií.
+Šestá kapitola představuje ukázkové instance s kladnou i zápornou odpovědí
+pro každou redukci a demonstraci funkcionality aplikace.
+Závěr shrnuje dosažené výsledky, diskutuje omezení navrženého řešení
+a nastiňuje možnosti budoucího rozšíření.
