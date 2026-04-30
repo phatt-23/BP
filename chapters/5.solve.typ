@@ -37,10 +37,8 @@ procházející možné orientované cesty v grafu.
 Algoritmus nejprve sestaví seznam sousednosti pro rychlé vyhledávání.
 Počáteční vrchol je libovolně zvolen jako první vrchol grafu.
 Algoritmus se rekurzivně pokouší rozšířit aktuální cestu o nepoužité sousední vrcholy.
-
 Po návratu z rekurze algoritmus backtrackuje,
 tj. odstraňuje poslední vrchol z cesty a zkouší jiného souseda.
-
 Po úspěšném nalezení cesty obsahující všechny vrcholy
 algoritmus kontroluje, zda poslední vrchol má hranu zpět do počátečního vrcholu.
 
@@ -49,8 +47,8 @@ algoritmus kontroluje, zda poslední vrchol má hranu zpět do počátečního v
 
 Solver `SolverHCIRCUIT` využívá modifikovaný backtrackingový algoritmus
 pro neorientované grafy.
-
-Algoritmus se liší od řešení HCYCLE tím, že hrany jsou neorientované,
+Algoritmus se od řešení HCYCLE liší pouze tím, 
+že hrany jsou neorientované,
 tj. je možné jimi procházet oběma směry.
 
 
@@ -61,12 +59,10 @@ Solver `SolverSSP` využívá dynamické programování.
 Algoritmus nejprve inicializuje tabulku `dp`
 mapující dosažitelné součty na indexy použitých čísel.
 Základní případ nastavuje součet 0 jako dosažitelný.
-
 V každé iteraci algoritmus prochází aktuálně dosažitelné součty
 a zkouší přidat aktuální číslo.
 Pokud nový součet ještě není dosažitelný, 
 je přidán do tabulky.
-
 Po vyčerpání všech čísel algoritmus kontroluje, 
 zda je cílový součet dosažitelný.
 Pokud ano, 

@@ -62,7 +62,7 @@
   fonts: (
     normal: fonts.normal.mcr,
     math: fonts.math.mcr,
-    raw: fonts.raw.courier,
+    raw: fonts.raw.lm,
   ),
 
   text: (

@@ -6,21 +6,18 @@ zatímco nefunkční požadavky specifikují její kvalitativní vlastnosti.
 
 === Funkční požadavky
 
-Aplikace musí uživateli umožnit výběr konkrétní redukce mezi rozhodovacími problémy
+Aplikace musí uživateli umožnit výběr konkrétní redukce mezi problémy
 a zadání libovolné instance vstupního problému, a to jak formou vlastního vstupu,
 tak prostřednictvím předdefinovaných ukázkových instancí.
 
-Na základě zadané instance systém provede její transformaci
-na instanci cílového problému pomocí zvolené redukce.
-Vstupní i výsledná instance jsou následně vizualizovány,
-aby bylo možné jejich přímé porovnání.
+Na základě zadané instance systém provede její transformaci na instanci cílového problému.
+Vstupní i výsledná instance jsou následně vizualizovány, aby bylo možné jejich přímé porovnání.
 
 Součástí funkcionality je rovněž možnost zobrazit proces redukce krokově,
 včetně textového vysvětlení jednotlivých transformačních kroků.
 
 V případě, že je odpověď na rozhodovací otázku kladná,
-aplikace umožní zobrazit nalezené řešení jak pro vstupní,
-tak pro cílový problém.
+aplikace zobrazí nalezené řešení jak pro vstupní, tak pro cílový problém.
 
 Systém dále validuje vstupní data a upozorňuje uživatele
 na případné syntaktické chyby.
@@ -30,8 +27,7 @@ opětovného načtení aplikace.
 #figure(
   image("../assets/plantuml/use-case-diagram.svg"),
   caption: [
-    Diagram případů užití (Use Case Diagram) 
-    zobrazujicí funkční požadavky systému z pohledu uživatele 
+    Diagram případů užití zobrazujicí funkční požadavky systému z pohledu uživatele 
   ]
 )
 

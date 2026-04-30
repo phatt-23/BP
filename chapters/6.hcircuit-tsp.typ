@@ -2,7 +2,7 @@
 
 === Instance s kladnou odpovědí
 
-Neorientovaný graf obsahující hamiltonovskou kružnici:
+Ukázkovou instancí je neorientovaný graf obsahující hamiltonovskou kružnici:
 $
   V = { x_0, x_1, x_2, x_3, x_4, x_5 } \
   E = {
@@ -40,15 +40,15 @@ a nastavení cílové hodnoty $k = |V|$.
 
 === Instance se zápornou odpovědí
 
-Graf neobsahující hamiltonovskou kružnici:
+Ukázkovou instancí je graf neobsahující hamiltonovskou kružnici:
 $
   V = {0,1,2,3,4}  \
   E = {
-    {0, 1}
-    {1, 2}
-    {2, 3}
-    {3, 4}
-    {0, 2}
+    {0, 1},
+    {1, 2},
+    {2, 3},
+    {3, 4},
+    {0, 2},
     {0, 3}
   }
 $

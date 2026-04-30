@@ -2,11 +2,11 @@
 
 === Instance s kladnou odpovědí
 
-Formule:
+Ukázková instance:
 $
   (alpha or beta or gamma) and
   (not alpha or beta or gamma) and
-  (alpha or not or beta or gamma)
+  (alpha or not beta or gamma)
 $
 
 Instance demonstruje:
@@ -21,7 +21,8 @@ Instance demonstruje:
 
 #figure(
   image("../assets/screenshots/3sat-ssp-yes-output-3sat-format.png"),
-  caption: [Výsledná množina čísel SSP zobrazená s 3-SAT formátováním])
+  caption: [Výsledná množina čísel SSP zobrazená s 3-SAT formátováním]
+)
 
 #figure(
   grid(
@@ -38,7 +39,7 @@ Instance demonstruje:
 
 === Instance se zápornou odpovědí
 
-Formule:
+Ukázková instance:
 $
   (x or x or x) and (not x or not x or not x)
 $

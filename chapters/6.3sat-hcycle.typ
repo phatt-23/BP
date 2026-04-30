@@ -45,7 +45,7 @@ $
 
 Tato instance je nesplnitelná, což demonstruje,
 že výsledný graf neobsahuje hamiltonovský cyklus.
-Instance je užitečná pro ilustraci toho, jak aplikace zpracovává instance se zápornou odpovědi.
+Instance je užitečná pro ilustraci toho, jak aplikace zpracovává instance se zápornou odpovědí.
 
 #figure(
   image("../assets/screenshots/3sat-hcycle-no-page.png", height: 97%),

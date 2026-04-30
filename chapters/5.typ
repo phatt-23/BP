@@ -5,8 +5,8 @@
 Tato kapitola se věnuje implementaci navrženého systému.
 Nejprve je popsána vnitřní reprezentace instancí problémů 
 a validace vstupních dat.
-Následně je detailně rozebrána implementace jednotlivých redukcí,
-včetně mapování teoretických kroků na programový kód.
+Následně je detailně rozebrána implementace jednotlivých redukcí.
+// včetně mapování teoretických kroků na programový kód.
 Kapitola dále popisuje, 
 jakým způsobem systém řeší problémy a dekóduje řešení.
 

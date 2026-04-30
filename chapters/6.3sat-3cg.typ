@@ -2,7 +2,7 @@
 
 === Instance s kladnou odpovědí
 
-Formule:
+Ukázková instance:
 $
   (alpha or beta or gamma) and (not alpha or beta or not gamma)
 $
@@ -29,7 +29,7 @@ Instance ukazuje:
 
 === Instance se zápornou odpovědí
 
-Formule:
+Ukázková instance:
 $
   (x or x or x) and
   (not x or not x or not x)

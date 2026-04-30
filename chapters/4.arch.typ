@@ -62,10 +62,8 @@ Kód UI zahrnuje komponenty pro
 UI aplikace je dále rozebráno v @ui-chapter[kapitole].
 
 Kód business logiky se skládá z 
-datových struktur reprezentujících instance jednotlivých problémů 
-a z modulů, které společně převádějí a transformují data nezávisle na sobě.
-
-V této aplikaci se vyskytují tři typy modulů: redukční, řešící a dekódovací modul. 
+datových struktur reprezentujících instance jednotlivých problémů a z modulů.
+V této aplikaci se vyskytují tři typy modulů: redukční (reducer), řešící (solver) a dekódovací (decoder) modul. 
 Redukční modul převádí instance jednoho problému na instance jiného problému. 
 Řešící modul se pokouší nalézt řešení zadané instance. 
 Dekódovací modul převádí nalezené řešení výstupního problému na řešení vstupního problému. 
@@ -91,7 +89,7 @@ Zpracování dat v systému probíhá v následujících krocích:
 2. Instance je převedena do interní reprezentace systému.
 3. Redukční modul transformuje vstupní instanci na instanci cílového problému.
    Zároveň také vytváří krokový průběh redukce.
-4. Řešicí modul (solver) se pokusí nalézt řešení cílové instance.
+4. Řešicí modul se pokusí nalézt řešení cílové instance.
 5. V případě úspěchu dekodér převede nalezené řešení zpět
    na řešení původní instance.
 

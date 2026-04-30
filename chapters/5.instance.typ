@@ -116,10 +116,10 @@ Jednotlivé řádky mohou obsahovat:
 
 Následující příklad ukazuje vstupní formát bez ohodnocení hran:
 #figure(sourcecode[```txt
-  B
-  C
-  N
-  R
+  X
+  Y Y
+  S U
+  U N
   B C
   C N
   N R
@@ -132,6 +132,10 @@ Následující příklad ukazuje vstupní formát bez ohodnocení hran:
       layout=fdp
       node [shape=circle fixedsize=true]
 
+      X
+      Y -> Y
+      S -> U
+      U -> N
       B -> C
       C -> N
       N -> R
@@ -145,21 +149,16 @@ Následující příklad ukazuje vstupní formát bez ohodnocení hran:
 Následující příklad ukazuje vstupní formát s ohodnocením hran:
 
 #figure(sourcecode[```txt
-  0
-  1
-  2
-  3
-  4
-  0 1  1
-  0 2  2
-  0 3  2
-  0 4  1
-  1 2  1
-  1 3  2
-  1 4  2
-  2 3  1
-  2 4  2
-  3 4  1
+  A B 1
+  A C 2
+  A D 3
+  A E 1
+  B C 1
+  B D 4
+  B E 2
+  C D 7
+  C E 2
+  D E 1
 ```], caption: [ Příklad vstupu grafu s ohodnocením hran ])
 
 #figure(
@@ -167,21 +166,16 @@ Následující příklad ukazuje vstupní formát s ohodnocením hran:
     digraph {
       node [shape=circle fixedsize=true]
 
-      0
-      1
-      2
-      3
-      4
-      0 -> 1 [label=1]
-      0 -> 2 [label=2]
-      0 -> 3 [label=2]
-      0 -> 4 [label=1]
-      1 -> 2 [label=1]
-      1 -> 3 [label=2]
-      1 -> 4 [label=2]
-      2 -> 3 [label=1]
-      2 -> 4 [label=2]
-      3 -> 4 [label=1]
+      A -> B [label="1"]
+      A -> C [label="2"]
+      A -> D [label="3"]
+      A -> E [label="1"]
+      B -> C [label="1"]
+      B -> D [label="4"]
+      B -> E [label="2"]
+      C -> D [label="7"]
+      C -> E [label="2"]
+      D -> E [label="1"]
     }
   ```),
   caption: [Vizualizace grafu s ohodnocením hran]
@@ -285,3 +279,5 @@ Tato fáze je důležitá zejména v redukčním modulu, kde zajišťuje validit
 
 Chybové zprávy jsou vraceny jako typ `ErrorMessage`,
 který v případě chyby obsahuje textový popis problému.
+
+

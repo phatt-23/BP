@@ -207,7 +207,7 @@
 #include "./chapters/4.typ"
 #include "./chapters/5.typ"
 #include "./chapters/6.typ"
-#include "./chapters/eval.typ"
+#include "./chapters/7.typ"
 
 // END
 //////////////////////////////////////////////////////////////////////////

@@ -46,10 +46,10 @@ a rekonstruuje ohodnocení booleovských proměnných.
 
 Proměnná je nastavena na pravdu, 
 pokud je v podmnožině přítomno
-odpovídající číslo $nu_T$.
+odpovídající číslo $x^((T))$.
 Proměnná je nastavena na nepravdu, 
 pokud je v podmnožině přítomno
-odpovídající číslo $nu_F$.
+odpovídající číslo $x^((F))$.
 
 
 === Dekódování řešení 3-CG na 3-SAT
@@ -57,8 +57,8 @@ odpovídající číslo $nu_F$.
 Dekoder `Decoder3CGto3SAT` analyzuje nalezené obarvení grafu
 a rekonstruuje ohodnocení booleovských proměnných.
 
-Proměnná je nastavena na pravdu, pokud je vrchol $nu$ obarven zeleně.
-Proměnná je nastavena na nepravdu, pokud je vrchol $nu$ obarven červeně.
+Proměnná je nastavena na pravdu, pokud je vrchol $x$ obarven zeleně.
+Proměnná je nastavena na nepravdu, pokud je vrchol $x$ obarven červeně.
 
 
 === Dekódování řešení HCIRCUIT na HCYCLE
@@ -66,8 +66,10 @@ Proměnná je nastavena na nepravdu, pokud je vrchol $nu$ obarven červeně.
 Dekoder `DecoderHCIRCUITtoHCYCLE` převádí nalezenou hamiltonovskou kružnici
 v neorientovaném grafu na hamiltonovský cyklus v orientovaném grafu.
 
-Algoritmus prochází nalezenou kružnicí a pro každou dvojici po sobě jdoucích vrcholů
-nalezne odpovídající dvojici ve výstupním grafu HCYCLE.
+Algoritmus prochází nalezenou cestu, odebírá prefixy identifikátorů vrcholů,
+které označují typ uzlu (vstupní, výstupní nebo propojovací),
+a odstraňuje po sobě jdoucí duplicity. 
+Vrcholy, které zbydou, odpovídají hamiltonovskému cyklu v orientovaném grafu.
 
 
 === Dekódování řešení TSP na HCIRCUIT
@@ -75,6 +77,6 @@ nalezne odpovídající dvojici ve výstupním grafu HCYCLE.
 Dekoder `DecoderTSPtoHCIRCUIT` převádí nalezenou optimální cestu v TSP
 na hamiltonovskou kružnici v neorientovaném grafu.
 
-Algoritmus filtruje hrany nalezené cesty a vybírá pouze ty,
-které mají váhu 1, což odpovídá hranám původního grafu HCIRCUIT.
+Jelikož vrcholy grafů TSP a HCIRCUIT jsou totožné a řešení má shodný formát,
+dekodování je triviální -- nalezená cesta je přímo vrácena jako řešení HCIRCUIT. 
 

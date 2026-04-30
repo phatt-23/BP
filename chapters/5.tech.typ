@@ -13,7 +13,8 @@ k tvorbě uživatelského rozhraní.
 Vývoj probíhal v jazyce TypeScript,
 který rozšiřuje jazyk JavaScript o statické typování.
 To umožňuje lepší kontrolu nad strukturou dat,
-zvyšuje čitelnost kódu a snižuje pravděpodobnost vzniku chyb.
+zvyšuje čitelnost kódu a snižuje pravděpodobnost vzniku chyb 
+z důsledků dynamického typování.
 // Implementace je napsána v jazyce TypeScript,
 // který rozšiřuje JavaScript o statické typování.
 // TypeScript umožňuje lepší kontrolu nad strukturou dat
@@ -35,7 +36,6 @@ která převádí TeX zápis do HTML reprezentace vhodné pro zobrazení v prohl
 // Toto umožňuje prezentovat formální popisy redukcí
 // včetně matematických vzorců přímo ve webovém prohlížeči.
 
-Pro sestavení aplikace je využit nástroj Vite,
-který poskytuje rychlý vývojový server a optimalizovanou produkční sestavení.
+Pro sestavení aplikace je využit nástroj Vite #footnote[https://vite.dev/].
 
 
