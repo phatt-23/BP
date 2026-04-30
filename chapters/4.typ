@@ -2,8 +2,8 @@
 
 = Návrh webové aplikace
 
-Cílem navrhované webové aplikace je převést teoretické poznatky z oblasti výpočetní složitosti, 
-konkrétně problematiku polynomiálních redukcí mezi NP problémy, 
+Cílem navrhované webové aplikace je převést teoretické poznatky z oblasti výpočetní složitosti,
+konkrétně problematiku polynomiálních redukcí mezi NP-úplnými problémy,
 do podoby interaktivního výukového nástroje.
 
 Navržený systém umožňuje nejen pasivní studium formálních důkazů,
@@ -16,5 +16,7 @@ Tím dochází k propojení formální matematické teorie s názornou vizualiza
 což přispívá k hlubšímu porozumění probírané problematice.
 
 #include "./4.reqs.typ"
+#pagebreak()
 #include "./4.arch.typ"
+#pagebreak()
 #include "./4.ui.typ"

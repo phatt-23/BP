@@ -29,4 +29,3 @@ a jsou u ní uvedeny i snímky obrazovky aplikace.
 #include "./6.hcycle-hcircuit.typ"
 #pagebreak()
 #include "./6.hcircuit-tsp.typ"
-#pagebreak()

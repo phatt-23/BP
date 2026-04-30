@@ -38,8 +38,8 @@
 #let abstract = (
   en: [
     This thesis deals with the complexity theory of algorithms with focus on NP-complete problems.
-    A key tool for studying these problems are polynomial reductions,
-    which allow transforming instances of one problem to another.
+    Key tools for studying these problems are polynomial reductions,
+    which allow transforming instances of one problem to instances of another.
     Understanding reductions is often challenging due to their abstract nature
     and the lack of interactive tools.
 
@@ -56,7 +56,7 @@
   cs: [
     Tato práce se zabývá teorií výpočetní složitosti algoritmů se zaměřením na NP-úplné problémy.
     Klíčovým nástrojem pro studium těchto problémů jsou polynomiální redukce,
-    které umožňují převod instancí jednoho problému na problém jiný.
+    které umožňují převod instancí jednoho problému na instance jiného.
     Pochopení redukcí je často náročné kvůli jejich abstraktní povaze
     a nedostatku interaktivních nástrojů.
 

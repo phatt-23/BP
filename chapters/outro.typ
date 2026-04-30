@@ -1,15 +1,27 @@
-Tato práce představuje funkční implementaci interaktivní výukové pomůcky
-pro studium polynomiálních redukcí mezi NP-úplnými problémy.
-Aplikace umožňuje uživatelům experimentovat s vlastními instancemi problémů,
-sledovat proces redukce krok za krokem
-a vizualizovat řešení výsledných instancí.
+Tato práce se zabývala návrhem a implementací interaktivní webové aplikace
+pro vizualizaci polynomiálních redukcí mezi NP-úplnými problémy.
+Cílem bylo překlenout mezeru mezi abstraktní teoretickou definicí redukcí
+a jejich konkrétním pochopením studenty.
 
-Přínos práce spočívá především v propojení teoretických konceptů
-s praktickou implementací.
-Kód reflektuje strukturu teoretických převodů,
-což umožňuje uživatelům snadněji pochopit,
-jakým způsobem formální důkazy odpovídají konkrétním programovým operacím.
+V teoretické části byly představeny základy výpočetní složitosti
+a šest vybraných NP-úplných problémů.
+Klíčovým přínosem této části je detailní popis pěti polynomiálních redukcí
+mezi těmito problémy, včetně analýzy konstrukčních prvků a důkazů korektnosti převodů.
 
-Navržené řešení může sloužit jako doplněk k tradičním výukovým materiálům
-a může pomoci studentům i vyučujícím
-získat hlubší porozumění problematice NP-úplnosti a polynomiálních redukcí.
+V praktické části byla navržena a realizována klientská webová aplikace,
+která umožňuje uživatelům zadávat vlastní instance vstupních problémů,
+provádět redukce, sledovat jejich průběh krok za krokem
+a vizualizovat výsledné instance a jejich řešení.
+Aplikace je postavena na frameworku Svelte s využitím knihoven
+Cytoscape pro vizualizaci grafů a KaTeX pro matematické výrazy.
+
+Hlavním přínosem práce je vytvoření nástroje, který umožňuje
+experimentovat s libovolnými instancemi a interaktivně prozkoumávat
+chování konstrukčních prvků při převodu z jednoho problému na druhý.
+Na rozdíl od statických výukových materiálů tak aplikace poskytuje
+aktivní přístup ke studiu vztahů mezi NP-úplnými problémy.
+
+Navržené řešení může sloužit jako doplňková výuková pomůcka
+v předmětech zaměřených na teorii výpočetní složitosti
+a poskytuje studentům prostor pro samostatné ověřování
+svého porozumění této problematice.

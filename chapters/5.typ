@@ -15,8 +15,11 @@ který co nejpřesněji reflektuje teoretický popis redukcí.
 Optimalizace výkonu byly prováděny pouze v nezbytných případech.
 
 #include "./5.instance.typ"
+#pagebreak()
 #include "./5.reduce.typ"
+#pagebreak()
 #include "./5.solve.typ"
+#pagebreak()
 #include "./5.decode.typ"
 #include "./5.tech.typ"
 

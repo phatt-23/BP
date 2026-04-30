@@ -47,4 +47,4 @@ pro demonstraci redukcí a jejich vizualizaci.
 #include "./2.ssp.typ"
 #pagebreak()
 #include "./2.3cg.typ"
-#pagebreak()
+

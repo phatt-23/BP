@@ -27,7 +27,7 @@ opětovného načtení aplikace.
 #figure(
   image("../assets/plantuml/use-case-diagram.svg"),
   caption: [
-    Diagram případů užití zobrazujicí funkční požadavky systému z pohledu uživatele 
+    Diagram případů užití zobrazující funkční požadavky systému z pohledu uživatele
   ]
 )
 
@@ -45,8 +45,4 @@ zejména na zvýraznění konstrukčních prvků v cílových instancích.
 
 Uživatel musí mít možnost interaktivně manipulovat se vstupním grafem
 u problémů, kde je vstupní instancí graf.
-
-// Aplikace by měla být plně funkční i v offline režimu.
-// Návrh systému by měl být modulární s ohledem na budoucí rozšiřitelnost.
-
 

@@ -18,7 +18,7 @@ Každá stránka redukce se skládá ze tří hlavních částí:
 Toto rozdělení umožňuje uživateli sledovat celý proces převodu instance z jednoho problému na jiný.
 
 #figure(
-  image("../assets/drawio/struktura_ui.svg"), 
+  image("../assets/drawio/struktura_ui.svg", width: 50%), 
   caption: [Wireframe model struktury rozhraní]
 )
 
@@ -43,7 +43,7 @@ Editor dále obsahuje instrukce a nápovědu k formátu vstupních dat,
 aby uživatel věděl, jak správně zadat instanci problému.
 
 #figure(
-  image("../assets/drawio/editor.svg"), 
+  image("../assets/drawio/editor.svg", width: 90%), 
   caption: [Wireframe model editační oblasti]
 )
 
