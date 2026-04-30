@@ -12,8 +12,6 @@ V praktické části byla navržena a realizována klientská webová aplikace,
 která umožňuje uživatelům zadávat vlastní instance vstupních problémů,
 provádět redukce, sledovat jejich průběh krok za krokem
 a vizualizovat výsledné instance a jejich řešení.
-Aplikace je postavena na frameworku Svelte s využitím knihoven
-Cytoscape pro vizualizaci grafů a KaTeX pro matematické výrazy.
 
 Hlavním přínosem práce je vytvoření nástroje, který umožňuje
 experimentovat s libovolnými instancemi a interaktivně prozkoumávat

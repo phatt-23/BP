@@ -40,31 +40,35 @@ Navržená aplikace přináší několik výhod oproti tradičním statickým v�
   Toto propojení je klíčové pro pochopení korektnosti redukcí.
 ]
 
+#pagebreak()
+
+#let h3 = heading.with(level: 3, numbering: none, outlined: false)
 
 == Omezení
 
 Navržené řešení má několik omezení, která je třeba vzít v úvahu.
 
-=== Rozsah podporovaných problémů
+
+#h3[Rozsah podporovaných problémů]
 
 Aplikace podporuje pouze problémy a redukce definované v rámci této práce.
 Přidání nových problémů vyžaduje implementaci odpovídajících tříd
 a může si vyžádat úpravu stávající architektury.
 
-=== Výkon řešících algoritmů
+#h3[Výkon řešících algoritmů]
 
 Řešící algoritmy běží na klientské straně v prostředí webového prohlížeče.
 Pro rozsáhlé instance může být výpočet časově náročný,
 což vede ke zpomalení odezvy aplikace.
 
-=== Vizualizace grafů a srozumitelnost výstupu
+#h3[Vizualizace grafů a srozumitelnost výstupu]
 
 Grafy jsou rozloženy automaticky, což nemusí vždy vést k optimálnímu výsledku.
 Ačkoliv byly pro některé redukce implementovány vlastní algoritmy pro umísťování vrcholů,
 u složitějších instancí může být výsledný graf stále obtížně čitelný.
 Totéž platí pro vizualizace v TeX -- text není vždy rozložen nejpřehledněji.
 
-=== Uživatelské rozhraní
+#h3[Uživatelské rozhraní]
 
 Rozhraní je navrženo primárně pro desktopové prostředí.
 Při vývoji nebylo řešeno responzivní chování pro zařízení s menším displejem.
@@ -73,14 +77,14 @@ Při vývoji nebylo řešeno responzivní chování pro zařízení s menším d
 
 Navržené řešení lze rozšířit v několika směrech.
 
-=== Rozšíření o další problémy
+#h3[Rozšíření o další problémy]
 
 Přidání podpory pro další NP-úplné problémy a redukce,
 například 3-SAT na problém maximálního řezu (Max-Cut)
 nebo na problém nezávislé množiny (Independent Set),
 by umožnilo demonstraci širší škály převodů.
 
-=== Export a ukládání dat
+#h3[Export a ukládání dat]
 
 Aplikaci by bylo možné rozšířit o možnost exportu grafů jako obrázků
 či exportu výsledků do formátu TeX pro vložení do dokumentace.
