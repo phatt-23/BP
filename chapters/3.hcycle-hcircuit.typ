@@ -7,11 +7,10 @@
 
 Tato redukce vychází z @sawa-ti-slides-06.
 
-// AGENT: uprav
-V této redukci redukujeme 
-instanci problému HCYCLE, orientovaný graf, 
-na instanci problému HCIRCUIT, neorientovaný graf.
-Je opět založena na konstrukci konstrukčních prvků.
+V této redukci převádíme
+instanci problému HCYCLE, tedy orientovaný graf,
+na instanci problému HCIRCUIT, tedy neorientovaný graf.
+Je založena na konstrukci konstrukčních prvků pro vrcholy.
 
 Pro každý vrchol $v in V(G)$ vstupního orientovaného grafu $G$ 
 vytvoříme konstrukční prvek skládajícím se ze tří vrcholů:
@@ -88,7 +87,7 @@ Jako konkrétní příklad uvažujme graf $G$ na @g[obrázku]:
 Transformace tohoto grafu do instance problému HCIRCUIT probíhá tak, 
 že každý vrchol je nahrazen trojicí $v^((i)), v^((b)), v^((o))$ 
 a hrany jsou propojeny podle výše uvedeného pravidla. 
-Výsledný graf je zobrazen na @h[obrázku]:
+Výsledný graf je zobrazen na @h[obrázku].
 
 #figure(
   raw-render(```

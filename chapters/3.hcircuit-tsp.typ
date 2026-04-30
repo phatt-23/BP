@@ -5,17 +5,20 @@
 
 == Redukce HCIRCUIT na TSP <sec-redukce-hcircuit-tsp>
 
-Všechny vrcholy z grafu $G$ vstupního problému HCIRCUIT 
+V této redukci převádíme vstupní neorientovaný graf $G$ problému HCIRCUIT
+na ohodnocený neorientovaný graf $H$ problému TSP.
+
+Všechny vrcholy z grafu $G$ 
 zkopírujeme do nového grafu $H$.
 Mezi každou dvojici vrcholů v $H$ přidáme hranu, 
 čímž vznikne kompletní graf.
 
-Každé hraně $e_H = {x, y} in E(H)$ přiřadíme váhu podle pravidla:
+Každé hraně $e = {x, y} in E(H)$ přiřadíme váhu podle pravidla:
 
-- Pokud hrana $e_H$ odpovídá hraně $e_G = {x, y} in E(G)$ ve vstupním grafu, 
+- Pokud hrana $e$ existuje ve vstupním grafu, ${x, y} in E(G)$,
   nastavíme její váhu na 1.
 
-- Pokud hrana $e_H$ ve vstupním grafu neexistuje, 
+- Pokud hrana $e$ ve vstupním grafu neexistuje, 
   nastavíme její váhu na hodnotu větší než 1, v našem případě 2.
 
 Cílovou hodnotu $k$ pro problém TSP stanovíme rovnou počtu vrcholů grafu:
@@ -67,8 +70,8 @@ caption: [Vstupní graf problému HCIRCUIT]
 Graf $G$ převedeme podle popsané redukce na graf $H$, 
 který je znázorněn na @tsp-h[obrázku].  
 Graf $H$ je kompletní graf nad stejnou množinou vrcholů.  
-Hrany, které existovaly již v grafu $G$, mají váhu 1 (modře),  
-zatímco nově přidané hrany mají váhu 2 (červeně).
+Hrany, které existovaly již v grafu $G$, mají váhu 1 (značeny modře),  
+zatímco nově přidané hrany mají váhu 2 (značeny červeně).
 
 #figure(
 raw-render(```
@@ -119,7 +122,6 @@ Zvýrazněné hrany tvoří cyklus délky $k = 6$, tedy rovné počtu vrcholů g
 Protože cyklus používá pouze hrany s váhou 1,  
 odpovídá tento cyklus přímo hamiltonovskému cyklu ve vstupním grafu $G$.  
 // Tím je ukázána korektnost redukce na konkrétní instanci.
-// TODO: pridat instanci s neg odpovedi
 
 #figure(
 raw-render(```
