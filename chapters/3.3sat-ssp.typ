@@ -6,7 +6,7 @@
 
 Tato redukce vychází z myšlenek prezentovaných v @three-sat-to-ssp-yt.
 
-V této redukci převádíme booleovskou formuli $Phi$ ve 3-KNF na instanci problému součtu množiny, 
+V této redukci převádíme booleovskou formuli $Phi$ ve 3-KNF na instanci problému SSP,
 tedy na množinu čísel $S$ a cílovou hodnotu $tau$.
 
 Nechť $lr(|cal(V)|)$ značí počet proměnných a $lr(|cal(K)|)$ počet klauzulí formule $Phi = (cal(V), cal(K))$.
@@ -21,15 +21,9 @@ $
   lr(|S|) = 2lr(|cal(V)|) + 2lr(|cal(K)|).
 $
 
-#let indexing = [
-  // AGENT: uprav toto
-  V této práci jsou číslice čísel indexována zleva doprava od $0$. 
-  Např. pro číslo $3452$, první číslice s indexem $0$ je $3$, číslice na indexu $2$ je $5$, apod.
-]
-
 Cílovou hodnotu $tau$ zvolíme jako číslo, jehož:
-- prvních #footnote(indexing) $|cal(V)|$ číslic (odpovídajících proměnným) je rovno jedné,
-- následujících $|cal(K)|$ číslic (odpovídajících klauzulím) je rovno třem.
+- $|cal(V)|$ nejvyšších číslic (odpovídajících proměnným) je rovno jedné,
+- $|cal(K)|$ nejnižších číslic (odpovídajících klauzulím) je rovno třem.
 
 Formálně tedy:
 $
@@ -49,10 +43,15 @@ přiřadíme dvě čísla, $x_i^((T))$ a $x_i^((F))$.
 Výběr právě jednoho z těchto čísel do finální podmnožiny $S'$ 
 reprezentuje přiřazení pravdivostní hodnoty proměnné $x_i$ 
 -- 
-výběr čísla $x_i^((T))$ odpovídá ohodnocení proměnné $x_i$ hodnotou $T$ 
-a výběr čísla $x_i^((F))$ odpovídá ohodnocení proměnné $x_i$ hodnotou $F$.  // AGENT: uprav
+výběr čísla $x_i^((T))$ odpovídá ohodnocení proměnné $x_i$ hodnotou $T$
+a výběr čísla $x_i^((F))$ odpovídá ohodnocení proměnné $x_i$ hodnotou $F$.
 
-Obě tato čísla mají na $i$-té pozici 
+
+Obě tato čísla mají na $i$-té pozici #footnote[
+  V této práci jsou číslice čísel indexovány zleva doprava od nuly.
+  Například pro číslo $0003682$ je číslice na indexu $1$ rovna $0$, číslice na indexu $3$ je rovna $3$, číslice na indexu $4$ je $6$, číslice na indexu $6$ je $2$ atd.
+  Nuly na začátku čísel slouží pouze pro přehlednost a nemají vliv na jejich hodnotu -- například $00100$ je totéž číslo jako $100$.
+]
 číslici rovnou jedné, 
 zatímco všechny ostatní číslice jsou prozatím nulové.
 
@@ -88,7 +87,7 @@ $
 První tři číslice odpovídají proměnným $alpha, beta$ a $gamma$ 
 (poslední dvě odpovídají klauzulím $kappa_0$ a $kappa_1$, těm věnujeme pozornost v @repre-clause[podkapitole]).
 
-Čísla reprezetujicí ohodnocení proměnných by měla podobu:
+Čísla reprezentující ohodnocení proměnných mají podobu:
 
 $
   alpha^((T)) &= 10000 \
@@ -98,8 +97,6 @@ $
   gamma^((T)) &= 00100 \
   gamma^((F)) &= 00100.
 $
-
-// AGENT: say that here the leading zeros are only for prehlednost, and don't mean anything, for example 00100 is the same number as 100. 
 
 První tři číslice cílové hodnoty $tau = 11133$ odpovídají proměnným $alpha, beta, gamma$ a jsou rovny jedné.
 To vynucuje, aby bylo do podmnožiny $S'$ vybráno právě jedno číslo z každé dvojice $x_i^((T))$ a $x_i^((F))$, 
@@ -129,20 +126,20 @@ $
   gamma^((F)) &= 00100.
 $
 
-// AGENT: uprav
-Nyni vyber cisla s cislici 1 na pozici $lr(|cal(V)|) + j$ zpusobi, ze finalni soucet podmnoziny $S'$ bude mit na pozici $lr(|cal(V)|) + j$ cislici kladnou (vetsi nez 0).
-a tedy klauzule $k_j$ bude reprezentována jako splněná.
+Nyní výběr čísel s nenulovou číslicí na pozici $|cal(V)| + j$ zajišťuje,
+že součet podmnožiny $S'$ bude mít na této pozici kladnou hodnotu (větší než nula),
+a klauzule $kappa_j$ bude tedy reprezentována jako splněná.
 
 === Vyrovnávací čísla
 
 Cílová hodnota $tau$ však vyžaduje, aby každá klauzulová číslice byla rovna třem.
 Výběrem ohodnocení proměnných může být na dané pozici 
 dosaženo hodnoty 0, 1, 2 nebo 3 -- 
-podle toho, kolik literálů klauzule je splněno, 
-pricemz klauzule se povazuje za splnenou, pokud je dosazena hodnota alespon 1 (to odpovida tomu ze je klauzule splnena jednim svym literalem). // AGENT: uprav
+podle toho, kolik literálů klauzule je splněno.
 
-Aby bylo možné vždy dosáhnout přesně hodnoty 3, v pripadech kdy je dosazena hodnota alespon 1,
-(pokud je klauzule splněna alespoň jedním literálem), 
+Klauzule se považuje za splněnou, pokud je na této pozici dosažena hodnota alespoň 1,
+což odpovídá tomu, že je splněna alespoň jedním svým literálem.
+Aby bylo v těchto případech možné vždy dosáhnout přesně hodnoty 3,
 přidáme pro každou klauzuli $kappa_j$ dvě tzv. _vyrovnávací čísla_.
 
 Každé z těchto čísel má na pozici $lr(|cal(V)|) + j$ číslici rovnu 1 a na všech ostatních pozicích číslici 0.
@@ -158,7 +155,7 @@ $
   kappa_(0,0) = 00010 \
   kappa_(0,1) = 00010,
 $
-která mají jednotku na pozici odpovídající této klauzuli a na ostatních pozicích nuly.
+která mají číslo $1$ na pozici odpovídající této klauzuli a na ostatních pozicích nuly.
 
 Analogicky pro klauzuli $kappa_1$ definujeme:
 $

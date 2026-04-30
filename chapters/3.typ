@@ -41,9 +41,9 @@ aby byla zachována odpověď na otázku rozhodovacího problému.
 
 Nejprve uvedeme základní myšlenku převodu, 
 následně konceptuálně popíšeme jednotlivé kroky algoritmu 
-a poté zdůvodníme jeho korektnost, 
-tj. že původní instance má kladnou odpověď právě tehdy, 
-má-li kladnou odpověď i instance převedená.
+a poté zdůvodníme jeho korektnost,
+tj. že původní instance má kladnou odpověď právě tehdy,
+když má kladnou odpověď i instance převedená.
 
 Ve většině popisovaných redukcí využíváme tzv. konstrukční prvky
 (v anglické literatuře často označované jako _gadgets_).
@@ -53,8 +53,8 @@ Tyto konstrukční prvky umožňují převést logickou strukturu jedné úlohy
 do struktury jiné úlohy tak, 
 aby byly zachovány podstatné vlastnosti řešení.
 V případě redukcí na grafové problémy mají konstrukční prvky podobu vhodně navržených podgrafů. 
-Při redukcích na problém SSP jsou konstrukčními prvky jednotlivá čísla vstupní množiny 
-a cílová hodnota, apod.
+Při redukcích na problém SSP jsou konstrukčními prvky jednotlivá čísla vstupní množiny
+a cílová hodnota.
 
 
 #pagebreak()

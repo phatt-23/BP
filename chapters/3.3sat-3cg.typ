@@ -37,19 +37,16 @@ vrchol $T$ je nabarven zeleně (G), vrchol $F$ červeně (R) a vrchol $N$ modře
   labels: (
     "B": "N",
   )),
-  caption: [Jadrový konstrukční prvek instance problému 3-CG],
+  caption: [Jádrový konstrukční prvek instance problému 3-CG],
 )
 
-Vrcholy tohoto podgrafu mají intuitivní význam odpovídající pravdivostním hodnotám.
-Vrchol $T$ reprezentuje hodnotu _True_, vrchol $F$ hodnotu _False_ a vrchol $N$ neutrální hodnotu.
-Tomuto významu odpovídá i jejich obarvení v rámci 3-obarvení grafu.
 
 === Konstrukční prvek proměnné
 
-Pro každou proměnnou $v in cal(V)(Phi)$ se vytvoří odpovídající konstrukční prvek proměnné.
-Ten je tvořen trojicí vrcholů: $v$, $not v$ a vrcholem $N$ z jádrového konstrukčního prvku.
+Pro každou proměnnou $x in cal(V)(Phi)$ se vytvoří odpovídající konstrukční prvek proměnné.
+Ten je tvořen trojicí vrcholů: $x$, $not x$ a vrcholem $N$ z jádrového konstrukčního prvku.
 Mezi těmito vrcholy jsou zavedeny hrany
-${v, not v}$, ${v, N}$ a ${not v, N}$,
+${x, not x}$, ${x, N}$ a ${not x, N}$,
 čímž opět vzniká cyklus.
 
 #figure(
@@ -91,24 +88,24 @@ ${v, not v}$, ${v, N}$ a ${not v, N}$,
 
 Tento prvek reprezentuje přiřazení pravdivostní hodnoty dané proměnné.
 Vrchol $N$ je již pevně obarven modře, 
-a protože jsou vrcholy $v$ a $not v$ s vrcholem $N$ sousední, 
+a protože jsou vrcholy $x$ a $not x$ s vrcholem $N$ sousední, 
 nemohou být obarveny modře. 
-Jejich obarvení je tedy omezeno na dvě zbývající barvy a to zelenou a červenou.
+Jejich obarvení je tedy omezeno na dvě zbývající barvy, a to zelenou a červenou.
 
-Zároveň jsou vrcholy $v$ a $not v$ spojeny hranou, 
+Zároveň jsou vrcholy $x$ a $not x$ spojeny hranou, 
 a proto nemohou mít stejnou barvu. 
 Právě jeden z nich tedy musí být zelený a druhý červený.
 
 Zvolíme-li interpretaci, 
-že zelená barva reprezentuje hodnotu _True_ a červená hodnotu _False_, 
+že zelená barva reprezentuje hodnotu pravda a červená hodnotu nepravda, 
 potom obarvení jednoznačně určuje pravdivostní hodnotu proměnné:
-- je-li vrchol $v$ zelený, potom $v = italic("True")$,
-- je-li zelený vrchol $not v$, potom $v = italic("False")$.
+- je-li vrchol $x$ zelený, potom $x = T$,
+- je-li zelený vrchol $not x$, potom $x = F$.
 
 === Konstrukční prvek klauzule
 
-Pro každou klauzuli $kappa in Phi$ se sestrojí samostatný konstrukční prvek klauzule.
-Nechť
+Pro každou klauzuli $kappa in cal(K)(Phi)$ se sestrojí samostatný konstrukční prvek klauzule.
+Nechť:
 $
   kappa = {Alpha, Beta, Gamma},
 $
@@ -117,32 +114,13 @@ kde $Alpha$, $Beta$ a $Gamma$ představují literály proměnných $alpha$, $bet
 Literály, značené velkými řeckými písmeny, mohou vystupovat buď v neznegované, nebo v negované podobě.
 Například literál $Alpha$ může odpovídat buď vrcholu $alpha$, nebo vrcholu $not alpha$ 
 v konstrukčním prvku příslušné proměnné. 
-Stejná konvence platí i pro $Beta$ a $Gamma$.
+Stejná konvence platí i pro literály $Beta$ a $Gamma$.
 
-Konstrukční prvek klauzule obsahuje 6 vlastních vrcholů,
-$
-  kappa_0,
-  kappa_1,
-  kappa_2,
-  kappa_3,
-  kappa_4,
-  kappa_5,
-$
-
-3 vrcholy převzaté z konstrukčních prvků proměnných,
-$
-  Alpha,
-  Beta,
-  Gamma,
-$
-
-a 2 vrcholy z jádrového konstrukčního prvku:
-$
-  T,
-  F.
-$
-
-Celkově tedy obsahuje 11 vrcholů.
+Konstrukční prvek klauzule obsahuje 6 vlastních vrcholů
+$kappa_0, kappa_1, kappa_2, kappa_3, kappa_4, kappa_5$,
+3 vrcholy převzaté z konstrukčních prvků proměnných
+$Alpha, Beta, Gamma$
+a 2 vrcholy z jádrového konstrukčního prvku $T$ a $F$.
 
 Hrany mezi těmito vrcholy jsou definovány následovně:
 

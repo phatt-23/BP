@@ -8,8 +8,8 @@
 
 Tato redukce vychází z myšlenek prezentovaných v @three-sat-to-hcycle-anim.
 
-Algoritmus pro převod instance problému 3-SAT na instanci problému HCYCLE 
-spočívá v konstrukci speciálních konstrukčních prvků pro proměnné a klauzule vstupní formule. 
+Algoritmus pro převod instance problému 3-SAT na instanci problému HCYCLE
+spočívá ve vytvoření speciálních konstrukčních prvků pro proměnné a klauzule vstupní formule.
 Tyto konstrukční prvky mají podobu vhodně navržených podgrafů, 
 které jsou následně propojeny tak, aby byla zachována odpověď původní instance.
 
@@ -82,7 +82,7 @@ i na jeho konci se nacházejí speciální vrcholy,
 které budeme dále označovat jako _mezi-vrcholy_. 
 Tyto mezi-vrcholy slouží jako spojovací uzly 
 a jsou vždy napojeny na krajní vrcholy příslušných konstrukčních prvků proměnných, 
-přičemž tyto krajní vrcholy propojeneny s následujícím mezi-vrcholem.
+přičemž tyto krajní vrcholy jsou propojeny s následujícím mezi-vrcholem.
 Poslední mezi-vrchol je spojen s prvním mezi-vrcholem řetězce, 
 čímž se uzavře cyklus.
 
@@ -95,10 +95,10 @@ Poslední mezi-vrchol je spojen s prvním mezi-vrcholem řetězce,
 )
 
 Průchod tímto řetězcem jednoznačně odpovídá volbě ohodnocení jednotlivých proměnných. 
-Lze například stanovit, 
-že průchod levou větví konstrukčního prvku reprezentuje přiřazení pravdivostní hodnoty $T$ dané proměnné, 
+Lze například stanovit,
+že průchod levou větví konstrukčního prvku reprezentuje přiřazení pravdivostní hodnoty $T$ dané proměnné,
 zatímco průchod pravou větví odpovídá přiřazení hodnoty $F$.
-// AGENT: s timto budeme dale v teto praci pocitat, leva => T, prava => F
+Tato konvence bude uplatňována i v následujících podkapitolách.
 
 Jakmile je při průchodu zvolena jedna z větví, 
 není již možné toto rozhodnutí změnit.
@@ -144,8 +144,8 @@ jsou hrany mezi konstrukčním prvkem proměnné a vrcholem klauzule přidány t
 V případě negovaného literálu jsou hrany přidány opačně -- 
 hrana směřující do vrcholu klauzule leží vpravo od hrany směřující z něj.
 
-Platí, že mezi každou dvojicí propojení konstrukčního prvku proměnné 
-a vrcholu klauzule musí být alespoň jeden vrchol zůstat volným od spojení s vrcholem klauzule, 
+Platí, že mezi každou dvojicí vrcholů konstrukčního prvku proměnné
+propojených s vrcholem klauzule musí zůstat alespoň jeden vrchol volný,
 a samotné koncové vrcholy konstrukčního prvku proměnné nesmí být propojeny s vrcholem klauzule.
 Tím je zajištěno, že v rámci hamiltonovského cyklu nemůže docházet k "přeskakování" mezi konstrukčními prvky proměnných, 
 což by narušilo jednoznačné přiřazení pravdivostní hodnoty proměnné.
@@ -164,8 +164,8 @@ a tím se stává dosažitelným i vrchol klauzule, který by za korektního pr�
 ) <preskakovani>
 
 Tomuto jevu zabráníme vložením alespoň jednoho volného vrcholu 
-mezi každou dvojici vrcholů konstrukčního prvku proměnné, 
-která je asociována s vrcholem klauzule.
+mezi každou dvojici vrcholů konstrukčního prvku proměnné,
+jež jsou propojeny s vrcholem klauzule.
 Pokus o přeskok by totiž vedl k tomu, 
 že tento vložený vrchol zůstane nenavštíven, 
 což znemožní existenci hamiltonovského cyklu.
@@ -184,50 +184,12 @@ by nutně vedl do již navštíveného vrcholu.
 Takto navržené propojení zaručuje, 
 že vrchol klauzule je dosažitelný v rámci hamiltonovského cyklu právě tehdy, 
 pokud je alespoň jeden z jejích literálů splněn.
-Při přiřazení proměnným hodnoty $T$ procházíme konstrukčním prvkem proměnné zleva doprava, 
+Pokud je proměnným přiřazena hodnota $T$, procházíme konstrukčním prvkem proměnné zleva doprava,
 což umožňuje navštívit vrchol klauzule obsahující neznegovaný literál a vrátit se zpět.
-Při přiřazení hodnoty $F$ procházíme konstrukčním prvkem zprava doleva, 
+Přiřazením hodnoty $F$ procházíme konstrukčním prvkem zprava doleva,
 čímž lze navštívit vrcholy klauzulí s negovaným literálem.
 
 Tím je zachována ekvivalence mezi splnitelností původní formule 
 a existencí hamiltonovského cyklu ve výsledném grafu.
 
 
-/*
----
-
-Algoritmus pro převod instance problému 3-SAT na instanci problému HCYCLE
-spočívá ve vykonstruování gadgetů pro proměnné a klauzule v podobě podgrafů,
-které výsledně spojíme tak, aby se zachovala odpověď.
-
-Výsledkem bude orientovaný graf, který obsahuje hamiltonovský cyklus
-tehdy a pouze tehdy, je-li vstupní instance problému 3-SAT splitelná.
-
-Gadgety proměnných mají podobu grafu cesty, který vede oběma směry. 
-Má tedy podobu neorientovaného grafu cesty, 
-ale, protože je výsledný graf je orientovaný, 
-musíme poskytnout hrany do obou směrů.
-Počet vrcholů těchto gadgetů musí být dostatečný na to, 
-abychom je byly schopni správně spojit s gadgety klauzulí.
-
-Tyto gadgety jsou spojeny v sérii. 
-Průchod tímto grafem je nyní ekvivalentní k ohodnocení proměnných.
-V našem případě si můžem např. zvolit, že průchod levou hranou bude znamenat
-ohodnocení dané proměnné na `True` a pravou `False`.
-Jakmile zvolíme jednou z hran, nemůžeme naše rozhodnutí vrátit.
-Každá proměnná bude validním průchodem nastavená na právě jednu pravdivostní hodnotu.
-
-Gadget klauzule má jeden jediný vrchol. 
-Hrany vedou z a do gadgetů proměnných, 
-vždy mezi dvěma sousedními vrcholy gadgetu proměnné,
-a to na základě literálů vyskytujicích se ve vstupní formuli.
-Vyskutuje-li se literál neznegovaný, 
-přídáme hrany z gadgetu proměnné a tímto vrcholem tak,
-že hrana, která směřuje k vrcholu klauzule bude nalevo od hrany 
-směřující od vrcholu klauzule.
-A naopak, je-li literál znegovaý, přidáme hrany tak, 
-že hrana směřující do vrcholu klauzule bude napravo od hrany směřující od něj.
-
-Touto konstrukcí zaručíme to, že vrchol klauzule je dosažitelný, 
-je-li alespoň jeden literál ze tří splněn.
-*/
