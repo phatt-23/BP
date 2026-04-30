@@ -21,4 +21,8 @@ zathura main.pdf
 typst compile -j10 --pdf-standard=a-4 main.typ 2026_TRA0163_BP.pdf
 ```
 
+# Uzitecne odkazy
+
+[https://www.fei.vsb.cz/export/sites/fei/cs/student/informace-ke-studiu/files/pokyny_pro_vypracovani_praci.pdf]
+
 
