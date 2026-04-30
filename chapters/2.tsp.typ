@@ -16,7 +16,7 @@ $
   w : E -> NN.
 $
 
-Problém obchodního cestujicího (Traveling Salesman Problem, TSP) je optimalizační problém,
+Problém obchodního cestujícího (Traveling Salesman Problem, TSP) je optimalizační problém,
 jehož cílem je nalézt hamiltonovskou kružnici v grafu $G$ 
 s minimální celkovou cenou, kde cena kružnice je dána součtem vah jejích hran.
 
@@ -29,15 +29,14 @@ $
   P = (v_1, v_2, ..., v_(lr(|V|) - 1), v_lr(|V|), v_1),
 $
 
-která splňuje, že:
+která splňuje následující podmínky:
 - každý vrchol z množiny $V$ se v posloupnosti $P$ vyskytuje právě jednou 
   s výjimkou počátečního a koncového vrcholu $v_1$,
 - platí ${v_i,v_(i+1)} in E$ pro $1 <= i < lr(|V|)$ a ${v_lr(|V|), v_1} in E$,
-
 - celková cena kružnice splňuje $sum_i^lr(|V|) w({v_i, v_(i+1)}) <= k$.
 
-Abychom získali optimální řešení, 
-  kterou je uzavřená cesta s nejnižší cenou splňující zmíněné podmínky, 
+Abychom získali optimální řešení,
+kterým je uzavřená cesta s nejnižší cenou splňující zmíněné podmínky, 
 budeme hodnotu $k$ snižovat do té doby, než bude odpověď záporná.
 V tu chvíli víme, že cena optimální cesty je $k + 1$ a žádná jiná cesta s nižší cenou neexistuje.
 
@@ -153,6 +152,6 @@ Pro $k = 6$ existuje také možné řešení. Odpověď na rozhodovací otázku 
 
 Pro $k = 5$ žádné řešení neexistuje, tudíž odpověď na rozhodovací otázku je záporná
 a nejnižší dosažitelná cena je $k + 1 = 5 + 1 = 6$.
-Cesta $(A,B,C,D,E,F,A)$ zobrazená na @tsp-opt-reseni[obrázku] o celkové ceně $6$ je optminálním řešením.
+Cesta $(A,B,C,D,E,F,A)$ zobrazená na @tsp-opt-reseni[obrázku] o celkové ceně $6$ je optimálním řešením.
 
 

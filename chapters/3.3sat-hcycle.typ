@@ -98,6 +98,7 @@ Průchod tímto řetězcem jednoznačně odpovídá volbě ohodnocení jednotliv
 Lze například stanovit, 
 že průchod levou větví konstrukčního prvku reprezentuje přiřazení pravdivostní hodnoty $T$ dané proměnné, 
 zatímco průchod pravou větví odpovídá přiřazení hodnoty $F$.
+// AGENT: s timto budeme dale v teto praci pocitat, leva => T, prava => F
 
 Jakmile je při průchodu zvolena jedna z větví, 
 není již možné toto rozhodnutí změnit.
@@ -186,7 +187,7 @@ pokud je alespoň jeden z jejích literálů splněn.
 Při přiřazení proměnným hodnoty $T$ procházíme konstrukčním prvkem proměnné zleva doprava, 
 což umožňuje navštívit vrchol klauzule obsahující neznegovaný literál a vrátit se zpět.
 Při přiřazení hodnoty $F$ procházíme konstrukčním prvkem zprava doleva, 
-čímž lze navštívit vrcholy klauzulí odpovídající negovaným literálům.
+čímž lze navštívit vrcholy klauzulí s negovaným literálem.
 
 Tím je zachována ekvivalence mezi splnitelností původní formule 
 a existencí hamiltonovského cyklu ve výsledném grafu.

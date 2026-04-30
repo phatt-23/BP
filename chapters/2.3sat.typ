@@ -13,29 +13,29 @@ $
   Phi = (cal(V), cal(K)),
 $
 kde $cal(V)$ je množina booleovských proměnných 
-a $cal(K)$ je množina klauzulí v 3-konjunktivní normální formě (3-KNF), 
-tedy takové, že každá klauzule obsahuje právě tři literály
+a $cal(K)$ je množina klauzulí,
+z nichž každá obsahuje právě tři literály
 #footnote[
   Literál představuje výskyt booleovské proměnné ve formuli. 
   Proměnná se v ní může vyskytovat buď v neznegované, nebo v znegované podobě.
 ]. 
 
 Každou klauzuli $kappa in cal(K)$ 
-lze chápat jako množinu obsahujicí právě 3 literály 
+lze chápat jako množinu obsahující právě 3 literály.
 Klauzuli budeme tedy značit:
 $
   kappa = {alpha, beta, gamma},
 $ 
 kde $alpha$, $beta$ a $gamma$ jsou literály 
-odpovídajicí booleovským proměnným $a$, $b$ a $c$ v tomto pořadí, 
-přičemž každý z literálu může být případně znegován.
+odpovídající booleovským proměnným $a$, $b$ a $c$ v tomto pořadí, 
+přičemž každý z literálů může být případně znegován.
 
-Pro ilustraci uvažujme následujcí instanci problému: 
+Pro ilustraci uvažujme následující instanci problému: 
 $
   (a or b or c) and (x or y or z) and (not x or not b or c).
 $
 
-V tomto případě mají množiny $cal(V)$ a $cal(K)$ následujicí podobu:
+V tomto případě mají množiny $cal(V)$ a $cal(K)$ následující podobu:
 $
   cal(V) &= {a,b,c,x,y,z} \
   cal(K) &= {{a,b,c},{x,y,z},{not x,not b,c}}
@@ -49,11 +49,11 @@ $x$, $b$ a $c$ v dané klauzuli.
 Zápis $cal(V)(Phi)$ označuje množinu všech booleovských proměnných formule $Phi$,
 zatímco $cal(K)(Phi)$ označuje množinu jejích klauzulí.
 
-Pravdivostní hodnoty jsou v této práci vyjadřovány zpravidla jako 
-$T$ pro pravdivou hodnota a 
+Pravdivostní hodnoty jsou v této práci vyjadřovány zpravidla jako
+$T$ pro pravdivou hodnotu a
 $F$ pro nepravdivou hodnotu.
 
-Formule $Phi$ se nazývá splitelná, 
+Formule $Phi$ se nazývá splnitelná, 
 pokud existuje ohodnocení booleovských proměnných, 
 při němž se celá formule vyhodnotí jako pravdivá.
 Ekvivalentně lze říci, že splnitelnost nastává tehdy, 
@@ -65,7 +65,7 @@ je-li splněna každá klauzule z množiny $cal(K)$.
   Booleovská formule $Phi = (cal(V), cal(K))$ ve 3-KNF.
 
 / Otázka: 
-  Je fomule $Phi$ splitelná?
+  Je formule $Phi$ splnitelná?
 
 #kladna-odpo
 
@@ -74,7 +74,7 @@ $
   (x or y or z) and (not x or not y or not z),
 $
 
-jež v množinovém zápise vypadádá následovně:
+který v množinovém zápise vypadá následovně:
 
 $
   Phi = (cal(V), cal(K)) quad cal(V) = {x,y,z} quad cal(K) = {{x,y,z},{not x, not y, not z}}.
@@ -89,7 +89,7 @@ $
 
 #zaporna-odpo
 
-Mějme booleovký výraz:
+Mějme booleovský výraz:
 $
   (not x or not x or not x) and
   (not y or not y or x) and
@@ -106,7 +106,7 @@ $
 $
 
 Tento výraz je kontradikcí, 
-protože pro libovolné ohodnocení jeho proměnných nebude nikdy splňen.
+protože pro libovolné ohodnocení jeho proměnných nebude nikdy splněn.
 Výraz $Phi$ je nesplnitelný.
 
 #figure(
@@ -119,7 +119,7 @@ Výraz $Phi$ je nesplnitelný.
     [T], [F], [F],
     [T], [T], [F],
   ), 
-  caption: [Všechny možné ohodnocení proměnných @formula-contra[formule] -- vede ke kontradikci]
+  caption: [Všechna možná ohodnocení proměnných @formula-contra[formule] -- vede ke kontradikci]
 ) <bool-assignment-contradiction>
 
 

@@ -87,7 +87,7 @@ $
   caption: [Instance problému HCYCLE s kladnou odpovědí],
 )
 
-Graf $G$ je hamiltonovský, protože obsahuje hamiltonovský cyklus popsán uzavřenou cestou:
+Graf $G$ je hamiltonovský, protože obsahuje hamiltonovský cyklus daný uzavřenou cestou:
 $
   P = (A,B,C,D,E,F,A).
 $
@@ -124,4 +124,6 @@ Mějme graf:
 )
 
 Tento graf neobsahuje hamiltonovský cyklus.
+Vrchol $C_2$ nemá žádnou vstupní hranu,
+a proto se do něj není možné vrátit poté, co jej cyklus opustí.
 

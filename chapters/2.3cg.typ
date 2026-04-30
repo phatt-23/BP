@@ -28,7 +28,7 @@ $kappa(u) eq.not kappa(v)$.
 
 / Vstup: Neorientovaný graf $G = (V,E)$.
 
-/ Otázka: Lze vrcholy grafu obarvit 3 barvami tak, aby žádné dvě sousední nesdíleli stejnou barvu?
+/ Otázka: Lze vrcholy grafu obarvit 3 barvami tak, aby žádné dva sousední vrcholy neměly stejnou barvu?
 
 #kladna-odpo
 
@@ -67,7 +67,7 @@ $
 
 #pagebreak()
 
-Pro tento graf existuje řešení, existuje totiž validní předpis funkce $kappa : V -> K$:
+Pro tento graf existuje validní předpis funkce $kappa : V -> K$:
 
 $
   A -> R \

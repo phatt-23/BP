@@ -29,7 +29,7 @@ V této práci se zaměřujeme na následující NP-úplné problémy:
 - 3-SAT -- splnitelnost booleovské formule v 3-konjunktivní normální formě,
 - HCYCLE -- existence hamiltonovského cyklu v orientovaném grafu,
 - HCIRCUIT -- existence hamiltonovské kružnice #footnote[#ham_cyklus_kruznice] v neorientovaném grafu,
-- TSP -- problém obchodního cestujícího,
+- TSP -- problém obchodního cestujícího (v rozhodovací verzi),
 - SSP -- problém podmnožinového součtu,
 - 3-CG -- 3-obarvitelnost vrcholů grafu.
 

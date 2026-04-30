@@ -44,11 +44,9 @@ následně konceptuálně popíšeme jednotlivé kroky algoritmu
 a poté zdůvodníme jeho korektnost, 
 tj. že původní instance má kladnou odpověď právě tehdy, 
 má-li kladnou odpověď i instance převedená.
-Na závěr ukážeme, 
-že popsaný algoritmus má polynomiální časovou složitost.
 
 Ve většině popisovaných redukcí využíváme tzv. konstrukční prvky
-(v anglické literatuře často označované jako gadgets).
+(v anglické literatuře často označované jako _gadgets_).
 Konstrukční prvek je vymezená část instance cílového problému, 
 která svým chováním simuluje určitý prvek nebo vlastnost instance původního problému.
 Tyto konstrukční prvky umožňují převést logickou strukturu jedné úlohy 

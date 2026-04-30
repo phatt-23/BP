@@ -39,9 +39,9 @@ $
   sum_(s in S') s = 10 + 5 = 15 = tau.
 $
 
-Dalším možným je $S'' = {3,7,5}$, protože: 
+Dalším možným řešením je $S'' = {3,7,5}$, protože: 
 $
-  sum_(s in S'') s = 3 + 7 + 5 = 15 = tau
+  sum_(s in S'') s = 3 + 7 + 5 = 15 = tau.
 $
 
 
@@ -60,6 +60,6 @@ nikdy nebude součet těchto prvků roven $10$.
 $
   S' subset.eq S \
   S' in {emptyset, {3}, {5}, {11}, {3,5}, {3,11}, {5,11}, {3,5,11}} \
-  sum_(s in S') s != 10
+  sum_(s in S') s != 10.
 $
 

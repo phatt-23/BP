@@ -5,7 +5,7 @@
 == HCIRCUIT
 
 Problém hamiltonovské kružnice (Hamiltonian Circuit, HCIRCUIT) 
-je obdobou problému HCYCLE definováný pro neorientované grafy.
+je obdobou problému HCYCLE definovaný pro neorientované grafy.
 
 Uvažujme neorientovaný graf:
 $
@@ -33,7 +33,7 @@ která prochází každým vrcholem grafu právě jednou.
 Mějme graf $G = (V,E)$, kde:
 
 $
-  V = {x_0 x_1 x_2 x_3 x_4 x_5} \
+  V = {x_0, x_1, x_2, x_3, x_4, x_5} \
   E = {
     {x_0, x_1},
     {x_4, x_2},
@@ -88,14 +88,14 @@ $
   caption: [Instance problému HCIRCUIT s kladnou odpovědí],
 )
 
-Graf $G$ je hamiltonovský, protože obsahuje hamiltonovskou kružnici popsán uzavřenou cestou:
+Graf $G$ je hamiltonovský, protože obsahuje hamiltonovskou kružnici danou uzavřenou cestou:
 $
   P = (x_0, x_4, x_5, x_3, x_2, x_1, x_0).
 $
 
 #zaporna-odpo
 
-Mějme graf stromu:
+Mějme graf strom:
 
 #figure(
   raw-render(```dot
